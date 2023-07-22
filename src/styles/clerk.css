@@ -1,0 +1,7 @@
+.cl-card {
+    @apply bg-card dark:border dark:border-border;
+}
+
+.cl-formFieldInput {
+    @apply bg-card;
+}
