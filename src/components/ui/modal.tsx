@@ -23,7 +23,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
             open={isOpen}
             onOpenChange={onChange}
         >
-            <DialogContent className="bg-card">
+            <DialogContent asModal>
                 <DialogHeader>
                     <DialogTitle>{title}</DialogTitle>
                     <DialogDescription>{description}</DialogDescription>

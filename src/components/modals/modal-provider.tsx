@@ -1,6 +1,6 @@
 "use client"
 
-import { CreateStoreModal } from "@/components/modals/create-store-modal"
+import { CreateProjectModal } from "@/components/modals/create-project-modal"
 
 import { useMounted } from "@/lib/hooks/mounted"
 
@@ -9,7 +9,7 @@ export const ModalProvider = () => {
 
     return (
         <>
-            <CreateStoreModal></CreateStoreModal>
+            <CreateProjectModal></CreateProjectModal>
         </>
     )
 }

@@ -17,7 +17,7 @@ const shadcnPlugin = plugin(
                 "--card": base[50],
                 "--card-foreground": base[900],
                 "--border": "240 5.9% 90%",
-                "--input": "var(--card)",
+                "--input": "240 5.9% 90%",
                 "--primary": "240 5.9% 10%",
                 "--primary-foreground": "0 0% 98%",
                 "--secondary": "240 4.8% 95.9%",
@@ -36,10 +36,10 @@ const shadcnPlugin = plugin(
                 "--muted-foreground": "240 5% 64.9%",
                 "--popover": "240 10% 3.9%",
                 "--popover-foreground": "0 0% 98%",
-                "--card": base[900],
-                "--card-foreground": base[50],
+                "--card": base[950],
+                "--card-foreground": base[100],
                 "--border": "240 3.7% 15.9%",
-                "--input": "var(--card)",
+                "--input": "240 3.7% 15.9%",
                 "--primary": "0 0% 98%",
                 "--primary-foreground": "240 5.9% 10%",
                 "--secondary": "240 3.7% 15.9%",
@@ -80,7 +80,7 @@ const shadcnPlugin = plugin(
                     background: "var(--background)",
                     foreground: "var(--foreground)",
                     border: "hsl(var(--border))",
-                    input: "var(--input)",
+                    input: "hsl(var(--input))",
                     ring: "hsl(var(--ring))",
                     primary: {
                         DEFAULT: "hsl(var(--primary))",
@@ -111,42 +111,6 @@ const shadcnPlugin = plugin(
                         foreground: "var(--card-foreground)",
                     },
                 },
-
-                // colors: {
-                //     background: "hsl(var(--background))",
-                //     foreground: "hsl(var(--foreground))",
-                //     border: "hsl(var(--border))",
-                //     input: "hsl(var(--input))",
-                //     ring: "hsl(var(--ring))",
-                //     primary: {
-                //         DEFAULT: "hsl(var(--primary))",
-                //         foreground: "hsl(var(--primary-foreground))",
-                //     },
-                //     secondary: {
-                //         DEFAULT: "hsl(var(--secondary))",
-                //         foreground: "hsl(var(--secondary-foreground))",
-                //     },
-                //     destructive: {
-                //         DEFAULT: "hsl(var(--destructive))",
-                //         foreground: "hsl(var(--destructive-foreground))",
-                //     },
-                //     muted: {
-                //         DEFAULT: "hsl(var(--muted))",
-                //         foreground: "hsl(var(--muted-foreground))",
-                //     },
-                //     accent: {
-                //         DEFAULT: "hsl(var(--accent))",
-                //         foreground: "hsl(var(--accent-foreground))",
-                //     },
-                //     popover: {
-                //         DEFAULT: "hsl(var(--popover))",
-                //         foreground: "hsl(var(--popover-foreground))",
-                //     },
-                //     card: {
-                //         DEFAULT: "hsl(var(--card))",
-                //         foreground: "hsl(var(--card-foreground))",
-                //     },
-                // },
                 borderRadius: {
                     lg: "var(--radius)",
                     md: "calc(var(--radius) - 2px)",
@@ -166,6 +130,10 @@ const shadcnPlugin = plugin(
                     "accordion-down": "accordion-down 0.2s ease-out",
                     "accordion-up": "accordion-up 0.2s ease-out",
                 },
+                boxShadow: {
+                    top: "0 -15px 40px -10px rgb(0 0 0 / 0.25)"
+                    // top: "0 -10px 15px -3px rgb(0 0 0 / 0.1), 0 -4px 6px -4px rgb(0 0 0 / 0.1)"
+                }
             },
         },
     }
