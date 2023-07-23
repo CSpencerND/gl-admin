@@ -1,7 +1,6 @@
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme/ThemeProvider"
 import { ClerkProvider } from "@clerk/nextjs"
-
 import { ModalProvider } from "@/components/modals/modal-provider"
 
 import type { Metadata } from "next"
@@ -17,6 +16,7 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+
     return (
         <ClerkProvider>
             <html
