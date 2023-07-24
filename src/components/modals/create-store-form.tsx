@@ -5,32 +5,43 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 
 import { useModal } from "@/lib/hooks/use-modal"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
+
+import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
 import * as z from "zod"
 
 const formSchema = z.object({
-    projectName: z.string().min(2, {
+    name: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
 })
 
-export function CreateProjectForm() {
-    const closeModal = useModal(s => s.setClose)
+export function CreateStoreForm() {
+    const closeModal = useModal((s) => s.setClose)
 
-    // 1. Define your form.
+    const [isLoading, setLoading] = useState<boolean>(false)
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            projectName: "",
+            name: "",
         },
     })
 
-    // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
         console.log(values)
+
+        try {
+            setLoading(true)
+            const response = await axios.post("/api/stores", values)
+            console.log(response.data)
+        } catch (error) {
+            console.log("[CREATE_FORM_ON_SUBMIT]", error)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -41,12 +52,13 @@ export function CreateProjectForm() {
             >
                 <FormField
                     control={form.control}
-                    name="projectName"
+                    name="name"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Project Name</FormLabel>
+                            <FormLabel>Store Name</FormLabel>
                             <FormControl>
                                 <Input
+                                    disabled={isLoading}
                                     placeholder="Mighty Martian Manager"
                                     {...field}
                                 />
@@ -58,13 +70,19 @@ export function CreateProjectForm() {
                 />
                 <div className="space-x-4 flex items-center justify-end w-full">
                     <Button
+                        disabled={isLoading}
                         className=""
                         variant="outline"
                         onClick={closeModal}
                     >
                         Cancel
                     </Button>
-                    <Button type="submit">Continue</Button>
+                    <Button
+                        disabled={isLoading}
+                        type="submit"
+                    >
+                        Continue
+                    </Button>
                 </div>
             </form>
         </Form>
