@@ -1,11 +1,13 @@
 import plugin from "tailwindcss/plugin"
-import { zinc } from "tailwindcss/colors"
+import { tw2hsl, hex2hsl } from "../utils"
 
-const base = zinc
+import { gray as baseColor, rose as destr } from "tailwindcss/colors"
+
+const base = tw2hsl(baseColor)
 
 const shadcnPlugin = plugin(
     // add css variable definition to base layer
-    function ({ addBase }) {
+    function({ addBase, addComponents, addUtilities, theme }) {
         addBase({
             ":root": {
                 "--background": base[100],
@@ -18,37 +20,37 @@ const shadcnPlugin = plugin(
                 "--card-foreground": base[900],
                 "--border": "240 5.9% 90%",
                 "--input": "240 5.9% 90%",
-                "--primary": "240 5.9% 10%",
-                "--primary-foreground": "0 0% 98%",
+                "--primary": base[950],
+                "--primary-foreground": base[50],
                 "--secondary": "240 4.8% 95.9%",
                 "--secondary-foreground": "240 5.9% 10%",
                 "--accent": "240 4.8% 95.9%",
                 "--accent-foreground": "240 5.9% 10%",
-                "--destructive": "0 84.2% 60.2%",
-                "--destructive-foreground": "0 0% 98%",
+                "--destructive": hex2hsl(destr[600]),
+                "--destructive-foreground": hex2hsl(destr[600]),
                 "--ring": "240 5% 64.9%",
                 "--radius": "0.5rem",
             },
             ".dark": {
                 "--background": base[950],
                 "--foreground": base[100],
-                "--muted": "240 3.7% 15.9%",
-                "--muted-foreground": "240 5% 64.9%",
-                "--popover": "240 10% 3.9%",
-                "--popover-foreground": "0 0% 98%",
+                "--muted": base[800],
+                "--muted-foreground": base[200],
+                "--popover": base[950],
+                "--popover-foreground": base[100],
                 "--card": base[950],
                 "--card-foreground": base[100],
-                "--border": "240 3.7% 15.9%",
-                "--input": "240 3.7% 15.9%",
-                "--primary": "0 0% 98%",
-                "--primary-foreground": "240 5.9% 10%",
-                "--secondary": "240 3.7% 15.9%",
-                "--secondary-foreground": "0 0% 98%",
-                "--accent": "240 3.7% 15.9%",
-                "--accent-foreground": "0 0% 98%",
-                "--destructive": "0 62.8% 30.6%",
-                "--destructive-foreground": "0 85.7% 97.3%",
-                "--ring": "240 3.7% 15.9%",
+                "--border": base[800],
+                "--input": base[800],
+                "--ring": base[800],
+                "--primary": base[50],
+                "--primary-foreground": base[950],
+                "--secondary": base[800],
+                "--secondary-foreground": base[100],
+                "--accent": base[800],
+                "--accent-foreground": base[100],
+                "--destructive": hex2hsl(destr[600]),
+                "--destructive-foreground": hex2hsl(destr[600]),
             },
         })
 
@@ -57,10 +59,27 @@ const shadcnPlugin = plugin(
                 "@apply border-border": {},
             },
 
-            "html, body, :root": { height: "100%" },
+            "html, body, :root": {
+                height: "100%",
+            },
+
             body: {
                 "@apply bg-background text-foreground": {},
                 "font-feature-settings": `"rlig" 1, "calt" 1`,
+            },
+        })
+
+        addUtilities({
+            ".size-sm": {
+                "@apply w-4 h-4": {}
+            },
+
+            ".size-md": {
+                "@apply w-5 h-5": {}
+            },
+
+            ".size-lg": {
+                "@apply w-6 h-6": {}
             },
         })
     },
@@ -77,8 +96,8 @@ const shadcnPlugin = plugin(
             },
             extend: {
                 colors: {
-                    background: "var(--background)",
-                    foreground: "var(--foreground)",
+                    background: "hsl(var(--background))",
+                    foreground: "hsl(var(--foreground))",
                     border: "hsl(var(--border))",
                     input: "hsl(var(--input))",
                     ring: "hsl(var(--ring))",
@@ -91,7 +110,7 @@ const shadcnPlugin = plugin(
                         foreground: "hsl(var(--secondary-foreground))",
                     },
                     destructive: {
-                        DEFAULT: "hsl(var(--destructive))",
+                        DEFAULT: "hsl(var(--destructive) / 0.25)",
                         foreground: "hsl(var(--destructive-foreground))",
                     },
                     muted: {
@@ -107,8 +126,8 @@ const shadcnPlugin = plugin(
                         foreground: "hsl(var(--popover-foreground))",
                     },
                     card: {
-                        DEFAULT: "var(--card)",
-                        foreground: "var(--card-foreground)",
+                        DEFAULT: "hsl(var(--card))",
+                        foreground: "hsl(var(--card-foreground))",
                     },
                 },
                 borderRadius: {

@@ -4,7 +4,7 @@ import typography from "@tailwindcss/typography"
 import animate from "tailwindcss-animate"
 import shadcn from "./src/lib/shadcn-plugin-tailwindcss"
 // import daisyui from "daisyui"
-const prettier = require("prettier-plugin-tailwindcss")
+
 
 // import { fontFamily } from "tailwindcss/defaultTheme"
 
@@ -18,7 +18,7 @@ const config = {
 
     presets: [shadcn],
 
-    plugins: [typography, prettier],
+    plugins: [typography, require("prettier-plugin-tailwindcss")],
     // plugins: [typography, prettier, daisyui],
 
     // daisyui: {

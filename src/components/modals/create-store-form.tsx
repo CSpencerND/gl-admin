@@ -4,22 +4,23 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-import { useModal } from "@/lib/hooks/use-modal"
+import { useModalStore } from "@/lib/hooks/use-modal"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
+import { toast } from "react-hot-toast"
+
 import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
 import * as z from "zod"
 
 const formSchema = z.object({
     name: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
+        message: "Store name must be at least 2 characters.",
     }),
 })
 
 export function CreateStoreForm() {
-    const closeModal = useModal((s) => s.setClose)
+    const closeModal = useModalStore((s) => s.setClose)
 
     const [isLoading, setLoading] = useState<boolean>(false)
 
@@ -35,10 +36,17 @@ export function CreateStoreForm() {
 
         try {
             setLoading(true)
-            const response = await axios.post("/api/stores", values)
-            console.log(response.data)
+            // const response = await axios.post("/api/stores", values)
+
+            const response = await fetch("/api/stores", {
+                body: JSON.stringify(values),
+                method: "post",
+            }).then((r) => r.json())
+
+            window.location.assign(`/${response.data.id}`)
         } catch (error) {
             console.log("[CREATE_FORM_ON_SUBMIT]", error)
+            toast.error("Something went wrong :(")
         } finally {
             setLoading(false)
         }
@@ -48,7 +56,6 @@ export function CreateStoreForm() {
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
             >
                 <FormField
                     control={form.control}
@@ -58,6 +65,7 @@ export function CreateStoreForm() {
                             <FormLabel>Store Name</FormLabel>
                             <FormControl>
                                 <Input
+                                    className="placeholder:text-input"
                                     disabled={isLoading}
                                     placeholder="Mighty Martian Manager"
                                     {...field}
@@ -78,6 +86,7 @@ export function CreateStoreForm() {
                         Cancel
                     </Button>
                     <Button
+                        variant="default"
                         disabled={isLoading}
                         type="submit"
                     >

@@ -1,7 +1,8 @@
-import { TailwindIndicator } from "@/components/tailwind-indicator"
-import { ThemeProvider } from "@/components/theme/ThemeProvider"
-import { ClerkProvider } from "@clerk/nextjs"
 import { ModalProvider } from "@/components/modals/modal-provider"
+import { TailwindIndicator } from "@/components/theme/tailwind-indicator"
+import { ThemeProvider } from "@/components/theme/theme-provider"
+import { ToasterProvider } from "@/lib/providers/toast-provider"
+import { ClerkProvider } from "@clerk/nextjs"
 
 import type { Metadata } from "next"
 
@@ -22,9 +23,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <html
                 lang="en"
                 suppressHydrationWarning
+                className="dark"
             >
                 <body className={inter.className}>
                     <ThemeProvider attribute="class">
+                        <ToasterProvider />
                         <ModalProvider />
                         {children}
                         <TailwindIndicator />

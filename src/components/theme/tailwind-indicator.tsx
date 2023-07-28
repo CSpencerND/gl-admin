@@ -1,6 +1,6 @@
 "use client"
 
-import { ThemeToggler } from "./theme/ThemeToggler"
+import { ThemeToggler } from "@/components/theme/theme-toggler"
 
 export function TailwindIndicator() {
     if (process.env.NODE_ENV === "production") return null

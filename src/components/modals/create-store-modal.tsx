@@ -3,11 +3,11 @@
 import { Modal } from "@/components/ui/modal"
 import { CreateStoreForm } from "@/components/modals/create-store-form"
 
-import { useModal } from "@/lib/hooks/use-modal"
+import { useModalStore } from "@/lib/hooks/use-modal"
 
 export const CreateStoreModal = () => {
-    const isOpen = useModal((s) => s.isOpen)
-    const setClose = useModal((s) => s.setClose)
+    const isOpen = useModalStore((s) => s.isOpen)
+    const setClose = useModalStore((s) => s.setClose)
 
     return (
         <Modal
@@ -15,6 +15,7 @@ export const CreateStoreModal = () => {
             description="Add a new store and manage products"
             isOpen={isOpen}
             onClose={setClose}
+            className="!prose !prose-invert prose-headings:!mt-0 p-8"
         >
             <CreateStoreForm />
         </Modal>
