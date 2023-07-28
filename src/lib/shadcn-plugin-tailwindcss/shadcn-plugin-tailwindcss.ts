@@ -1,5 +1,5 @@
 import plugin from "tailwindcss/plugin"
-import { tw2hsl, hex2hsl } from "../utils"
+import { tw2hsl, hex2hsl } from "./converters"
 
 import { gray as baseColor, rose as destr } from "tailwindcss/colors"
 
@@ -7,7 +7,7 @@ const base = tw2hsl(baseColor)
 
 const shadcnPlugin = plugin(
     // add css variable definition to base layer
-    function({ addBase, addComponents, addUtilities, theme }) {
+    function({ addBase, addUtilities }) {
         addBase({
             ":root": {
                 "--background": base[100],
