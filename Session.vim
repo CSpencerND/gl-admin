@@ -14,12 +14,11 @@ else
   set shortmess=aoO
 endif
 badd +34 ~/Code/ecommerce-admin/src/app/(dashboard)/\[storeId]/(routes)/settings/page.tsx
-badd +21 ~/Code/ecommerce-admin/src/components/settings/settings-form.tsx
-badd +4 src/lib/shadcn-plugin-tailwindcss/shadcn-plugin-tailwindcss.ts
+badd +30 ~/Code/ecommerce-admin/src/components/settings/settings-form.tsx
 argglobal
 %argdel
 $argadd ./
-edit src/lib/shadcn-plugin-tailwindcss/shadcn-plugin-tailwindcss.ts
+edit ~/Code/ecommerce-admin/src/components/settings/settings-form.tsx
 wincmd t
 let s:save_winminheight = &winminheight
 let s:save_winminwidth = &winminwidth
@@ -28,7 +27,6 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-balt ~/Code/ecommerce-admin/src/components/settings/settings-form.tsx
 setlocal fdm=manual
 setlocal fde=
 setlocal fmr={{{,}}}
@@ -39,12 +37,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 4 - ((3 * winheight(0) + 27) / 54)
+let s:l = 30 - ((29 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 4
-normal! 037|
+keepjumps 30
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
