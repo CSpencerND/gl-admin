@@ -56,7 +56,7 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({ className, items =
                 >
                     <StoreIcon className="mr-2 size-sm" />
                     <span>{currentStore?.label}</span>
-                    <ChevronsUpDownIcon className="ml-auto opacity-60 size-sm" />
+                    <ChevronsUpDownIcon className="ml-auto stroke-muted-foreground size-sm" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="mt-1 p-0 border-none ring-1 ring-ring">

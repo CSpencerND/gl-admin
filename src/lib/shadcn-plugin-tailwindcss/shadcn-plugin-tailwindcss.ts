@@ -35,7 +35,7 @@ const shadcnPlugin = plugin(
                 "--background": base[950],
                 "--foreground": base[100],
                 "--muted": base[800],
-                "--muted-foreground": base[200],
+                "--muted-foreground": base[400],
                 "--popover": base[950],
                 "--popover-foreground": base[100],
                 "--card": base[950],

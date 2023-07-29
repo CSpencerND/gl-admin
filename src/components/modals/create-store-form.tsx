@@ -5,8 +5,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 
 import { useModalStore } from "@/lib/hooks/use-modal"
-import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { useLoading } from "@/lib/hooks/loading"
 
 import { toast } from "react-hot-toast"
 
@@ -21,8 +21,7 @@ const formSchema = z.object({
 
 export function CreateStoreForm() {
     const closeModal = useModalStore((s) => s.setClose)
-
-    const [isLoading, setLoading] = useState<boolean>(false)
+    const { isLoading, setLoading, setLoaded } = useLoading()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -35,7 +34,7 @@ export function CreateStoreForm() {
         console.log(values)
 
         try {
-            setLoading(true)
+            setLoading()
             // const response = await axios.post("/api/stores", values)
 
             const response = await fetch("/api/stores", {
@@ -48,7 +47,7 @@ export function CreateStoreForm() {
             console.log("[CREATE_FORM_ON_SUBMIT]", error)
             toast.error("Something went wrong :(")
         } finally {
-            setLoading(false)
+            setLoaded()
         }
     }
 
@@ -65,7 +64,6 @@ export function CreateStoreForm() {
                             <FormLabel>Store Name</FormLabel>
                             <FormControl>
                                 <Input
-                                    className="placeholder:text-input"
                                     disabled={isLoading}
                                     placeholder="Mighty Martian Manager"
                                     {...field}
