@@ -1,7 +1,7 @@
 import plugin from "tailwindcss/plugin"
 import { tw2hsl, hex2hsl } from "./converters"
 
-import { gray as baseColor, rose as destr } from "tailwindcss/colors"
+import { slate as baseColor, rose as destr } from "tailwindcss/colors"
 
 const base = tw2hsl(baseColor)
 
@@ -42,7 +42,7 @@ const shadcnPlugin = plugin(
                 "--card-foreground": base[100],
                 "--border": base[800],
                 "--input": base[800],
-                "--ring": base[800],
+                "--ring": base[700],
                 "--primary": base[50],
                 "--primary-foreground": base[950],
                 "--secondary": base[800],

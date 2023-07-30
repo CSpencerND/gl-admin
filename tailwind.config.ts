@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss"
 
 import typography from "@tailwindcss/typography"
-import animate from "tailwindcss-animate"
+// import animate from "tailwindcss-animate"
 import shadcn from "./src/lib/shadcn-plugin-tailwindcss"
 // import daisyui from "daisyui"
 

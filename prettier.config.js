@@ -1,7 +1,10 @@
+// @ts-check
+
 /** @type {import("prettier").Config} */
 module.exports = {
-    plugins: [require.resolve("prettier-plugin-tailwindcss")],
-    tailwindConfig: "./tailwind.config.js",
+    plugins: ["prettier-plugin-tailwindcss"],
+    tailwindConfig: "./tailwind.config.ts",
+    tailwindFunctions: ["clsx", "twMerge", "cn", "tw", "expandVariant"],
     trailingComma: "es5",
     tabWidth: 4,
     semi: false,

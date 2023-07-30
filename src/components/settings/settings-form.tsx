@@ -1,18 +1,18 @@
 "use client"
 
+import { FormEntry } from "@/components/form-entry"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
-import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { TrashIcon } from "lucide-react"
-
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
 
 import { useLoading } from "@/lib/hooks/loading"
 import { useOpen } from "@/lib/hooks/open"
 import { useForm } from "react-hook-form"
+
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
 
 import type { Store } from "@prisma/client"
 
@@ -23,7 +23,7 @@ type SettingsFormProps = {
 type SettingsFormValues = z.infer<typeof schema>
 
 const schema = z.object({
-    name: z.string().min(1)
+    name: z.string().min(1),
 })
 
 export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
@@ -32,7 +32,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
 
     const form = useForm<SettingsFormValues>({
         resolver: zodResolver(schema),
-        defaultValues: initialData
+        defaultValues: initialData,
     })
 
     const onSubmit = async (values: SettingsFormValues) => {
@@ -42,7 +42,10 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
     return (
         <>
             <div className="flex items-center justify-between">
-                <Heading title="Settings" description="Manage store preferences" />
+                <Heading
+                    title="Settings"
+                    description="Manage store preferences"
+                />
                 <Button
                     variant="destructive"
                     size="icon"
@@ -55,26 +58,18 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-8 w-full"
+                    className="w-full space-y-8"
                 >
                     <div className="grid grid-cols-3 gap-8">
-                        <FormField
+                        <FormEntry
                             control={form.control}
                             name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            disabled={isLoading}
-                                            placeholder="Store name"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
+                            label="Name"
+                            isLoading={isLoading}
+                            floating
                         />
                     </div>
+                    <Button variant="secondary">Save Changes</Button>
                 </form>
             </Form>
         </>

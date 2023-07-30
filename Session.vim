@@ -13,13 +13,12 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +34 ~/Code/ecommerce-admin/src/app/(dashboard)/\[storeId]/(routes)/settings/page.tsx
-badd +68 ~/Code/ecommerce-admin/src/components/settings/settings-form.tsx
-badd +71 src/components/modals/create-store-form.tsx
+badd +70 src/components/settings/settings-form.tsx
+badd +63 ~/Code/ecommerce-admin/src/components/form-entry.tsx
 argglobal
 %argdel
 $argadd ./
-edit src/components/modals/create-store-form.tsx
+edit ~/Code/ecommerce-admin/src/components/form-entry.tsx
 wincmd t
 let s:save_winminheight = &winminheight
 let s:save_winminwidth = &winminwidth
@@ -28,6 +27,7 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
+balt src/components/settings/settings-form.tsx
 setlocal fdm=manual
 setlocal fde=
 setlocal fmr={{{,}}}
@@ -38,12 +38,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 71 - ((27 * winheight(0) + 27) / 54)
+let s:l = 63 - ((47 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 71
-normal! 035|
+keepjumps 63
+normal! 010|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
