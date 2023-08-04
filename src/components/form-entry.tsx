@@ -1,4 +1,4 @@
-import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
 import { cn } from "@/lib/utils"
@@ -38,6 +38,7 @@ export const FormEntry: React.FC<FormEntryProps> = ({ control, name, label, isLo
                         >
                             {label}
                         </FormLabel>
+                        <FormMessage />
                     </FormItem>
                 )}
             />

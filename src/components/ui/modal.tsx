@@ -7,13 +7,14 @@ import { cn } from "@/lib/utils"
 type ModalProps = React.PropsWithChildren & {
     title: string
     description: string
+    icon?: React.ReactNode
     isOpen: boolean
     onClose: () => void
     className?: string
 }
 
 export const Modal: React.FC<ModalProps> = (props) => {
-    const { title, description, isOpen, onClose, children, className } = props
+    const { title, description, icon, isOpen, onClose, children, className } = props
 
     const onChange = (open: boolean) => {
         if (!open) {
@@ -26,11 +27,15 @@ export const Modal: React.FC<ModalProps> = (props) => {
             open={isOpen}
             onOpenChange={onChange}
         >
-            <DialogContent asModal
-                className={cn(className)}
+            <DialogContent
+                asModal
+                className={cn("!prose !prose-invert p-8 prose-headings:!mt-0", className)}
             >
                 <DialogHeader>
-                    <DialogTitle>{title}</DialogTitle>
+                    <DialogTitle className="flex flex-row gap-4">
+                        {icon}
+                        {title}
+                    </DialogTitle>
                     <DialogDescription>{description}</DialogDescription>
                 </DialogHeader>
                 <div>{children}</div>

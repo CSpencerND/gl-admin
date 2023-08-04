@@ -1,12 +1,7 @@
-import type { Config } from "tailwindcss"
-
 import typography from "@tailwindcss/typography"
-// import animate from "tailwindcss-animate"
-import shadcn from "./src/lib/shadcn-plugin-tailwindcss"
-// import daisyui from "daisyui"
+import shadcn from "./shadcn-plugin-tailwindcss"
 
-
-// import { fontFamily } from "tailwindcss/defaultTheme"
+import type { Config } from "tailwindcss"
 
 const config = {
     content: [
@@ -16,22 +11,14 @@ const config = {
         './src/**/*.{ts,tsx}',
     ],
 
-    presets: [shadcn],
+    presets: [
+        shadcn
+    ],
 
-    plugins: [typography, require("prettier-plugin-tailwindcss")],
-    // plugins: [typography, prettier, daisyui],
+    plugins: [
+        typography,
+    ],
 
-    // daisyui: {
-    //     styled: false,
-    //     base: true,
-    //     utils: true,
-    //     logs: false,
-    //     rtl: false,
-    //     prefix: "",
-    //     darkTheme: "dark",
-    //     themes: [],
-    // },
-    //
 } satisfies Config
 
 export default config

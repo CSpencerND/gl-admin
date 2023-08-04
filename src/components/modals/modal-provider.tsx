@@ -1,6 +1,6 @@
 "use client"
 
-import { CreateStoreModal } from "@/components/modals/create-store-modal"
+import { CreateStoreModal } from "@/components/modals/create-store"
 
 import { useMounted } from "@/lib/hooks/mounted"
 

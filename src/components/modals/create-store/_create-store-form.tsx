@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
+import { useToast } from "@/components/ui/use-toast"
+import { useLoading } from "@/lib/hooks/loading"
 import { useModalStore } from "@/lib/hooks/use-modal"
 import { useForm } from "react-hook-form"
-import { useLoading } from "@/lib/hooks/loading"
 
-import { toast } from "react-hot-toast"
+import axios from "axios"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -22,6 +23,7 @@ const formSchema = z.object({
 export function CreateStoreForm() {
     const closeModal = useModalStore((s) => s.setClose)
     const { isLoading, setLoading, setLoaded } = useLoading()
+    const { toast } = useToast()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -35,17 +37,13 @@ export function CreateStoreForm() {
 
         try {
             setLoading()
-            // const response = await axios.post("/api/stores", values)
-
-            const response = await fetch("/api/stores", {
-                body: JSON.stringify(values),
-                method: "post",
-            }).then((r) => r.json())
-
+            const response = await axios.post("/api/stores", values)
             window.location.assign(`/${response.data.id}`)
         } catch (error) {
             console.log("[CREATE_FORM_ON_SUBMIT]", error)
-            toast.error("Something went wrong :(")
+            toast({
+                description: "Something went wrong :(",
+            })
         } finally {
             setLoaded()
         }
@@ -53,9 +51,7 @@ export function CreateStoreForm() {
 
     return (
         <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(onSubmit)}
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)}>
                 <FormField
                     control={form.control}
                     name="name"
@@ -74,7 +70,7 @@ export function CreateStoreForm() {
                         </FormItem>
                     )}
                 />
-                <div className="space-x-4 flex items-center justify-end w-full">
+                <div className="flex w-full items-center justify-end space-x-4">
                     <Button
                         disabled={isLoading}
                         className=""

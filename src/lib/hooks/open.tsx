@@ -6,5 +6,5 @@ export const useOpen = () => {
     const setOpen = () => setOpenState(true)
     const setClose = () => setOpenState(false)
 
-    return { isOpen, setOpen, setClose }
+    return { isOpen, setOpen, setClose, setOpenState }
 }

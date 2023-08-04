@@ -1,7 +1,15 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Command, CommandEmpty, CommandItem, CommandInput, CommandList, CommandGroup, CommandSeparator } from "@/components/ui/command"
+import {
+    Command,
+    CommandEmpty,
+    CommandItem,
+    CommandInput,
+    CommandList,
+    CommandGroup,
+    CommandSeparator,
+} from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { CheckIcon, ChevronsUpDownIcon, PlusCircleIcon, StoreIcon } from "lucide-react"
 
@@ -27,13 +35,13 @@ type StoreItem = {
 export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({ className, items = [], ...props }) => {
     const [isOpen, setOpen] = useState<boolean>(false)
 
-    const setModalOpen = useModalStore(s => s.setOpen)
+    const setModalOpen = useModalStore((s) => s.setOpen)
     const params = useParams()
     const router = useRouter()
 
     const formattedItems: StoreItem[] = items.map((item) => ({
         label: item.name,
-        value: item.id
+        value: item.id,
     }))
 
     const currentStore = formattedItems.find((item) => item.value === params.storeId)
@@ -44,10 +52,12 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({ className, items =
     }
 
     return (
-        <Popover open={isOpen} onOpenChange={setOpen}>
+        <Popover
+            open={isOpen}
+            onOpenChange={setOpen}
+        >
             <PopoverTrigger asChild>
                 <Button
-                    size="sm"
                     variant="outline"
                     role="combobox"
                     aria-expanded={isOpen}
@@ -59,22 +69,26 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({ className, items =
                     <ChevronsUpDownIcon className="ml-auto stroke-muted-foreground size-sm" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="mt-1 p-0 border-none ring-1 ring-border">
+            <PopoverContent className="mt-1 border-none p-0 ring-1 ring-border">
                 <Command>
                     <CommandList>
-                        <CommandInput placeholder="Search store..." className="h-9" />
+                        <CommandInput
+                            placeholder="Search store..."
+                            className="h-9"
+                        />
                         <CommandEmpty>No Store Found</CommandEmpty>
                         <CommandGroup heading="Store">
                             {formattedItems.map((store) => (
-                                <CommandItem key={store.value} onSelect={() => onStoreSelect(store)} className="text-sm">
+                                <CommandItem
+                                    key={store.value}
+                                    onSelect={() => onStoreSelect(store)}
+                                >
                                     <StoreIcon className="mr-2 size-sm" />
                                     {store.label}
                                     <CheckIcon
                                         className={cn(
-                                            "ml-auto size-sm",
-                                            currentStore?.value === store.value
-                                                ? "opacity-100"
-                                                : "opacity-0"
+                                            "ml-auto stroke-muted-foreground size-sm",
+                                            currentStore?.value === store.value ? "opacity-100" : "opacity-0"
                                         )}
                                     />
                                 </CommandItem>

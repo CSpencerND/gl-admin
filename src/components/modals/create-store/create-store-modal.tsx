@@ -1,7 +1,7 @@
 "use client"
 
 import { Modal } from "@/components/ui/modal"
-import { CreateStoreForm } from "@/components/modals/create-store-form"
+import { CreateStoreForm } from "./_create-store-form"
 
 import { useModalStore } from "@/lib/hooks/use-modal"
 
@@ -15,7 +15,6 @@ export const CreateStoreModal = () => {
             description="Add a new store and manage products"
             isOpen={isOpen}
             onClose={setClose}
-            className="!prose !prose-invert prose-headings:!mt-0 p-8"
         >
             <CreateStoreForm />
         </Modal>

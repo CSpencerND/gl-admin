@@ -6,5 +6,5 @@ export const useLoading = () => {
     const setLoading = () => setLoadingState(true)
     const setLoaded = () => setLoadingState(false)
 
-    return { isLoading, setLoading, setLoaded }
+    return { isLoading, setLoading, setLoaded, setLoadingState }
 }

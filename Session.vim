@@ -13,12 +13,11 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +70 src/components/settings/settings-form.tsx
-badd +63 ~/Code/ecommerce-admin/src/components/form-entry.tsx
+badd +1 ~/Code/ecommerce-admin/tailwind.config.ts
 argglobal
 %argdel
 $argadd ./
-edit ~/Code/ecommerce-admin/src/components/form-entry.tsx
+edit ~/Code/ecommerce-admin/tailwind.config.ts
 wincmd t
 let s:save_winminheight = &winminheight
 let s:save_winminwidth = &winminwidth
@@ -27,7 +26,6 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-balt src/components/settings/settings-form.tsx
 setlocal fdm=manual
 setlocal fde=
 setlocal fmr={{{,}}}
@@ -38,12 +36,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 63 - ((47 * winheight(0) + 25) / 50)
+let s:l = 1 - ((0 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 63
-normal! 010|
+keepjumps 1
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

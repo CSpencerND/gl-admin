@@ -1,4 +1,4 @@
-type BaseColor = {
+export type BaseColor = {
     [k: string]: `#${string}`;
 };
 

@@ -1,6 +1,7 @@
-import type { Config } from "tailwindcss"
-import shadcn from "./shadcn-plugin-tailwindcss"
 import animate from "tailwindcss-animate"
+import shadcn from "./shadcn-plugin-tailwindcss"
+
+import type { Config } from "tailwindcss"
 
 const shadcnPreset = {
     content: [],

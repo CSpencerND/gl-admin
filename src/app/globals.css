@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .cl-card {
     @apply bg-card dark:border dark:border-border;
 }
