@@ -1,5 +1,5 @@
-import { SettingsForm } from "@/components/settings/settings-form"
-import { Main } from "@/components/ui/main"
+import { SettingsForm } from "@/components/forms/settings-form"
+import { MainDiv } from "@/components/ui/main-div"
 
 import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs"
@@ -30,11 +30,11 @@ const SettingsPage: React.FC<SettingsPageProps> = async ({ params }) => {
     }
 
     return (
-        <Main>
+        <MainDiv>
             <section className="space-y-8">
                 <SettingsForm initialData={store} />
             </section>
-        </Main>
+        </MainDiv>
     )
 }
 

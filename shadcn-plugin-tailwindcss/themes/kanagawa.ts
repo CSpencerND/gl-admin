@@ -1,0 +1,83 @@
+const base = {
+    "50": "240 40% 96%",
+    "100": "240 13% 85%",
+    "200": "240 12% 75%",
+    "300": "240 11% 64%",
+    "400": "242 11% 54%",
+    "500": "242 12% 44%",
+    "600": "243 13% 35%",
+    "700": "240 13% 25%",
+    "800": "240 13% 15%",
+    "900": "240 20% 10% ",
+}
+
+// const destruct = {
+//     "100": "359 99% 55%",
+//     "900": "359 99% 15%",
+// }
+
+const destruct = "359 99% 55%"
+
+// export const rosePine: BaseColor = {
+//     "50": "#f0eefa",
+//     "100": "#d3d0e1",
+//     "200": "#b6b1cb",
+//     "300": "#9892b6",
+//     "400": "#7b74a2",
+//     "500": "#615a88",
+//     "600": "#4c466a",
+//     "700": "#36324a",
+//     "800": "#201e2d",
+//     "900": "#0b0911",
+// }
+
+export default {
+    ":root": {
+        "--background": base[50],
+        "--foreground": base[900],
+        "--muted": "240 4.8% 95.9%",
+        "--muted-foreground": "240 3.8% 46.1%",
+        "--popover": "0 0% 100%",
+        "--popover-foreground": "240 10% 3.9%",
+        "--card": base[50],
+        "--card-foreground": base[900],
+        "--border": "240 5.9% 90%",
+        "--input": "240 5.9% 90%",
+        "--primary": base[900],
+        "--primary-foreground": base[50],
+        "--secondary": "240 4.8% 95.9%",
+        "--secondary-foreground": "240 5.9% 10%",
+        "--accent": "240 4.8% 95.9%",
+        "--accent-foreground": "240 5.9% 10%",
+        "--destructive": destruct,
+        "--destructive-foreground": destruct,
+        "--warning": "23 100% 70%",
+        "--warning-foreground": "23 100% 70%",
+        "--ring": "240 5% 64.9%",
+        "--radius": "0.5rem",
+        "--shadow-opactity": "0.333",
+    },
+    ".dark": {
+        "--background": base[900],
+        "--foreground": base[100],
+        "--muted": base[700],
+        "--muted-foreground": base[300],
+        "--popover": base[900],
+        "--popover-foreground": base[100],
+        "--card": base[900],
+        "--card-foreground": base[100],
+        "--border": base[800],
+        "--input": base[700],
+        "--ring": base[600],
+        "--primary": base[100],
+        "--primary-foreground": base[800],
+        "--secondary": base[800],
+        "--secondary-foreground": base[100],
+        "--accent": base[600],
+        "--accent-foreground": base[100],
+        "--destructive": destruct,
+        "--destructive-foreground": destruct,
+        "--warning": "23 100% 70%",
+        "--warning-foreground": "23 100% 70%",
+    },
+}

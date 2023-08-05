@@ -3,7 +3,7 @@ import shadcn from "./shadcn-plugin-tailwindcss"
 
 import type { Config } from "tailwindcss"
 
-const config = {
+export default {
     content: [
         './pages/**/*.{ts,tsx}',
         './components/**/*.{ts,tsx}',
@@ -20,5 +20,3 @@ const config = {
     ],
 
 } satisfies Config
-
-export default config

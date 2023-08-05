@@ -95,6 +95,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
                     description="Manage store preferences"
                 />
                 <Button
+                    base="soft"
                     variant="destructive"
                     size="icon"
                     disabled={isLoading}
@@ -119,7 +120,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
                         />
                     </div>
                     <Button
-                        variant="secondary"
+                        // variant="secondary"
                         disabled={isLoading}
                         type="submit"
                         className="ml-auto"

@@ -5,9 +5,9 @@ type Config = Prettier & {
     tailwindFunctions?: string[]
 }
 
-const config = {
+export default {
     // plugins: ["prettier-plugin-tailwindcss"],
-    // tailwindConfig: "./tailwind.config.ts",
+    // tailwindConfig: "./tailwind.config.ts" ?? "./tailwind.config.js",
     // tailwindFunctions: ["clsx", "twMerge", "cn", "tw", "expandVariant"],
     trailingComma: "es5",
     tabWidth: 4,
@@ -16,5 +16,3 @@ const config = {
     printWidth: 120,
     singleAttributePerLine: true,
 } satisfies Config
-
-export default config

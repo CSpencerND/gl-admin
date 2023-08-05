@@ -13,11 +13,12 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +1 ~/Code/ecommerce-admin/tailwind.config.ts
+badd +35 src/components/billboard.tsx
+badd +20 ~/Code/ecommerce-admin/src/app/(dashboard)/\[storeId]/(routes)/billboards/\[billboardId]/page.tsx
 argglobal
 %argdel
 $argadd ./
-edit ~/Code/ecommerce-admin/tailwind.config.ts
+edit ~/Code/ecommerce-admin/src/app/(dashboard)/\[storeId]/(routes)/billboards/\[billboardId]/page.tsx
 wincmd t
 let s:save_winminheight = &winminheight
 let s:save_winminwidth = &winminwidth
@@ -36,11 +37,11 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 1 - ((0 * winheight(0) + 27) / 55)
+let s:l = 20 - ((19 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 1
+keepjumps 20
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
@@ -57,6 +58,7 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
+nohlsearch
 let g:this_session = v:this_session
 let g:this_obsession = v:this_session
 doautoall SessionLoadPost

@@ -3,7 +3,9 @@
 import { useModalStore } from "@/lib/hooks/use-modal"
 import { useEffect } from "react"
 
-export default function SetupPage() {
+import type { NextPage } from "next"
+
+const SetupPage: NextPage = () => {
     const isOpen = useModalStore((s) => s.isOpen)
     const setOpen = useModalStore((s) => s.setOpen)
 
@@ -13,3 +15,5 @@ export default function SetupPage() {
 
     return null
 }
+
+export default SetupPage
