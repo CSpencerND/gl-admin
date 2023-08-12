@@ -13,14 +13,13 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +67 src/components/forms/image-upload.tsx
-badd +10 src/lib/uploadthing.ts
+badd +65 src/components/forms/billboard-form.tsx
 badd +44 src/app/api/\[storeId]/billboards/route.ts
-badd +20 src/app/api/\[storeId]/billboards/\[billboardId]/route.ts
+badd +70 src/app/api/\[storeId]/billboards/\[billboardId]/route.ts
 argglobal
 %argdel
 $argadd ./
-edit src/components/forms/image-upload.tsx
+edit src/components/forms/billboard-form.tsx
 wincmd t
 let s:save_winminheight = &winminheight
 let s:save_winminwidth = &winminwidth
@@ -29,7 +28,7 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-balt src/lib/uploadthing.ts
+balt src/app/api/\[storeId]/billboards/\[billboardId]/route.ts
 setlocal fdm=manual
 setlocal fde=
 setlocal fmr={{{,}}}
@@ -40,12 +39,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 67 - ((36 * winheight(0) + 27) / 54)
+let s:l = 65 - ((25 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 67
-normal! 056|
+keepjumps 65
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
