@@ -1,5 +1,5 @@
 import plugin from "tailwindcss/plugin"
-import theme from "./themes/kanagawa"
+import theme from "./themes/catppuccin"
 
 export default plugin(
     function({ addBase, addUtilities }) {

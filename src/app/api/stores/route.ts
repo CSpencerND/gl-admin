@@ -2,14 +2,15 @@ import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
+import type { StoreFormValues } from "@/types"
+
 export async function POST(req: Request) {
     try {
         const { userId } = auth()
-        const body = await req.json()
-        const { name } = body
+        const { name } = (await req.json()) as StoreFormValues
 
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 403 })
+            return new NextResponse("You must be logged in", { status: 401 })
         }
 
         if (!name) {
@@ -24,7 +25,7 @@ export async function POST(req: Request) {
         })
 
         return NextResponse.json(store)
-    } catch (error: unknown) {
+    } catch (error) {
         console.log("[STORES_POST]", error)
         return new NextResponse("Internal Error", { status: 500 })
     }

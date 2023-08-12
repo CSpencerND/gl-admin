@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/** Clerk */
 /* .cl-card { */
 /*     @apply bg-card dark:border dark:border-border; */
 /* } */
@@ -9,3 +10,32 @@
 /* .cl-formFieldInput { */
 /*     @apply bg-card; */
 /* } */
+
+/** Uplaod Thing */
+.ut-flex-col {
+    @apply !w-72 !h-72;
+}
+
+.ut-flex-col > * {
+    @apply !mr-auto;
+}
+
+.ut-flex > div {
+    @apply !ml-9;
+
+    & * {
+        @apply !text-ring;
+    }
+}
+
+.ut-relative {
+    @apply !bg-secondary !text-secondary-foreground !stroke-secondary-foreground;
+    @apply hover:!bg-secondary/80 !transition-colors !duration-200;
+
+    /* &::before { */
+    /*     content: url("./lucid-image-plus.svg"); */
+    /*     left: 0; */
+    /*     margin-bottom: -0.4rem; */
+    /*     margin-left: 0.4rem; */
+    /* } */
+}

@@ -1,5 +1,5 @@
 import { SettingsForm } from "@/components/forms/settings-form"
-import { MainDiv } from "@/components/ui/main-div"
+import { MainDiv } from "@/components/ui/divs"
 
 import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs"

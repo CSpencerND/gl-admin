@@ -8,27 +8,20 @@ import { PlusCircleIcon } from "lucide-react"
 
 import { useRouter, useParams } from "next/navigation"
 
-type BillboardProps = {}
+import type { StoreParams } from "@/types"
 
-export const Billboard: React.FC<BillboardProps> = ({ ...props }) => {
+export const Billboard = () => {
     const router = useRouter()
-    const storeId = useParams().storeId
+    const { storeId } = useParams() as StoreParams["params"]
 
     return (
         <>
-            <div
-                className="flex items-center justify-between"
-                {...props}
-            >
+            <div className="flex items-center justify-between">
                 <Heading
                     title="Billboards (0)"
                     description="Manage Billboards For Your Store"
                 />
-                <Button
-                    onClick={() => router.push(
-                        `/${storeId}/billboards/new`
-                    )}
-                >
+                <Button onClick={() => router.push(`/${storeId}/billboards/new`)}>
                     <PlusCircleIcon className="mr-3 size-sm" />
                     Add New
                 </Button>

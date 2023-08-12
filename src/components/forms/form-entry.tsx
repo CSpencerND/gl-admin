@@ -9,7 +9,7 @@ type FormEntryProps = {
     control: Control<any>
     name: string
     label: string
-    isLoading: boolean
+    isLoading?: boolean
     floating?: boolean
 }
 
@@ -31,7 +31,7 @@ export const FormEntry: React.FC<FormEntryProps> = ({ control, name, label, isLo
                         </FormControl>
                         <FormLabel
                             className={cn(
-                                "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-bold text-ring transition-all",
+                                "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-ring transition-all",
                                 "peer-placeholder-shown:top-0 peer-placeholder-shown:text-base",
                                 "peer-focus:-top-5 peer-focus:text-sm peer-focus:text-ring"
                             )}
@@ -59,6 +59,7 @@ export const FormEntry: React.FC<FormEntryProps> = ({ control, name, label, isLo
                             {...field}
                         />
                     </FormControl>
+                    <FormMessage />
                 </FormItem>
             )}
         />

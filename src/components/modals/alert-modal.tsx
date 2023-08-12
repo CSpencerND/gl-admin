@@ -35,9 +35,10 @@ export const AlertModal: React.FC<AlertModalProps> = ({ isOpen, isLoading, onClo
                     Cancel
                 </Button>
                 <Button
+                    base="soft"
+                    variant="destructive"
                     disabled={isLoading}
                     onClick={onConfirm}
-                    variant="destructive"
                 >
                     <Spinner
                         isLoading={isLoading}

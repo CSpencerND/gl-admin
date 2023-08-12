@@ -1,4 +1,5 @@
-import { MainDiv } from "@/components/ui/main-div"
+import { MainDiv, SectionDiv } from "@/components/ui/divs"
+import { BillboardForm } from "@/components/forms/billboard-form"
 
 import prismadb from "@/lib/prismadb"
 
@@ -19,7 +20,9 @@ const BillboardPage: NextPage<BillboardPageProps> = async ({ params }) => {
 
     return (
         <MainDiv>
-            <div>Existing Billboard: {billboard?.label ?? "None"}</ div>
+            <SectionDiv>
+                <BillboardForm initialData={billboard} />
+            </SectionDiv>
         </MainDiv>
     )
 }

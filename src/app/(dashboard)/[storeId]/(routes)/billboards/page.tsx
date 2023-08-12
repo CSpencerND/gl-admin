@@ -1,5 +1,5 @@
 import { Billboard } from "@/components/billboard"
-import { MainDiv } from "@/components/ui/main-div"
+import { MainDiv, SectionDiv } from "@/components/ui/divs"
 
 import type { NextPage } from "next"
 
@@ -8,9 +8,9 @@ type BillboardsPageProps = { params: {} }
 const BillboardsPage: NextPage<BillboardsPageProps> = ({ params }) => {
     return (
         <MainDiv>
-            <section>
+            <SectionDiv>
                 <Billboard />
-            </section>
+            </SectionDiv>
         </MainDiv>
     )
 }

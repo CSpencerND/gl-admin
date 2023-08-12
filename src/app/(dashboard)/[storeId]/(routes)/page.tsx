@@ -1,4 +1,4 @@
-import { MainDiv } from "@/components/ui/main-div"
+import { MainDiv, SectionDiv } from "@/components/ui/divs"
 
 import prismadb from "@/lib/prismadb"
 
@@ -15,7 +15,13 @@ const DashboardPage: NextPage<DashProps> = async ({ params }) => {
         },
     })
 
-    return <MainDiv><section>Active Store: {store?.name}</section></MainDiv>
+    return (
+        <MainDiv>
+            <SectionDiv>
+                Active Store:{store?.name}
+            </SectionDiv>
+        </MainDiv>
+    )
 }
 
 export default DashboardPage

@@ -20,6 +20,7 @@ import { useState } from "react"
 import { cn } from "@/lib/utils"
 
 import type { Store } from "@prisma/client"
+import type { StoreParams } from "@/types"
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
 
@@ -36,7 +37,7 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({ className, items =
     const [isOpen, setOpen] = useState<boolean>(false)
 
     const setModalOpen = useModalStore((s) => s.setOpen)
-    const params = useParams()
+    const { storeId } = useParams() as StoreParams["params"]
     const router = useRouter()
 
     const formattedItems: StoreItem[] = items.map((item) => ({
@@ -44,7 +45,7 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({ className, items =
         value: item.id,
     }))
 
-    const currentStore = formattedItems.find((item) => item.value === params.storeId)
+    const currentStore = formattedItems.find((item) => item.value === storeId)
 
     const onStoreSelect = (store: StoreItem) => {
         setOpen(false)

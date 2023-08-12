@@ -5,13 +5,15 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { useParams, usePathname } from "next/navigation"
 
+import type { StoreParams } from "@/types"
+
 type MainNavProps = React.ComponentProps<"menu"> & {}
 
 export const MainNav: React.FC<MainNavProps> = ({ children, className, ...props }) => {
-    const params = useParams()
+    const { storeId } = useParams() as StoreParams["params"]
     const pathname = usePathname()
 
-    const rootHref = `/${params.storeId}`
+    const rootHref = `/${storeId}`
     const settingsHref = `${rootHref}/settings`
     const billboardHref = `${rootHref}/billboards`
 

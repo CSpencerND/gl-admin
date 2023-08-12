@@ -9,6 +9,7 @@ const buttonVariants = cva(
     {
         variants: {
             base: {
+                default: "",
                 soft: "bg-opacity-20 hover:bg-opacity-30"
             },
             variant: {
@@ -31,14 +32,20 @@ const buttonVariants = cva(
             },
         },
         defaultVariants: {
+            base: "default",
             variant: "default",
             size: "default",
         },
         compoundVariants: [
             {
+                base: "default" || null,
+                variant: "destructive",
+                class: "stroke-foreground text-foreground"
+            },
+            {
                 base: "soft",
                 variant: "destructive",
-                class: "bg-destructive/20 hover:bg-destructive/30"
+                class: "bg-destructive/20 hover:bg-destructive/30 backdrop-blur-lg"
             }
         ]
     }

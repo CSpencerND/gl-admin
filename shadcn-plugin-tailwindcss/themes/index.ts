@@ -1,6 +1,6 @@
 export default {
     ':root': {
-        '--background': '240 0% 100%',
+        '--background': '240 0% 96%',
         '--foreground': '240 10% 3.9%',
         '--muted': '240 4.8% 95.9%',
         '--muted-foreground': '240 3.8% 46.1%',

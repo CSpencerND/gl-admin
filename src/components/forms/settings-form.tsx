@@ -1,14 +1,13 @@
 "use client"
 
 import { ApiCard } from "@/components/api-card"
-import { FormEntry } from "@/components/form-entry"
+import { FormEntry } from "@/components/forms/form-entry"
 import { AlertModal } from "@/components/modals/alert-modal"
+import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
 import { Separator } from "@/components/ui/separator"
-
-import { TrashIcon } from "lucide-react"
 
 import { useToast } from "@/components/ui/use-toast"
 import { useLoading } from "@/lib/hooks/loading"
@@ -23,42 +22,44 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 
 import type { Store } from "@prisma/client"
+import type { StoreParams } from "@/types"
 
 type SettingsFormProps = {
     initialData: Store
 }
 
-type SettingsFormValues = z.infer<typeof schema>
+export type StoreFormValues = z.infer<typeof schema>
 
 const schema = z.object({
-    name: z.string().min(1),
+    name: z.string().min(2),
 })
 
 export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
     const { isOpen, setOpen, setClose } = useOpen()
     const { isLoading, setLoading, setLoaded } = useLoading()
 
+    const { storeId } = useParams() as StoreParams["params"]
     const router = useRouter()
     const origin = useOrigin()
-    const storeId = useParams().storeId
     const toast = useToast().toast
 
-    const form = useForm<SettingsFormValues>({
+    const form = useForm<StoreFormValues>({
         resolver: zodResolver(schema),
         defaultValues: initialData,
     })
 
-    const onSubmit = async (values: SettingsFormValues) => {
+    const onSubmit = async (values: StoreFormValues) => {
         try {
             setLoading()
             await axios.patch(`/api/stores/${storeId}`, values)
             router.refresh()
             toast({
-                description: "Store Updated",
+                title: "Store Updated",
             })
-        } catch (error: unknown) {
+        } catch (error) {
             toast({
-                description: "Something went wrong :(",
+                title: "Something went wrong :(",
+                description: `${error}`
             })
         } finally {
             setLoaded()
@@ -72,11 +73,11 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
             router.refresh()
             router.push("/")
             toast({
-                description: "Store Deleted Successfully",
+                title: "Store Deleted Successfully",
             })
         } catch (error: unknown) {
             toast({
-                description: "Make sure you remove all the products and categories first",
+                title: "You must remove all the products and categories first",
             })
         }
     }
@@ -94,15 +95,14 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
                     title="Settings"
                     description="Manage store preferences"
                 />
-                <Button
-                    base="soft"
-                    variant="destructive"
-                    size="icon"
-                    disabled={isLoading}
-                    onClick={setOpen}
-                >
-                    <TrashIcon className="stroke-[3] size-sm" />
-                </Button>
+                {initialData ? (
+                    <TrashButton
+                        disabled={isLoading}
+                        onClick={setOpen}
+                    />
+                )
+                    : null
+                }
             </div>
             <Separator />
             <Form {...form}>
@@ -114,7 +114,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
                         <FormEntry
                             control={form.control}
                             name="name"
-                            label="Name"
+                            label="Store Name"
                             isLoading={isLoading}
                             floating
                         />

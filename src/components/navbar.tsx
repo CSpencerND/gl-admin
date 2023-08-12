@@ -23,7 +23,7 @@ export const Navbar: React.FC<NavbarProps> = async () => {
     })
 
     return (
-        <header className="border-b sticky top-0">
+        <header className="border-b sticky top-0 backdrop-blur-lg">
             <div className="container flex gap-8 items-center px-8 h-[74px]">
                 <nav className="flex items-center gap-8">
                     <h1 aria-label="Gryffyn Labs Enterprise">GLE</h1>
