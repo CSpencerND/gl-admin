@@ -13,9 +13,7 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +65 src/components/forms/billboard-form.tsx
-badd +44 src/app/api/\[storeId]/billboards/route.ts
-badd +70 src/app/api/\[storeId]/billboards/\[billboardId]/route.ts
+badd +59 src/components/forms/billboard-form.tsx
 argglobal
 %argdel
 $argadd ./
@@ -28,7 +26,6 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-balt src/app/api/\[storeId]/billboards/\[billboardId]/route.ts
 setlocal fdm=manual
 setlocal fde=
 setlocal fmr={{{,}}}
@@ -39,11 +36,11 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 65 - ((25 * winheight(0) + 27) / 54)
+let s:l = 59 - ((26 * winheight(0) + 27) / 55)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 65
+keepjumps 59
 normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'

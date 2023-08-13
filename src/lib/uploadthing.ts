@@ -11,7 +11,4 @@ export const urlFromKey = (key: string) => `https://uploadthing.com/f/${key}`
 
 export { UTFileRouter }
 
-export type UTData = {
-    fileUrl: string
-    fileKey: string
-}
+export type { UploadFileResponse } from "uploadthing/client"

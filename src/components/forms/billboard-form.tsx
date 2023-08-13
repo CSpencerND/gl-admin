@@ -1,6 +1,5 @@
 "use client"
 
-import { ApiCard } from "@/components/api-card"
 import { FormEntry } from "@/components/forms/form-entry"
 import { ImageUpload } from "@/components/forms/image-upload"
 import { AlertModal } from "@/components/modals/alert-modal"
@@ -13,7 +12,6 @@ import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/components/ui/use-toast"
 import { useLoading } from "@/lib/hooks/loading"
 import { useOpen } from "@/lib/hooks/open"
-import { useOrigin } from "@/lib/hooks/use-origin"
 import { useParams, useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
@@ -41,7 +39,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
 
     const { storeId, billboardId } = useParams() as BillboardParams["params"]
     const router = useRouter()
-    const origin = useOrigin()
     const toast = useToast().toast
 
     const title = initialData ? "Edit Billboard" : "Create Billboard"
@@ -67,10 +64,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
             }
 
             router.refresh()
-
             toast({
                 title: toastMessage,
             })
+            router.push(`/${storeId}/billboards`)
         } catch (error) {
             toast({
                 title: "Something went wrong :(",
@@ -149,12 +146,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
                     </Button>
                 </form>
             </Form>
-            <Separator />
-            <ApiCard
-                title="NEXT_PUBLIC_API_URL"
-                content={`${origin}/api/${storeId}`}
-                accessLevel="public"
-            />
         </>
     )
 }
