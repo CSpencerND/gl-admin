@@ -85,7 +85,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
             await axios.delete(`/api/${storeId}/billboards/${billboardId}`)
 
             router.refresh()
-            router.push("/")
+            router.push(`/${storeId}/billboards`)
 
             toast({
                 title: "Billboard Deleted Successfully",
@@ -94,6 +94,9 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
             toast({
                 title: "You must remove all categories associated with this billboard first",
             })
+        } finally {
+            setLoaded()
+            setClosed()
         }
     }
 

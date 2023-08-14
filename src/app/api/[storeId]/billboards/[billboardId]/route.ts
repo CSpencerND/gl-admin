@@ -79,7 +79,7 @@ export async function DELETE(_req: Request, { params: { storeId, billboardId } }
             })
         }
 
-        const billboard = await prismadb.store.deleteMany({
+        const billboard = await prismadb.billboard.delete({
             where: {
                 id: billboardId,
             },
@@ -98,7 +98,7 @@ export async function GET(_req: Request, { params: { billboardId } }: BillboardP
             return new NextResponse("Billbord ID is required", { status: 400 })
         }
 
-        const billboard = await prismadb.store.findUnique({
+        const billboard = await prismadb.billboard.findUnique({
             where: {
                 id: billboardId,
             },

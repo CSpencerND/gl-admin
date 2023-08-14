@@ -13,20 +13,12 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +30 src/components/forms/image-upload.tsx
-badd +104 src/components/forms/billboard-form.tsx
-badd +24 src/app/(dashboard)/\[storeId]/(routes)/billboards/page.tsx
-badd +22 src/components/billboard.tsx
-badd +24 src/components/forms/create-store-form.tsx
-badd +11 src/components/modals/create-store-modal.tsx
-badd +12 src/lib/hooks/use-modal.tsx
-badd +9 src/lib/hooks/open.tsx
-badd +73 src/components/ui/copy-button.tsx
-badd +89 src/components/forms/settings-form.tsx
+badd +27 src/components/billboard-client.tsx
+badd +13 src/components/table/columns.tsx
 argglobal
 %argdel
 $argadd ./
-edit src/components/forms/settings-form.tsx
+edit src/components/table/columns.tsx
 wincmd t
 let s:save_winminheight = &winminheight
 let s:save_winminwidth = &winminwidth
@@ -35,7 +27,6 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-balt src/components/ui/copy-button.tsx
 setlocal fdm=manual
 setlocal fde=
 setlocal fmr={{{,}}}
@@ -46,12 +37,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 89 - ((26 * winheight(0) + 27) / 54)
+let s:l = 13 - ((12 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 89
-normal! 017|
+keepjumps 13
+normal! 014|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
