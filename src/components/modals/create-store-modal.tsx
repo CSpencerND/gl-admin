@@ -7,14 +7,14 @@ import { useModalStore } from "@/lib/hooks/use-modal"
 
 export const CreateStoreModal = () => {
     const isOpen = useModalStore((s) => s.isOpen)
-    const setClose = useModalStore((s) => s.setClose)
+    const setClosed = useModalStore((s) => s.setClosed)
 
     return (
         <Modal
             title="Create store"
             description="Add a new store and manage products"
             isOpen={isOpen}
-            onClose={setClose}
+            onClose={setClosed}
         >
             <CreateStoreForm />
         </Modal>

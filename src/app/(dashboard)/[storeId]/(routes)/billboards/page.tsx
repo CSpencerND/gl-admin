@@ -1,15 +1,27 @@
-import { Billboard } from "@/components/billboard"
+import { BillboardClient } from "@/components/billboard"
 import { MainDiv, SectionDiv } from "@/components/ui/divs"
 
+import prismadb from "@/lib/prismadb"
+
 import type { NextPage } from "next"
+import type { BillboardParams } from "@/types"
 
-type BillboardsPageProps = { params: {} }
+type BillboardsPageProps = BillboardParams
 
-const BillboardsPage: NextPage<BillboardsPageProps> = ({ params }) => {
+const BillboardsPage: NextPage<BillboardsPageProps> = async ({ params: { storeId } }) => {
+    const billboards = await prismadb.billboard.findMany({
+        where: {
+            storeId,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    })
+
     return (
         <MainDiv>
             <SectionDiv>
-                <Billboard />
+                <BillboardClient data={billboards} />
             </SectionDiv>
         </MainDiv>
     )

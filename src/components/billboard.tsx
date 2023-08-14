@@ -9,8 +9,13 @@ import { PlusCircleIcon } from "lucide-react"
 import { useRouter, useParams } from "next/navigation"
 
 import type { StoreParams } from "@/types"
+import type { Billboard } from "@prisma/client"
 
-export const Billboard = () => {
+type BillboardClientProps = {
+    data: Billboard[]
+}
+
+export const BillboardClient: React.FC<BillboardClientProps> = ({ data }) => {
     const router = useRouter()
     const { storeId } = useParams() as StoreParams["params"]
 
@@ -18,7 +23,7 @@ export const Billboard = () => {
         <>
             <div className="flex items-center justify-between">
                 <Heading
-                    title="Billboards (0)"
+                    title={`Billboards (${data.length})`}
                     description="Manage Billboards For Your Store"
                 />
                 <Button onClick={() => router.push(`/${storeId}/billboards/new`)}>

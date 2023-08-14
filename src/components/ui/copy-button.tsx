@@ -12,7 +12,7 @@ type CopyButtonProps = {
 }
 
 export const CopyButton: React.FC<CopyButtonProps> = ({ content }) => {
-    const { isOpen, setOpen, setClose } = useOpen()
+    const { isOpen, setOpen, setClosed } = useOpen()
 
     const [tooltipText, setTooltipText] = useState<string>("Copy")
 
@@ -28,7 +28,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ content }) => {
             .finally(() => {
                 setOpen()
                 setTimeout(() => {
-                    setClose()
+                    setClosed()
                     setTimeout(() => setTooltipText("Copy"), 1000)
                 }, 1000)
             })
@@ -47,7 +47,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ content }) => {
     const onLeave = () => {
         clearTimeout(hoverTimeout)
         leaveTimeout = setTimeout(() => {
-            setClose()
+            setClosed()
             setTimeout(() => setTooltipText("Copy"), 200)
         }, 200)
     }

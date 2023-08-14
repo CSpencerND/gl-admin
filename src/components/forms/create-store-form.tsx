@@ -21,7 +21,7 @@ const schema = z.object({
 })
 
 export function CreateStoreForm() {
-    const closeModal = useModalStore((s) => s.setClose)
+    const closeModal = useModalStore((s) => s.setClosed)
     const { isLoading, setLoading, setLoaded } = useLoading()
     const { toast } = useToast()
 

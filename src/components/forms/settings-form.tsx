@@ -35,7 +35,7 @@ const schema = z.object({
 })
 
 export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
-    const { isOpen, setOpen, setClose } = useOpen()
+    const { isOpen, setOpen, setClosed } = useOpen()
     const { isLoading, setLoading, setLoaded } = useLoading()
 
     const { storeId } = useParams() as StoreParams["params"]
@@ -86,7 +86,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
         <>
             <AlertModal
                 isOpen={isOpen}
-                onClose={setClose}
+                onClose={setClosed}
                 onConfirm={onDelete}
                 isLoading={isLoading}
             />

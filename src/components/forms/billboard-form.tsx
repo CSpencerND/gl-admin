@@ -34,7 +34,7 @@ const schema = z.object({
 })
 
 export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
-    const { setOpen, setClose, isOpen } = useOpen()
+    const { setOpen, setClosed, isOpen } = useOpen()
     const { isLoading, setLoading, setLoaded } = useLoading()
 
     const { storeId, billboardId } = useParams() as BillboardParams["params"]
@@ -101,7 +101,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
         <>
             <AlertModal
                 isOpen={isOpen}
-                onClose={setClose}
+                onClose={setClosed}
                 onConfirm={onDelete}
                 isLoading={isLoading}
             />
