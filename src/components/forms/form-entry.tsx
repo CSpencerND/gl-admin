@@ -24,15 +24,15 @@ export const FormEntry: React.FC<FormEntryProps> = ({ control, name, label, isLo
                         <FormControl>
                             <Input
                                 placeholder={label}
-                                className={cn("!placeholder-transparent")}
+                                className={cn("!placeholder-transparent h-12")}
                                 disabled={isLoading}
                                 {...field}
                             />
                         </FormControl>
                         <FormLabel
                             className={cn(
-                                "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-ring transition-all",
-                                "peer-placeholder-shown:top-0 peer-placeholder-shown:text-base",
+                                "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all",
+                                "peer-placeholder-shown:top-1 peer-placeholder-shown:text-base",
                                 "peer-focus:-top-5 peer-focus:text-sm peer-focus:text-ring"
                             )}
                         >

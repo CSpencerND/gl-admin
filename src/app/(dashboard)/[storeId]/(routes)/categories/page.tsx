@@ -6,10 +6,10 @@ import prismadb from "@/lib/prismadb"
 import { format } from "date-fns"
 
 import type { CategoryColumn } from "@/components/tables/category-columns"
-import type { CategoryParams } from "@/types"
+import type { StoreParams } from "@/types"
 import type { NextPage } from "next"
 
-type CategoriesPageProps = CategoryParams
+type CategoriesPageProps = StoreParams
 
 const CategoriesPage: NextPage<CategoriesPageProps> = async ({ params: { storeId } }) => {
     const categories = await prismadb.category.findMany({
