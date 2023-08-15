@@ -34,7 +34,7 @@ export const ApiCard: React.FC<ApiCardProps> = ({ title, content, accessLevel = 
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <code className="flex items-center justify-between rounded-sm border border-ring bg-secondary py-0.5 pl-2 pr-1 text-sm">
+                <code className="flex items-center justify-between rounded-sm border border-border bg-secondary py-0.5 pl-2 pr-1 text-sm">
                     {content}
                     <CopyButton content={content} />
                 </code>

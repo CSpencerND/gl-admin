@@ -22,6 +22,26 @@ export const ApiList: React.FC<ApiListProps> = ({ entityId, entityName }) => {
             <ApiCard
                 title="GET"
                 accessLevel="public"
+                content={`${baseUrl}/${entityName}`}
+            />
+            <ApiCard
+                title="GET"
+                accessLevel="public"
+                content={`${baseUrl}/${entityName}/{${entityId}}`}
+            />
+            <ApiCard
+                title="POST"
+                accessLevel="admin"
+                content={`${baseUrl}/${entityName}`}
+            />
+            <ApiCard
+                title="PATCH"
+                accessLevel="admin"
+                content={`${baseUrl}/${entityName}/{${entityId}}`}
+            />
+            <ApiCard
+                title="DELETE"
+                accessLevel="admin"
                 content={`${baseUrl}/${entityName}/{${entityId}}`}
             />
         </>

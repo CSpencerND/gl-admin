@@ -7,7 +7,7 @@ type TrashButtonProps = ButtonProps & {
 export const TrashButton: React.FC<TrashButtonProps> = ({ disabled, onClick, ...props }) => {
     return (
         <Button
-            base="soft"
+            // base="soft"
             variant="destructive"
             size="icon"
             disabled={disabled}
