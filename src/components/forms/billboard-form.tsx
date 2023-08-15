@@ -33,6 +33,9 @@ const schema = z.object({
     imageKey: z.string(),
 })
 
+const ENTITY = "Billboard"
+const SEGMENT = "billboards"
+
 export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
     const { setOpen, setClosed, isOpen } = useOpen()
     const { isLoading, setLoading, setLoaded } = useLoading()
@@ -41,9 +44,9 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
     const router = useRouter()
     const toast = useToast().toast
 
-    const title = initialData ? "Edit Billboard" : "Create Billboard"
-    const description = initialData ? "Edit A Billboard" : "Add A New Billboard"
-    const toastMessage = initialData ? "Billboard Updated" : "Billboard Created"
+    const title = initialData ? `Edit ${ENTITY}` : `Create ${ENTITY}`
+    const description = initialData ? `Edit A ${ENTITY}` : `Add A New ${ENTITY}`
+    const toastMessage = initialData ? `${ENTITY} Updated` : `${ENTITY} Created`
     const action = initialData ? "Save Changes" : "Create"
 
     const form = useForm<BillboardFormValues>({
@@ -58,16 +61,16 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
             setLoading()
 
             if (initialData) {
-                await axios.patch(`/api/${storeId}/billboards/${billboardId}`, values)
+                await axios.patch(`/api/${storeId}/${SEGMENT}/${billboardId}`, values)
             } else {
-                await axios.post(`/api/${storeId}/billboards`, values)
+                await axios.post(`/api/${storeId}/${SEGMENT}`, values)
             }
 
             router.refresh()
             toast({
                 title: toastMessage,
             })
-            router.push(`/${storeId}/billboards`)
+            router.push(`/${storeId}/${SEGMENT}`)
         } catch (error) {
             toast({
                 title: "Something went wrong :(",
@@ -82,10 +85,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
         try {
             setLoading()
 
-            await axios.delete(`/api/${storeId}/billboards/${billboardId}`)
+            await axios.delete(`/api/${storeId}/${SEGMENT}/${billboardId}`)
 
             router.refresh()
-            router.push(`/${storeId}/billboards`)
+            router.push(`/${storeId}/${SEGMENT}`)
 
             toast({
                 title: "Billboard Deleted Successfully",

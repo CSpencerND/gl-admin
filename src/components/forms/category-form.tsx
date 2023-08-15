@@ -32,6 +32,9 @@ const schema = z.object({
     billboardId: z.string(),
 })
 
+const ENTITY = "Billboard"
+const SEGMENT = "categories"
+
 export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
     const { setOpen, setClosed, isOpen } = useOpen()
     const { isLoading, setLoading, setLoaded } = useLoading()
@@ -40,9 +43,9 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
     const router = useRouter()
     const toast = useToast().toast
 
-    const title = initialData ? "Edit Category" : "Create Category"
-    const description = initialData ? "Edit A Category" : "Add A New Category"
-    const toastMessage = initialData ? "Category Updated" : "Category Created"
+    const title = initialData ? `Edit ${ENTITY}` : `Create ${ENTITY}`
+    const description = initialData ? `Edit A ${ENTITY}` : `Add A New ${ENTITY}`
+    const toastMessage = initialData ? `${ENTITY} Updated` : `${ENTITY} Created`
     const action = initialData ? "Save Changes" : "Create"
 
     const form = useForm<CategoryFormValues>({
@@ -57,16 +60,16 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
             setLoading()
 
             if (initialData) {
-                await axios.patch(`/api/${storeId}/categories/${categoryId}`, values)
+                await axios.patch(`/api/${storeId}/${SEGMENT}/${categoryId}`, values)
             } else {
-                await axios.post(`/api/${storeId}/categories`, values)
+                await axios.post(`/api/${storeId}/${SEGMENT}`, values)
             }
 
             router.refresh()
             toast({
                 title: toastMessage,
             })
-            router.push(`/${storeId}/categories`)
+            router.push(`/${storeId}/${SEGMENT}`)
         } catch (error) {
             toast({
                 title: "Something went wrong :(",
@@ -81,10 +84,10 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
         try {
             setLoading()
 
-            await axios.delete(`/api/${storeId}/categories/${categoryId}`)
+            await axios.delete(`/api/${storeId}/${SEGMENT}/${categoryId}`)
 
             router.refresh()
-            router.push(`/${storeId}/categories`)
+            router.push(`/${storeId}/${SEGMENT}`)
 
             toast({
                 title: "Category Deleted Successfully",
