@@ -21,8 +21,8 @@ const SettingsPage: React.FC<SettingsPageProps> = async ({ params }) => {
     const store = await prismadb.store.findFirst({
         where: {
             id: params.storeId,
-            userId
-        }
+            userId,
+        },
     })
 
     if (!store) {
@@ -31,9 +31,7 @@ const SettingsPage: React.FC<SettingsPageProps> = async ({ params }) => {
 
     return (
         <MainDiv>
-            <section className="space-y-8">
-                <SettingsForm initialData={store} />
-            </section>
+            <SettingsForm initialData={store} />
         </MainDiv>
     )
 }

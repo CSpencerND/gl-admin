@@ -5,9 +5,9 @@ import { FormEntry } from "@/components/forms/form-entry"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
+import { SectionDiv } from "@/components/ui/divs"
 import { Form } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
-import { Separator } from "@/components/ui/separator"
 
 import { useToast } from "@/components/ui/use-toast"
 import { useLoading } from "@/lib/hooks/loading"
@@ -21,8 +21,8 @@ import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 
-import type { Store } from "@prisma/client"
 import type { StoreParams } from "@/types"
+import type { Store } from "@prisma/client"
 
 type SettingsFormProps = {
     initialData: Store
@@ -59,7 +59,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
         } catch (error) {
             toast({
                 title: "Something went wrong :(",
-                description: `${error}`
+                description: `${error}`,
             })
         } finally {
             setLoaded()
@@ -100,41 +100,41 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
                         disabled={isLoading}
                         onClick={setOpen}
                     />
-                )
-                    : null
-                }
+                ) : null}
             </div>
-            <Separator />
-            <Form {...form}>
-                <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="w-full space-y-8"
-                >
-                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-                        <FormEntry
-                            control={form.control}
-                            name="name"
-                            label="Store Name"
-                            isLoading={isLoading}
-                            floating
-                        />
-                    </div>
-                    <Button
-                        // variant="secondary"
-                        disabled={isLoading}
-                        type="submit"
-                        className="ml-auto"
+            <SectionDiv>
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="w-full space-y-8"
                     >
-                        Save Changes
-                    </Button>
-                </form>
-            </Form>
-            <Separator />
-            <ApiCard
-                title="NEXT_PUBLIC_API_URL"
-                content={`${origin}/api/${storeId}`}
-                accessLevel="public"
-            />
+                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+                            <FormEntry
+                                control={form.control}
+                                name="name"
+                                label="Store Name"
+                                isLoading={isLoading}
+                                floating
+                            />
+                        </div>
+                        <Button
+                            // variant="secondary"
+                            disabled={isLoading}
+                            type="submit"
+                            className="ml-auto"
+                        >
+                            Save Changes
+                        </Button>
+                    </form>
+                </Form>
+            </SectionDiv>
+            <SectionDiv>
+                <ApiCard
+                    title="NEXT_PUBLIC_API_URL"
+                    content={`${origin}/api/${storeId}`}
+                    accessLevel="public"
+                />
+            </SectionDiv>
         </>
     )
 }

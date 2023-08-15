@@ -5,9 +5,9 @@ import { ImageUpload } from "@/components/forms/image-upload"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
+import { SectionDiv } from "@/components/ui/divs"
 import { Form } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
-import { Separator } from "@/components/ui/separator"
 
 import { useToast } from "@/components/ui/use-toast"
 import { useLoading } from "@/lib/hooks/loading"
@@ -19,8 +19,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import * as z from "zod"
 
-import type { Billboard } from "@prisma/client"
 import type { BillboardParams } from "@/types"
+import type { Billboard } from "@prisma/client"
 
 type BillboardFormProps = {
     initialData: Billboard | null
@@ -108,47 +108,48 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
                 onConfirm={onDelete}
                 isLoading={isLoading}
             />
-            <div className="flex items-center justify-between">
-                <Heading
-                    title={title}
-                    description={description}
-                />
-                {initialData ? (
-                    <TrashButton
-                        disabled={isLoading}
-                        onClick={setOpen}
+            <SectionDiv>
+                <div className="flex items-center justify-between">
+                    <Heading
+                        title={title}
+                        description={description}
                     />
-                ) : null}
-            </div>
-            <Separator />
-            <Form {...form}>
-                <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="w-full space-y-8"
-                >
-                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-                        <div className="flex flex-col gap-8">
-                            <ImageUpload
-                                control={form.control}
-                                label="Billboard Image"
-                            />
-                            <FormEntry
-                                control={form.control}
-                                name="label"
-                                label="Billboard Label"
-                                floating
-                            />
-                        </div>
-                    </div>
-                    <Button
-                        disabled={isLoading}
-                        type="submit"
-                        className="ml-auto"
+                    {initialData ? (
+                        <TrashButton
+                            disabled={isLoading}
+                            onClick={setOpen}
+                        />
+                    ) : null}
+                </div>
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="w-full space-y-8"
                     >
-                        {action}
-                    </Button>
-                </form>
-            </Form>
+                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+                            <div className="flex flex-col gap-8">
+                                <ImageUpload
+                                    control={form.control}
+                                    label="Billboard Image"
+                                />
+                                <FormEntry
+                                    control={form.control}
+                                    name="label"
+                                    label="Billboard Label"
+                                    floating
+                                />
+                            </div>
+                        </div>
+                        <Button
+                            disabled={isLoading}
+                            type="submit"
+                            className="ml-auto"
+                        >
+                            {action}
+                        </Button>
+                    </form>
+                </Form>
+            </SectionDiv>
         </>
     )
 }

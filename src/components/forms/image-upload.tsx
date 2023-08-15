@@ -40,6 +40,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
 
                     return (
                         <>
+                            <FormLabel htmlFor="imageKey" className="ml-3 font-semibold text-sm text-ring">{label}</FormLabel>
                             {fieldValue && fieldValue.length > 0 ? (
                                 <ul className="mb-4 flex items-center gap-4">
                                     {fieldValue.map((key, i) => (
@@ -53,10 +54,13 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
                                                     onClick={() => field.onChange("")}
                                                 />
                                             </div>
-                                            <Skeleton hidden={!isLoading} className="w-full h-full rounded-lg" />
+                                            <Skeleton
+                                                hidden={!isLoading}
+                                                className="w-full h-full rounded-lg"
+                                            />
                                             <Image
                                                 src={urlFromKey(key)}
-                                                alt="Billboard Image"
+                                                alt={""}
                                                 fill
                                                 onLoadingComplete={setLoaded}
                                                 className="object-cover"
@@ -67,7 +71,6 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
                             ) : (
                                 <>
                                     <FormItem>
-                                        <FormLabel className="ml-3 font-semibold text-sm text-ring">{label}</FormLabel>
                                         <FormControl>
                                             <UploadButton
                                                 endpoint="media"

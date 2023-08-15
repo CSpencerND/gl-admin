@@ -28,9 +28,7 @@ const BillboardsPage: NextPage<BillboardsPageProps> = async ({ params: { storeId
 
     return (
         <MainDiv>
-            <SectionDiv>
-                <BillboardClient data={formattedBillboards} />
-            </SectionDiv>
+            <BillboardClient data={formattedBillboards} />
         </MainDiv>
     )
 }
