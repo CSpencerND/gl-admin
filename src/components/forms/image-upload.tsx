@@ -6,8 +6,8 @@ import { UploadButton, urlFromKey } from "@/lib/uploadthing"
 import { Skeleton } from "@/components/ui/skeleton"
 import Image from "next/image"
 
-import { useMounted } from "@/lib/hooks/mounted"
-import { useLoading } from "@/lib/hooks/loading"
+import { useMounted } from "@/lib/hooks/use-mounted"
+import { useLoading } from "@/lib/hooks/use-loading"
 
 import type { Control } from "react-hook-form"
 

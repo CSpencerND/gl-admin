@@ -1,7 +1,6 @@
 "use client"
 
 import { FormEntry } from "@/components/forms/form-entry"
-import { ImageUpload } from "@/components/forms/image-upload"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
@@ -19,55 +18,55 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import * as z from "zod"
 
-import type { BillboardParams } from "@/types"
-import type { Billboard } from "@prisma/client"
+import type { CategoryParams } from "@/types"
+import type { Category } from "@prisma/client"
 
-type BillboardFormProps = {
-    initialData: Billboard | null
+type CategoryFormProps = {
+    initialData: Category | null
 }
 
-export type BillboardFormValues = z.infer<typeof schema>
+export type CategoryFormValues = z.infer<typeof schema>
 
 const schema = z.object({
-    label: z.string().min(1),
-    imageKey: z.string(),
+    name: z.string().min(1),
+    billboardId: z.string(),
 })
 
-export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
+export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
     const { setOpen, setClosed, isOpen } = useOpen()
     const { isLoading, setLoading, setLoaded } = useLoading()
 
-    const { storeId, billboardId } = useParams() as BillboardParams["params"]
+    const { storeId, categoryId } = useParams() as CategoryParams["params"]
     const router = useRouter()
     const toast = useToast().toast
 
-    const title = initialData ? "Edit Billboard" : "Create Billboard"
-    const description = initialData ? "Edit A Billboard" : "Add A New Billboard"
-    const toastMessage = initialData ? "Billboard Updated" : "Billboard Created"
+    const title = initialData ? "Edit Category" : "Create Category"
+    const description = initialData ? "Edit A Category" : "Add A New Category"
+    const toastMessage = initialData ? "Category Updated" : "Category Created"
     const action = initialData ? "Save Changes" : "Create"
 
-    const form = useForm<BillboardFormValues>({
+    const form = useForm<CategoryFormValues>({
         resolver: zodResolver(schema),
-        defaultValues: initialData ?? { label: "", imageKey: "" },
+        defaultValues: initialData ?? { name: "", billboardId: "" },
     })
 
-    const onSubmit = async (values: BillboardFormValues) => {
+    const onSubmit = async (values: CategoryFormValues) => {
         console.log(values)
 
         try {
             setLoading()
 
             if (initialData) {
-                await axios.patch(`/api/${storeId}/billboards/${billboardId}`, values)
+                await axios.patch(`/api/${storeId}/categories/${categoryId}`, values)
             } else {
-                await axios.post(`/api/${storeId}/billboards`, values)
+                await axios.post(`/api/${storeId}/categories`, values)
             }
 
             router.refresh()
             toast({
                 title: toastMessage,
             })
-            router.push(`/${storeId}/billboards`)
+            router.push(`/${storeId}/categories`)
         } catch (error) {
             toast({
                 title: "Something went wrong :(",
@@ -82,13 +81,13 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
         try {
             setLoading()
 
-            await axios.delete(`/api/${storeId}/billboards/${billboardId}`)
+            await axios.delete(`/api/${storeId}/categories/${categoryId}`)
 
             router.refresh()
-            router.push(`/${storeId}/billboards`)
+            router.push(`/${storeId}/categories`)
 
             toast({
-                title: "Billboard Deleted Successfully",
+                title: "Category Deleted Successfully",
             })
         } catch (error) {
             toast({
@@ -128,14 +127,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
                     >
                         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
                             <div className="flex flex-col gap-8">
-                                <ImageUpload
-                                    control={form.control}
-                                    label="Billboard Image"
-                                />
                                 <FormEntry
                                     control={form.control}
-                                    name="label"
-                                    label="Billboard Label"
+                                    name="name"
+                                    label="Category Name"
                                     floating
                                 />
                             </div>

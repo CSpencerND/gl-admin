@@ -10,3 +10,12 @@ export type StoreParams<T = Record<string, string>> = {
 export type BillboardParams = StoreParams<{
     billboardId: string
 }>
+
+export type CategoryParams = StoreParams<{
+    categoryId: string
+}>
+
+export type ColumnType<T = {}> = {
+    id: string
+    createdAt: string
+} & T

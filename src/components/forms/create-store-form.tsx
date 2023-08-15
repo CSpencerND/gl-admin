@@ -4,9 +4,9 @@ import { FormEntry } from "@/components/forms/form-entry"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 
-import { useToast } from "@/components/ui/use-toast"
-import { useLoading } from "@/lib/hooks/loading"
+import { useLoading } from "@/lib/hooks/use-loading"
 import { useModalStore } from "@/lib/hooks/use-modal"
+import { useToast } from "@/lib/hooks/use-toast"
 import { useForm } from "react-hook-form"
 
 import axios from "axios"

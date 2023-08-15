@@ -3,54 +3,51 @@
 import { ApiList } from "@/components/api-list"
 import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/ui/data-table"
+import { SectionDiv } from "@/components/ui/divs"
 import { Heading } from "@/components/ui/heading"
 import { PlusCircleIcon } from "lucide-react"
-import { columns, type BillboardColumn } from "./table/columns"
 
 import { useParams, useRouter } from "next/navigation"
 
+import type { ComponentProps } from "react"
 import type { StoreParams } from "@/types"
-import { SectionDiv } from "./ui/divs"
 
-type BillboardClientProps = {
-    data: BillboardColumn[]
-}
+type DataClientProps<TData, TValue> = ComponentProps<typeof DataTable<TData, TValue>> & ComponentProps<typeof ApiList>
 
-export const BillboardClient: React.FC<BillboardClientProps> = ({ data }) => {
+export function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>) {
+    const { columns, data, searchKey, entityName, entityId } = props
+
     const router = useRouter()
     const { storeId } = useParams() as StoreParams["params"]
 
     return (
         <>
-            <SectionDiv>
+            <SectionDiv className="">
                 <div className="flex items-center justify-between">
                     <Heading
-                        title={`Billboards (${data.length})`}
-                        description="Manage Billboards For Your Store"
+                        title={`${entityName} (${data.length})`}
+                        description={`Manage ${entityName} for your store`}
                     />
-                    <Button
-                        className="bg-primary"
-                        onClick={() => router.push(`/${storeId}/billboards/new`)}
-                    >
+                    <Button onClick={() => router.push(`/${storeId}/${entityName.toLowerCase()}/new`)}>
                         <PlusCircleIcon className="mr-3 size-sm" />
                         Add New
                     </Button>
                 </div>
                 <DataTable
                     data={data}
-                    searchKey="label"
+                    searchKey={searchKey}
                     columns={columns}
-                    className="max-w-5xl mx-auto"
+                    className=""
                 />
             </SectionDiv>
-            <SectionDiv>
+            <SectionDiv className="">
                 <Heading
                     title="API"
-                    description="API calls for Billboards"
+                    description={`CRUD operations for ${entityName}`}
                 />
                 <ApiList
-                    entityName="billboards"
-                    entityId="billboardId"
+                    entityName={entityName.toLowerCase()}
+                    entityId={entityId}
                 />
             </SectionDiv>
         </>

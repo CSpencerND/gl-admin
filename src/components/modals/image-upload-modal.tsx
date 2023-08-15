@@ -1,11 +1,10 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import { Modal } from "@/components/ui/modal"
-import { UploadDropzone, type UploadResponse } from "@/lib/uploadthing"
+import { UploadDropzone, type UploadFileResponse } from "@/lib/uploadthing"
 
-import { useToast } from "@/components/ui/use-toast"
-import { useMounted } from "@/lib/hooks/mounted"
+import { useToast } from "@/lib/hooks/use-toast"
+import { useMounted } from "@/lib/hooks/use-mounted"
 import { useState } from "react"
 import Link from "next/link"
 
@@ -21,7 +20,7 @@ type ImageUploadModalProps = {
 export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, isLoading, onClose, onConfirm }) => {
     useMounted()
 
-    const [images, setImages] = useState<UploadResponse[]>([])
+    const [images, setImages] = useState<UploadFileResponse[]>([])
 
     const title = images.length ? (
         <div>

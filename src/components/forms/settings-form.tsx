@@ -9,10 +9,10 @@ import { SectionDiv } from "@/components/ui/divs"
 import { Form } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
 
-import { useToast } from "@/components/ui/use-toast"
-import { useLoading } from "@/lib/hooks/loading"
-import { useOpen } from "@/lib/hooks/open"
+import { useLoading } from "@/lib/hooks/use-loading"
+import { useOpen } from "@/lib/hooks/use-open"
 import { useOrigin } from "@/lib/hooks/use-origin"
+import { useToast } from "@/lib/hooks/use-toast"
 import { useParams, useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
@@ -130,7 +130,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
             </SectionDiv>
             <SectionDiv>
                 <ApiCard
-                    title="NEXT_PUBLIC_API_URL"
+                    env="NEXT_PUBLIC_API_URL"
                     content={`${origin}/api/${storeId}`}
                     accessLevel="public"
                 />

@@ -11,40 +11,44 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { CopyIcon, MoreHorizontalIcon, PenSquareIcon, TrashIcon } from "lucide-react"
 
-import { useLoading } from "@/lib/hooks/loading"
-import { useOpen } from "@/lib/hooks/open"
+import { useLoading } from "@/lib/hooks/use-loading"
+import { useOpen } from "@/lib/hooks/use-open"
+import { useToast } from "@/lib/hooks/use-toast"
 import { useParams, useRouter } from "next/navigation"
 
-import { toast } from "@/components/ui/use-toast"
 import axios from "axios"
 
-import type { BillboardColumn } from "@/components/table/columns"
-import type { StoreParams } from "@/types"
+import type { ColumnType, StoreParams } from "@/types"
 
-type CellActionProps = {
-    data: BillboardColumn
+type CellActionProps<TColumn extends ColumnType> = {
+    data: TColumn
+    entityName: string
+    pathSegment: string
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+export function CellAction<TColumn extends ColumnType>(props: CellActionProps<TColumn>) {
+    const { data, entityName, pathSegment } = props
+
     const router = useRouter()
     const { storeId } = useParams() as StoreParams["params"]
     const { isLoading, setLoading, setLoaded } = useLoading()
     const { isOpen, setOpen, setClosed } = useOpen()
+    const { toast } = useToast()
 
     const onDelete = async () => {
         try {
             setLoading()
 
-            await axios.delete(`/api/${storeId}/billboards/${data.id}`)
+            await axios.delete(`/api/${storeId}/${pathSegment}/${data.id}`)
 
             router.refresh()
 
             toast({
-                title: "Billboard Deleted Successfully",
+                title: `${entityName} Deleted Successfully`,
             })
         } catch (error) {
             toast({
-                title: "You must remove all categories associated with this billboard first",
+                title: "You must remove all categories associated with this billboards first",
             })
         } finally {
             setLoaded()
@@ -81,7 +85,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
                         <CopyIcon className="size-sm mr-2" />
                         Copy ID
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push(`/${storeId}/billboards/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/${storeId}/${pathSegment}/${data.id}`)}>
                         <PenSquareIcon className="size-sm mr-2" />
                         Edit
                     </DropdownMenuItem>

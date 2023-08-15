@@ -5,7 +5,7 @@ import { Modal } from "@/components/ui/modal"
 import { Spinner } from "@/components/ui/spinner"
 import { AlertTriangleIcon as AlertIcon } from "lucide-react"
 
-import { useMounted } from "@/lib/hooks/mounted"
+import { useMounted } from "@/lib/hooks/use-mounted"
 
 type AlertModalProps = {
     isOpen: boolean

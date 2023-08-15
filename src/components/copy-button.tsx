@@ -6,7 +6,7 @@ import { CopyIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-import { useOpen } from "@/lib/hooks/open"
+import { useOpen } from "@/lib/hooks/use-open"
 import { useState } from "react"
 
 type CopyButtonProps = {

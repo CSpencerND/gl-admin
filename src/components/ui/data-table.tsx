@@ -15,7 +15,7 @@ import {
 
 import { useState } from "react"
 
-type DataTableProps<TData, TValue> = {
+export type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     searchKey: string
@@ -37,7 +37,6 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, className }
         },
     })
 
-    console.log(table.getState().pagination.pageSize)
     return (
         <div className={className}>
             <div className="flex items-center py-4">
