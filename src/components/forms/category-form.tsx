@@ -140,7 +140,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
                         className="w-full space-y-8"
                     >
                         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-                            <div className="flex flex-col gap-8">
+                            {/* <div className="flex flex-col gap-8"> */}
                                 <FormEntry
                                     control={form.control}
                                     name="name"
@@ -153,17 +153,17 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
                                     render={({ field }) => (
                                         <FormItem className="relative my-1">
                                             <Select
-                                                // disabled={isLoading}
+                                                disabled={isLoading}
                                                 onValueChange={field.onChange}
-                                                // value={field.value}
+                                                value={field.value}
                                                 defaultValue={field.value}
                                             >
                                                 <FormControl>
                                                     <SelectTrigger className="h-12">
                                                         <SelectValue
-                                                            // defaultValue={field.value}
+                                                            defaultValue={field.value}
                                                             placeholder="Select A Billboard"
-                                                            // className="!placeholder-transparent !peer"
+                                                            className="!placeholder-transparent !peer"
                                                         />
                                                     </SelectTrigger>
                                                 </FormControl>
@@ -192,7 +192,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
                                     )}
                                 />
                             </div>
-                        </div>
+                        {/* </div> */}
                         <Button
                             disabled={isLoading}
                             type="submit"

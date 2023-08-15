@@ -1,5 +1,5 @@
 import { CategoryForm } from "@/components/forms/category-form"
-import { MainDiv, SectionDiv } from "@/components/ui/divs"
+import { MainDiv } from "@/components/ui/divs"
 
 import prismadb from "@/lib/prismadb"
 
@@ -23,9 +23,10 @@ const CategoryPage: NextPage<CategoryPageProps> = async ({ params: { storeId, ca
 
     return (
         <MainDiv>
-            <SectionDiv>
-                <CategoryForm initialData={category} billboards={billboards} />
-            </SectionDiv>
+            <CategoryForm
+                initialData={category}
+                billboards={billboards}
+            />
         </MainDiv>
     )
 }

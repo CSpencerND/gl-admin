@@ -1,5 +1,5 @@
-import { MainDiv, SectionDiv } from "@/components/ui/divs"
 import { BillboardForm } from "@/components/forms/billboard-form"
+import { MainDiv } from "@/components/ui/divs"
 
 import prismadb from "@/lib/prismadb"
 
@@ -14,15 +14,13 @@ type BillboardPageProps = {
 const BillboardPage: NextPage<BillboardPageProps> = async ({ params }) => {
     const billboard = await prismadb.billboard.findUnique({
         where: {
-            id: params.billboardId
-        }
+            id: params.billboardId,
+        },
     })
 
     return (
         <MainDiv>
-            <SectionDiv>
-                <BillboardForm initialData={billboard} />
-            </SectionDiv>
+            <BillboardForm initialData={billboard} />
         </MainDiv>
     )
 }
