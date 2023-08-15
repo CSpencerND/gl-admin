@@ -29,7 +29,7 @@ export const ApiCard: React.FC<ApiCardProps> = ({ title, content, accessLevel = 
             {/* <ServerIcon className="size-sm" /> */}
             <CardHeader>
                 <CardTitle className="flex items-center gap-3">
-                    <Badge variant={accessLevelStyle[accessLevel]}>{accessLevelText[accessLevel]}</Badge>
+                    <Badge base="soft" variant={accessLevelStyle[accessLevel]}>{accessLevelText[accessLevel]}</Badge>
                     <var className="not-italic text-base">{title}</var>
                 </CardTitle>
             </CardHeader>

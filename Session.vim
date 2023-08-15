@@ -14,13 +14,13 @@ else
   set shortmess=aoO
 endif
 badd +57 src/components/billboard-client.tsx
-badd +40 src/components/api-card.tsx
-badd +42 ~/Code/ecommerce-admin/src/components/api-list.tsx
-badd +33 src/app/(dashboard)/\[storeId]/(routes)/billboards/page.tsx
+badd +32 src/components/api-card.tsx
+badd +44 ~/Code/ecommerce-admin/src/components/api-list.tsx
+badd +39 src/components/ui/badge.tsx
 argglobal
 %argdel
 $argadd ./
-edit src/app/(dashboard)/\[storeId]/(routes)/billboards/page.tsx
+edit src/components/ui/badge.tsx
 wincmd t
 let s:save_winminheight = &winminheight
 let s:save_winminwidth = &winminwidth
@@ -29,6 +29,7 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
+balt ~/Code/ecommerce-admin/src/components/api-list.tsx
 setlocal fdm=manual
 setlocal fde=
 setlocal fmr={{{,}}}
@@ -39,12 +40,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 33 - ((32 * winheight(0) + 27) / 54)
+let s:l = 39 - ((38 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 33
-normal! 05|
+keepjumps 39
+normal! 048|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -60,7 +61,6 @@ if filereadable(s:sx)
 endif
 let &g:so = s:so_save | let &g:siso = s:siso_save
 set hlsearch
-nohlsearch
 let g:this_session = v:this_session
 let g:this_obsession = v:this_session
 doautoall SessionLoadPost
