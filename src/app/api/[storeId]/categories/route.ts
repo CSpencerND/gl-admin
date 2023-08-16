@@ -2,23 +2,23 @@ import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
-import type { BillboardFormValues, BillboardParams } from "@/types"
+import type { CategoryFormValues, StoreParams } from "@/types"
 
-export async function POST(req: Request, { params: { storeId } }: BillboardParams) {
+export async function POST(req: Request, { params: { storeId } }: StoreParams) {
     try {
         const { userId } = auth()
-        const { label, imageKey } = (await req.json()) as BillboardFormValues
+        const { name, billboardId } = (await req.json()) as CategoryFormValues
 
         if (!userId) {
             return new NextResponse("You must be logged in", { status: 401 })
         }
 
-        if (!label) {
-            return new NextResponse("Label is required", { status: 400 })
+        if (!name) {
+            return new NextResponse("Name is required", { status: 400 })
         }
 
-        if (!imageKey) {
-            return new NextResponse("Image URL is required", { status: 400 })
+        if (!billboardId) {
+            return new NextResponse("Billboard ID is required", { status: 400 })
         }
 
         if (!storeId) {
@@ -38,36 +38,36 @@ export async function POST(req: Request, { params: { storeId } }: BillboardParam
             })
         }
 
-        const billboard = await prismadb.billboard.create({
+        const category = await prismadb.category.create({
             data: {
-                label,
-                imageKey,
+                name,
+                billboardId,
                 storeId,
             },
         })
 
-        return NextResponse.json(billboard)
+        return NextResponse.json(category)
     } catch (error) {
-        console.log("[BILLBOARDS_POST]", error)
+        console.log("[CATEGORIES_POST]", error)
         return new NextResponse("Internal Error", { status: 500 })
     }
 }
 
-export async function GET(_req: Request, { params: { storeId } }: BillboardParams) {
+export async function GET(_req: Request, { params: { storeId } }: StoreParams) {
     try {
         if (!storeId) {
             return new NextResponse("Store ID is required", { status: 400 })
         }
 
-        const billboards = await prismadb.billboard.findMany({
+        const categories = await prismadb.category.findMany({
             where: {
                 storeId,
             },
         })
 
-        return NextResponse.json(billboards)
+        return NextResponse.json(categories)
     } catch (error) {
-        console.log("[BILLBOARDS_GET]", error)
+        console.log("[CATEGORIES_GET]", error)
         return new NextResponse("Internal Error", { status: 500 })
     }
 }

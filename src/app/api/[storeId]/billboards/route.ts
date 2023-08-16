@@ -2,9 +2,9 @@ import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
-import type { BillboardFormValues, BillboardParams } from "@/types"
+import type { BillboardFormValues, StoreParams } from "@/types"
 
-export async function POST(req: Request, { params: { storeId } }: BillboardParams) {
+export async function POST(req: Request, { params: { storeId } }: StoreParams) {
     try {
         const { userId } = auth()
         const { label, imageKey } = (await req.json()) as BillboardFormValues
@@ -53,7 +53,7 @@ export async function POST(req: Request, { params: { storeId } }: BillboardParam
     }
 }
 
-export async function GET(_req: Request, { params: { storeId } }: BillboardParams) {
+export async function GET(_req: Request, { params: { storeId } }: StoreParams) {
     try {
         if (!storeId) {
             return new NextResponse("Store ID is required", { status: 400 })

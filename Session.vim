@@ -13,21 +13,16 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +12 src/app/(dashboard)/\[storeId]/(routes)/categories/page.tsx
-badd +2 src/app/(dashboard)/\[storeId]/(routes)/categories/\[categoryId]/page.tsx
-badd +137 ~/Code/ecommerce-admin/src/components/forms/category-form.tsx
+badd +13 src/app/(dashboard)/\[storeId]/(routes)/categories/page.tsx
+badd +28 src/app/(dashboard)/\[storeId]/(routes)/categories/\[categoryId]/page.tsx
+badd +108 ~/Code/ecommerce-admin/src/components/forms/category-form.tsx
+badd +48 src/components/forms/billboard-form.tsx
 argglobal
 %argdel
 $argadd ./
 edit ~/Code/ecommerce-admin/src/components/forms/category-form.tsx
-wincmd t
-let s:save_winminheight = &winminheight
-let s:save_winminwidth = &winminwidth
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
 argglobal
+balt src/components/forms/billboard-form.tsx
 setlocal fdm=manual
 setlocal fde=
 setlocal fmr={{{,}}}
@@ -38,12 +33,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 137 - ((0 * winheight(0) + 24) / 48)
+let s:l = 108 - ((49 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 137
-normal! 030|
+keepjumps 108
+normal! 082|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
@@ -51,8 +46,6 @@ endif
 unlet! s:wipebuf
 set winheight=1 winwidth=20
 let &shortmess = s:shortmess_save
-let &winminheight = s:save_winminheight
-let &winminwidth = s:save_winminwidth
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if filereadable(s:sx)
   exe "source " . fnameescape(s:sx)

@@ -1,4 +1,5 @@
 export type { BillboardFormValues } from "@/components/forms/billboard-form"
+export type { CategoryFormValues } from "@/components/forms/category-form"
 export type { StoreFormValues } from "@/components/forms/settings-form"
 
 export type StoreParams<T = Record<string, string>> = {

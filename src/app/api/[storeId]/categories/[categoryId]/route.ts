@@ -2,27 +2,27 @@ import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
-import { BillboardFormValues, BillboardParams } from "@/types"
+import { CategoryFormValues, CategoryParams } from "@/types"
 
-export async function PATCH(req: Request, { params: { storeId, billboardId } }: BillboardParams) {
+export async function PATCH(req: Request, { params: { storeId, categoryId } }: CategoryParams) {
     try {
         const { userId } = auth()
-        const { label, imageKey } = (await req.json()) as BillboardFormValues
+        const { name, billboardId } = (await req.json()) as CategoryFormValues
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })
         }
 
-        if (!label) {
-            return new NextResponse("Label Is Required", { status: 400 })
-        }
-
-        if (!imageKey) {
-            return new NextResponse("Image URL Is Required", { status: 400 })
+        if (!name) {
+            return new NextResponse("Name Is Required", { status: 400 })
         }
 
         if (!billboardId) {
-            return new NextResponse("Billbord ID is required", { status: 400 })
+            return new NextResponse("Billbord ID Is Required", { status: 400 })
+        }
+
+        if (!categoryId) {
+            return new NextResponse("Category ID is required", { status: 400 })
         }
 
         const storeMatchByUserId = await prismadb.store.findFirst({
@@ -38,23 +38,23 @@ export async function PATCH(req: Request, { params: { storeId, billboardId } }: 
             })
         }
 
-        const billboard = await prismadb.billboard.updateMany({
+        const category = await prismadb.category.updateMany({
             where: {
-                id: billboardId,
+                id: categoryId,
             },
             data: {
-                label,
-                imageKey,
+                name,
+                billboardId,
             },
         })
-        return NextResponse.json(billboard)
+        return NextResponse.json(category)
     } catch (error) {
-        console.log("[BILLBOARD_PATCH]", error)
+        console.log("[CATEGORY_PATCH]", error)
         return new NextResponse("Internal Error", { status: 500 })
     }
 }
 
-export async function DELETE(_req: Request, { params: { storeId, billboardId } }: BillboardParams) {
+export async function DELETE(_req: Request, { params: { storeId, categoryId } }: CategoryParams) {
     try {
         const { userId } = auth()
 
@@ -62,8 +62,8 @@ export async function DELETE(_req: Request, { params: { storeId, billboardId } }
             return new NextResponse("You must be logged in", { status: 401 })
         }
 
-        if (!billboardId) {
-            return new NextResponse("Billbord ID is required", { status: 400 })
+        if (!categoryId) {
+            return new NextResponse("Category ID is required", { status: 400 })
         }
 
         const storeMatchByUserId = await prismadb.store.findFirst({
@@ -79,34 +79,34 @@ export async function DELETE(_req: Request, { params: { storeId, billboardId } }
             })
         }
 
-        const billboard = await prismadb.billboard.delete({
+        const category = await prismadb.category.delete({
             where: {
-                id: billboardId,
+                id: categoryId,
             },
         })
 
-        return NextResponse.json(billboard)
+        return NextResponse.json(category)
     } catch (error) {
-        console.log("[BILLBOARD_DELETE]", error)
+        console.log("[CATEGORY_DELETE]", error)
         return new NextResponse("Internal Error", { status: 500 })
     }
 }
 
-export async function GET(_req: Request, { params: { billboardId } }: BillboardParams) {
+export async function GET(_req: Request, { params: { categoryId } }: CategoryParams) {
     try {
-        if (!billboardId) {
-            return new NextResponse("Billbord ID is required", { status: 400 })
+        if (!categoryId) {
+            return new NextResponse("Category ID is required", { status: 400 })
         }
 
-        const billboard = await prismadb.billboard.findUnique({
+        const category = await prismadb.category.findUnique({
             where: {
-                id: billboardId,
+                id: categoryId,
             },
         })
 
-        return NextResponse.json(billboard)
+        return NextResponse.json(category)
     } catch (error) {
-        console.log("[BILLBOARD_GET]", error)
+        console.log("[CATEGORY_GET]", error)
         return new NextResponse("Internal Error", { status: 500 })
     }
 }

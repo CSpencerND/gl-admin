@@ -55,7 +55,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
     const toast = useToast().toast
 
     const title = initialData ? `Edit ${ENTITY}` : `Create ${ENTITY}`
-    const description = initialData ? `Edit A ${ENTITY}` : `Add A New ${ENTITY}`
+    const description = initialData ? `Manage a ${ENTITY} for your store` : `Add A New ${ENTITY}`
     const toastMessage = initialData ? `${ENTITY} Updated` : `${ENTITY} Created`
     const action = initialData ? "Save Changes" : "Create"
 
@@ -101,11 +101,11 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
             router.push(`/${storeId}/${SEGMENT}`)
 
             toast({
-                title: "Category Deleted Successfully",
+                title: `${ENTITY} Deleted Successfully`,
             })
         } catch (error) {
             toast({
-                title: "You must remove all categories associated with this billboard first",
+                title: "You must remove all products associated with this category first",
             })
         } finally {
             setLoaded()

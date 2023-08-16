@@ -45,7 +45,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
     const toast = useToast().toast
 
     const title = initialData ? `Edit ${ENTITY}` : `Create ${ENTITY}`
-    const description = initialData ? `Edit A ${ENTITY}` : `Add A New ${ENTITY}`
+    const description = initialData ? `Manage a ${ENTITY} for your store` : `Add A New ${ENTITY}`
     const toastMessage = initialData ? `${ENTITY} Updated` : `${ENTITY} Created`
     const action = initialData ? "Save Changes" : "Create"
 
@@ -91,7 +91,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
             router.push(`/${storeId}/${SEGMENT}`)
 
             toast({
-                title: "Billboard Deleted Successfully",
+                title: `${ENTITY} Deleted Successfully`,
             })
         } catch (error) {
             toast({
