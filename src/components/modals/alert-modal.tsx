@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { Modal } from "@/components/ui/modal"
 import { Spinner } from "@/components/ui/spinner"
-import { AlertTriangleIcon as AlertIcon } from "lucide-react"
 
 import { useMounted } from "@/lib/hooks/use-mounted"
 
@@ -19,12 +18,11 @@ export const AlertModal: React.FC<AlertModalProps> = ({ isOpen, isLoading, onClo
 
     return (
         <Modal
-            title="Are You Sure?"
+            title="Heads Up!"
             description="This Action Cannot Be Undone"
+            asAlert
             isOpen={isOpen}
             onClose={onClose}
-            icon={<AlertIcon className="stroke-warning-foreground size-xl" />}
-            // className="bg-card"
         >
             <div className="flex w-full items-center justify-end space-x-2 pt-8">
                 <Button
@@ -35,7 +33,6 @@ export const AlertModal: React.FC<AlertModalProps> = ({ isOpen, isLoading, onClo
                     Cancel
                 </Button>
                 <Button
-                    // base="soft"
                     variant="destructive"
                     disabled={isLoading}
                     onClick={onConfirm}
