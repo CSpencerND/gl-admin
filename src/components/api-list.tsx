@@ -9,10 +9,10 @@ import type { StoreParams } from "@/types"
 
 type ApiListProps = {
     entityName: string
-    entityId: string
+    entityIdName: string
 }
 
-export const ApiList: React.FC<ApiListProps> = ({ entityId, entityName }) => {
+export const ApiList: React.FC<ApiListProps> = ({ entityIdName, entityName }) => {
     const { storeId } = useParams() as StoreParams["params"]
     const origin = useOrigin()
     const baseUrl = `${origin}/api/${storeId}`
@@ -29,7 +29,7 @@ export const ApiList: React.FC<ApiListProps> = ({ entityId, entityName }) => {
                 method="GET"
                 quantity="single"
                 accessLevel="public"
-                content={`${baseUrl}/${entityName}/{${entityId}}`}
+                content={`${baseUrl}/${entityName}/{${entityIdName}}`}
             />
             <ApiCard
                 method="POST"
@@ -39,12 +39,12 @@ export const ApiList: React.FC<ApiListProps> = ({ entityId, entityName }) => {
             <ApiCard
                 method="PATCH"
                 accessLevel="admin"
-                content={`${baseUrl}/${entityName}/{${entityId}}`}
+                content={`${baseUrl}/${entityName}/{${entityIdName}}`}
             />
             <ApiCard
                 method="DELETE"
                 accessLevel="admin"
-                content={`${baseUrl}/${entityName}/{${entityId}}`}
+                content={`${baseUrl}/${entityName}/{${entityIdName}}`}
             />
         </>
     )

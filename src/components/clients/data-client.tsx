@@ -15,7 +15,7 @@ import type { StoreParams } from "@/types"
 type DataClientProps<TData, TValue> = ComponentProps<typeof DataTable<TData, TValue>> & ComponentProps<typeof ApiList>
 
 export function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>) {
-    const { columns, data, searchKey, entityName, entityId } = props
+    const { columns, data, searchKey, entityName, entityIdName } = props
 
     const router = useRouter()
     const { storeId } = useParams() as StoreParams["params"]
@@ -37,7 +37,7 @@ export function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>)
                     data={data}
                     searchKey={searchKey}
                     columns={columns}
-                    className=""
+                    className="font-mono"
                 />
             </SectionDiv>
             <SectionDiv className="">
@@ -47,7 +47,7 @@ export function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>)
                 />
                 <ApiList
                     entityName={entityName.toLowerCase()}
-                    entityId={entityId}
+                    entityIdName={entityIdName}
                 />
             </SectionDiv>
         </>

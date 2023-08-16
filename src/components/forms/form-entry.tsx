@@ -5,22 +5,61 @@ import { cn } from "@/lib/utils"
 
 import type { Control } from "react-hook-form"
 
-type FormEntryProps = {
+type FormEntryProps = React.PropsWithChildren<{
     control: Control<any>
     name: string
     label: string
     isLoading?: boolean
     floating?: boolean
-}
+    colorIndicator?: boolean
+}>
 
-export const FormEntry: React.FC<FormEntryProps> = ({ control, name, label, isLoading, floating }) => {
+export const FormEntry: React.FC<FormEntryProps> = (props) => {
+    const { control, name, label, isLoading, floating, colorIndicator, children } = props
+
+    if (colorIndicator) {
+        return (
+            <FormField
+                control={control}
+                name={name}
+                render={({ field }) => (
+                    <FormItem className="relative my-1 flex items-center gap-4">
+                        <FormControl>
+                            <div className="flex items-center gap-4">
+                                <Input
+                                    placeholder={label}
+                                    className={cn("!placeholder-transparent h-12")}
+                                    disabled={isLoading}
+                                    {...field}
+                                />
+                                <span
+                                    aria-hidden="true"
+                                    className="border border-ring p-5 rounded-full"
+                                    style={{ backgroundColor: field.value }}
+                                />
+                            </div>
+                        </FormControl>
+                        <FormLabel
+                            className={cn(
+                                "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all"
+                            )}
+                        >
+                            {label}
+                        </FormLabel>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
+        )
+    }
+
     if (floating) {
         return (
             <FormField
                 control={control}
                 name={name}
                 render={({ field }) => (
-                    <FormItem className="relative my-1">
+                    <FormItem className="relative my-1 flex">
                         <FormControl>
                             <Input
                                 placeholder={label}

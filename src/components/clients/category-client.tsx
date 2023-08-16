@@ -13,7 +13,7 @@ export const CategoryClient: React.FC<CategoryClientProps> = ({ data }) => {
             columns={CategoryColumns}
             searchKey="label"
             entityName="Categories"
-            entityId="categoryId"
+            entityIdName="categoryId"
         />
     )
 }

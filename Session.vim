@@ -13,16 +13,13 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +13 src/app/(dashboard)/\[storeId]/(routes)/categories/page.tsx
-badd +28 src/app/(dashboard)/\[storeId]/(routes)/categories/\[categoryId]/page.tsx
-badd +108 ~/Code/ecommerce-admin/src/components/forms/category-form.tsx
-badd +48 src/components/forms/billboard-form.tsx
+badd +72 src/components/forms/color-form.tsx
+badd +40 src/components/tables/color-columns.tsx
 argglobal
 %argdel
 $argadd ./
-edit ~/Code/ecommerce-admin/src/components/forms/category-form.tsx
+edit src/components/tables/color-columns.tsx
 argglobal
-balt src/components/forms/billboard-form.tsx
 setlocal fdm=manual
 setlocal fde=
 setlocal fmr={{{,}}}
@@ -33,12 +30,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 108 - ((49 * winheight(0) + 27) / 54)
+let s:l = 40 - ((39 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 108
-normal! 082|
+keepjumps 40
+normal! 070|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

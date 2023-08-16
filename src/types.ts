@@ -1,6 +1,8 @@
+export type { StoreFormValues } from "@/components/forms/settings-form"
 export type { BillboardFormValues } from "@/components/forms/billboard-form"
 export type { CategoryFormValues } from "@/components/forms/category-form"
-export type { StoreFormValues } from "@/components/forms/settings-form"
+export type { SizeFormValues } from "@/components/forms/size-form"
+export type { ColorFormValues } from "@/components/forms/color-form"
 
 export type StoreParams<T = Record<string, string>> = {
     params: {
@@ -14,6 +16,14 @@ export type BillboardParams = StoreParams<{
 
 export type CategoryParams = StoreParams<{
     categoryId: string
+}>
+
+export type SizeParams = StoreParams<{
+    sizeId: string
+}>
+
+export type ColorParams = StoreParams<{
+    colorId: string
 }>
 
 export type ColumnType<T = {}> = {

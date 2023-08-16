@@ -1,15 +1,15 @@
 import { DataClient } from "@/components/clients/data-client"
-import { SizesColumns } from "@/components/tables/size-columns"
+import { SizeColumns } from "@/components/tables/size-columns"
 import { MainDiv } from "@/components/ui/divs"
 
 import prismadb from "@/lib/prismadb"
 import { format } from "date-fns"
 
-import type { SizesColumn } from "@/components/tables/size-columns"
-import type { SizesParams } from "@/types"
+import type { SizeColumn } from "@/components/tables/size-columns"
+import type { SizeParams } from "@/types"
 import type { NextPage } from "next"
 
-type SizesPageProps = SizesParams
+type SizesPageProps = SizeParams
 
 const SizesPage: NextPage<SizesPageProps> = async ({ params: { storeId } }) => {
     const sizes = await prismadb.size.findMany({
@@ -21,7 +21,7 @@ const SizesPage: NextPage<SizesPageProps> = async ({ params: { storeId } }) => {
         },
     })
 
-    const formattedSizes: SizesColumn[] = sizes.map(({ id, name, value, createdAt }) => ({
+    const formattedSizes: SizeColumn[] = sizes.map(({ id, name, value, createdAt }) => ({
         id,
         name,
         value,
@@ -32,10 +32,10 @@ const SizesPage: NextPage<SizesPageProps> = async ({ params: { storeId } }) => {
         <MainDiv>
             <DataClient
                 data={formattedSizes}
-                columns={SizesColumns}
-                searchKey="label"
+                columns={SizeColumns}
+                searchKey="name"
                 entityName="Sizes"
-                entityId="sizeId"
+                entityIdName="sizeId"
             />
         </MainDiv>
     )

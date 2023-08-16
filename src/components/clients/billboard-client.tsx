@@ -13,7 +13,7 @@ export const BillboardClient: React.FC<BillboardClientProps> = ({ data }) => {
             columns={BillboardColumns}
             searchKey="label"
             entityName="Billboards"
-            entityId="billboardId"
+            entityIdName="billboardId"
         />
     )
 }

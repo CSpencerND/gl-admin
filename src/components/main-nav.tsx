@@ -18,6 +18,7 @@ export const MainNav: React.FC<MainNavProps> = ({ children, className, ...props 
     const billboardHref = `${rootHref}/billboards`
     const categoriesHref = `${rootHref}/categories`
     const sizesHref = `${rootHref}/sizes`
+    const colorsHref = `${rootHref}/colors`
 
     const routes = [
         {
@@ -44,6 +45,11 @@ export const MainNav: React.FC<MainNavProps> = ({ children, className, ...props 
             href: sizesHref,
             label: "Sizes",
             active: pathname === sizesHref,
+        },
+        {
+            href: colorsHref,
+            label: "Colors",
+            active: pathname === colorsHref,
         },
     ]
 

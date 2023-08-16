@@ -1,28 +1,28 @@
-import { BillboardForm } from "@/components/forms/billboard-form"
+import { SizeForm } from "@/components/forms/size-form"
 import { MainDiv } from "@/components/ui/divs"
 
 import prismadb from "@/lib/prismadb"
 
 import type { NextPage } from "next"
 
-type BillboardPageProps = {
+type SizePageProps = {
     params: {
-        billboardId: string
+        sizeId: string
     }
 }
 
-const BillboardPage: NextPage<BillboardPageProps> = async ({ params }) => {
-    const billboard = await prismadb.billboard.findUnique({
+const SizePage: NextPage<SizePageProps> = async ({ params }) => {
+    const size = await prismadb.size.findUnique({
         where: {
-            id: params.billboardId,
+            id: params.sizeId,
         },
     })
 
     return (
         <MainDiv>
-            <BillboardForm initialData={billboard} />
+            <SizeForm initialData={size} />
         </MainDiv>
     )
 }
 
-export default BillboardPage
+export default SizePage

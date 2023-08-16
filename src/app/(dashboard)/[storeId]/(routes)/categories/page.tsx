@@ -38,7 +38,7 @@ const CategoriesPage: NextPage<CategoriesPageProps> = async ({ params: { storeId
                 columns={CategoryColumns}
                 searchKey="name"
                 entityName="Categories"
-                entityId="categoryId"
+                entityIdName="categoryId"
             />
         </MainDiv>
     )

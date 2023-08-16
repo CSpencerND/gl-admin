@@ -18,7 +18,7 @@ export async function PATCH(req: Request, { params: { storeId, categoryId } }: C
         }
 
         if (!billboardId) {
-            return new NextResponse("Billbord ID Is Required", { status: 400 })
+            return new NextResponse("Billboard ID Is Required", { status: 400 })
         }
 
         if (!categoryId) {

@@ -34,7 +34,7 @@ const BillboardsPage: NextPage<BillboardsPageProps> = async ({ params: { storeId
                 columns={BillboardColumns}
                 searchKey="label"
                 entityName="Billboards"
-                entityId="billboardId"
+                entityIdName="billboardId"
             />
         </MainDiv>
     )
