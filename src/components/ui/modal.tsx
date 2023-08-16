@@ -29,7 +29,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
         >
             <DialogContent
                 asModal
-                className={cn("!prose !prose-invert p-8 prose-headings:!mt-0", className)}
+                className={cn("!prose dark:!prose-invert p-8 prose-headings:!mt-0", className)}
             >
                 <DialogHeader>
                     <DialogTitle className="flex flex-row gap-4">

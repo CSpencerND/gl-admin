@@ -26,7 +26,7 @@ type ImageUploadProps = {
 
 export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
     const { control, label } = props
-    const { isLoading, setLoading, setLoaded } = useLoading()
+    const { isLoading, setLoading, setLoaded } = useLoading(true)
 
     useMounted()
 
@@ -46,7 +46,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
                                     {fieldValue.map((key, i) => (
                                         <li
                                             key={i}
-                                            className="relative w-72 h-72 rounded-lg overflow-clip"
+                                            className="relative w-72 h-72 rounded-lg overflow-hidden"
                                         >
                                             <div className="z-10 absolute top-2 right-2">
                                                 <TrashButton

@@ -1,4 +1,4 @@
-import { DataClient } from "@/components/clients/data-client"
+import { DataClient } from "@/components/data-client"
 import { ColorColumns } from "@/components/tables/color-columns"
 import { MainDiv } from "@/components/ui/divs"
 

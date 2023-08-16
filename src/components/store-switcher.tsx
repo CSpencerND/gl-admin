@@ -70,16 +70,15 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({ className, items =
                     <ChevronsUpDownIcon className="ml-auto stroke-muted-foreground size-sm" />
                 </Button>
             </PopoverTrigger>
-            {/* <PopoverContent className="mt-1 border-none p-0 ring-1 ring-border"> */}
-            <PopoverContent className="mt-1 border-none p-0">
+            <PopoverContent className="mt-1 overflow-hidden border-none p-0 ring-1 ring-border">
                 <Command>
                     <CommandList>
                         <CommandInput
-                            placeholder="Search store..."
-                            className="h-9"
+                            placeholder="Search stores ..."
+                            className="h-12"
                         />
                         <CommandEmpty>No Store Found</CommandEmpty>
-                        <CommandGroup heading="Store">
+                        <CommandGroup>
                             {formattedItems.map((store) => (
                                 <CommandItem
                                     key={store.value}
