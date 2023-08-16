@@ -70,7 +70,8 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({ className, items =
                     <ChevronsUpDownIcon className="ml-auto stroke-muted-foreground size-sm" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="mt-1 border-none p-0 ring-1 ring-border">
+            {/* <PopoverContent className="mt-1 border-none p-0 ring-1 ring-border"> */}
+            <PopoverContent className="mt-1 border-none p-0">
                 <Command>
                     <CommandList>
                         <CommandInput

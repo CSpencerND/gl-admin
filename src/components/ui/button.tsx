@@ -19,7 +19,7 @@ const buttonVariants = cva(
                 destructive:
                     "bg-destructive text-destructive-foreground hover:bg-destructive/80",
                 outline:
-                    "ring-1 ring-border bg-background hover:bg-accent hover:text-accent-foreground",
+                    "ring-1 ring-input bg-background hover:bg-accent hover:text-accent-foreground",
                 ghost: "hover:bg-accent hover:text-accent-foreground",
                 link: "text-primary underline-offset-4 hover:underline",
             },

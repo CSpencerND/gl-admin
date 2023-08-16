@@ -47,7 +47,8 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, className }
                     className="max-w-sm"
                 />
             </div>
-            <div className="rounded-lg ring-1 ring-border">
+            {/* <div className="rounded-lg ring-1 ring-border"> */}
+            <div className="rounded-lg">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

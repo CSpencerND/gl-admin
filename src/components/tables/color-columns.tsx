@@ -37,7 +37,7 @@ export const ColorColumns: ColumnDef<ColorColumn>[] = [
                 {row.original.value}
                 <div
                     aria-hidden="true"
-                    className="size-md rounded-full border border-ring"
+                    className="size-md rounded-full border"
                     style={{ backgroundColor: row.original.value }}
                 />
             </div>

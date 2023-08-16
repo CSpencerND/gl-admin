@@ -34,7 +34,7 @@ export const FormEntry: React.FC<FormEntryProps> = (props) => {
                                 />
                                 <span
                                     aria-hidden="true"
-                                    className="border border-ring p-5 rounded-full"
+                                    className="border p-5 rounded-full"
                                     style={{ backgroundColor: field.value }}
                                 />
                             </div>
