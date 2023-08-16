@@ -1,7 +1,7 @@
 import { useState } from "react"
 
-export const useOpen = () => {
-    const [isOpen, setOpenState] = useState<boolean>(false)
+export const useOpen = (open?: boolean) => {
+    const [isOpen, setOpenState] = useState<boolean>(open ?? false)
 
     const setOpen = () => setOpenState(true)
     const setClosed = () => setOpenState(false)
