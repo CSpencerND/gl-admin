@@ -1,16 +1,18 @@
-import { type ClassValue, clsx } from "clsx"
+import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
-export function cn(...inputs: ClassValue[]) {
+import type { Decimal } from "@prisma/client/runtime/library"
+
+export function cn(...inputs: ClassValue[]): string {
     return twMerge(clsx(inputs))
 }
 
-export function isBase64Image(imageData: string) {
+export function isBase64Image(imageData: string): boolean {
     const base64Regex = /^data:image\/(png|jpe?g|gif|webp);base64,/
     return base64Regex.test(imageData)
 }
 
-export function formatDateString(dateString: string) {
+export function formatDateString(dateString: string): string {
     const options: Intl.DateTimeFormatOptions = {
         year: "numeric",
         month: "short",
@@ -36,4 +38,13 @@ export function formatThreadCount(count: number): string {
         const threadWord = count === 1 ? "Thread" : "Threads"
         return `${threadCount} ${threadWord}`
     }
+}
+
+export function formatPrice(price: Decimal): string {
+    const formatter = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+    })
+
+    return formatter.format(price.toNumber())
 }
