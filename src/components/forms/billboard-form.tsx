@@ -1,7 +1,7 @@
 "use client"
 
 import { FormEntry } from "@/components/forms/form-entry"
-import { ImageUpload } from "@/components/forms/image-upload"
+import { BillboardImageUpload } from "@/components/forms/billboard-image-upload"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
@@ -131,7 +131,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => 
                     >
                         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
                             <div className="flex flex-col gap-8">
-                                <ImageUpload
+                                <BillboardImageUpload
                                     control={form.control}
                                     label="Billboard Image"
                                 />

@@ -10,7 +10,13 @@ type CellActionProps = {
 }
 
 export type ProductColumn = ColumnType<{
-    label: string
+    name: string
+    price: string
+    size: string
+    color: string
+    category: string
+    isFeatured: boolean
+    isArchived: boolean
 }>
 
 const ProductCellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -25,8 +31,42 @@ const ProductCellAction: React.FC<CellActionProps> = ({ data }) => {
 
 export const ProductColumns: ColumnDef<ProductColumn>[] = [
     {
-        accessorKey: "label",
-        header: "Label",
+        accessorKey: "name",
+        header: "Name",
+    },
+    {
+        accessorKey: "category",
+        header: "Category",
+    },
+    {
+        accessorKey: "price",
+        header: "Price",
+    },
+    {
+        accessorKey: "size",
+        header: "Size",
+    },
+    {
+        accessorKey: "color",
+        header: "Color",
+        cell: ({ row }) => (
+            <div className="flex items-center gap-2">
+                {row.original.color}
+                <div
+                    aria-hidden="true"
+                    className="size-md rounded-full border"
+                    style={{ backgroundColor: row.original.color }}
+                />
+            </div>
+        ),
+    },
+    {
+        accessorKey: "isArchived",
+        header: "Archived",
+    },
+    {
+        accessorKey: "isFeatured",
+        header: "Featured",
     },
     {
         accessorKey: "createdAt",

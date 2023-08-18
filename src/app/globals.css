@@ -12,16 +12,16 @@
 /* } */
 
 /** Uplaod Thing */
-.ut-flex-col {
-    @apply !w-72 !h-72;
-}
+/* .ut-flex-col { */
+/*     @apply !w-72 !h-72; */
+/* } */
 
-.ut-flex-col > * {
-    @apply !mr-auto;
-}
+/* .ut-flex-col > * { */
+/*     @apply !mr-auto; */
+/* } */
 
 .ut-flex > div {
-    @apply !ml-9;
+    /* @apply !ml-9; */
 
     & * {
         @apply !text-ring;

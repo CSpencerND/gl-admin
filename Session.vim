@@ -13,16 +13,12 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +23 ~/Code/ecommerce-admin/src/app/(dashboard)/\[storeId]/(routes)/products/\[productId]/page.tsx
-badd +34 ~/Code/ecommerce-admin/src/app/(dashboard)/\[storeId]/(routes)/products/page.tsx
-badd +3 ~/Code/ecommerce-admin/src/components/forms/product-form.tsx
-badd +21 ~/Code/ecommerce-admin/src/components/tables/product-columns.tsx
-badd +6 src/types.ts
-badd +50 src/lib/utils.ts
+badd +43 ~/Code/ecommerce-admin/src/app/(dashboard)/\[storeId]/(routes)/products/\[productId]/page.tsx
+badd +384 ~/Code/ecommerce-admin/src/components/forms/product-form.tsx
 argglobal
 %argdel
 $argadd ./
-edit src/lib/utils.ts
+edit ~/Code/ecommerce-admin/src/components/forms/product-form.tsx
 wincmd t
 let s:save_winminheight = &winminheight
 let s:save_winminwidth = &winminwidth
@@ -31,7 +27,6 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-balt src/types.ts
 setlocal fdm=manual
 setlocal fde=
 setlocal fmr={{{,}}}
@@ -42,12 +37,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 50 - ((49 * winheight(0) + 27) / 54)
+let s:l = 384 - ((34 * winheight(0) + 27) / 54)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 50
-normal! 0
+keepjumps 384
+normal! 061|
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

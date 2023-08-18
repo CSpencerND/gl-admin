@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import type { Control } from "react-hook-form"
 
 type FormEntryProps = React.PropsWithChildren<{
+    type?: React.HTMLInputTypeAttribute
     control: Control<any>
     name: string
     label: string
@@ -15,7 +16,7 @@ type FormEntryProps = React.PropsWithChildren<{
 }>
 
 export const FormEntry: React.FC<FormEntryProps> = (props) => {
-    const { control, name, label, isLoading, floating, colorIndicator, children } = props
+    const { type, control, name, label, isLoading, floating, colorIndicator } = props
 
     if (colorIndicator) {
         return (
@@ -27,6 +28,7 @@ export const FormEntry: React.FC<FormEntryProps> = (props) => {
                         <FormControl>
                             <div className="flex items-center gap-4">
                                 <Input
+                                    type={type}
                                     placeholder={label}
                                     className={cn("!placeholder-transparent h-12")}
                                     disabled={isLoading}
@@ -39,11 +41,7 @@ export const FormEntry: React.FC<FormEntryProps> = (props) => {
                                 />
                             </div>
                         </FormControl>
-                        <FormLabel
-                            className={cn(
-                                "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all"
-                            )}
-                        >
+                        <FormLabel className="absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all">
                             {label}
                         </FormLabel>
                         <FormMessage />
@@ -62,6 +60,7 @@ export const FormEntry: React.FC<FormEntryProps> = (props) => {
                     <FormItem className="relative my-1 flex">
                         <FormControl>
                             <Input
+                                type={type}
                                 placeholder={label}
                                 className={cn("!placeholder-transparent h-12")}
                                 disabled={isLoading}
@@ -93,6 +92,7 @@ export const FormEntry: React.FC<FormEntryProps> = (props) => {
                     <FormLabel className="ml-3">{label}</FormLabel>
                     <FormControl>
                         <Input
+                            type={type}
                             placeholder={label}
                             disabled={isLoading}
                             {...field}

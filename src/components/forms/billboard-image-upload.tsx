@@ -10,28 +10,23 @@ import { useMounted } from "@/lib/hooks/use-mounted"
 import { useLoading } from "@/lib/hooks/use-loading"
 
 import type { Control } from "react-hook-form"
+import type { BillboardFormValues } from "@/types"
 
-type ImageControl = Control<
-    {
-        label: string
-        imageKey: string
-    },
-    any
->
+type ImageControl = Control<BillboardFormValues, any>
 
 type ImageUploadProps = {
     control: ImageControl
     label: string
 }
 
-export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
+export const BillboardImageUpload: React.FC<ImageUploadProps> = (props) => {
     const { control, label } = props
     const { isLoading, setLoading, setLoaded } = useLoading(true)
 
     useMounted()
 
     return (
-        <div>
+        <div className="w-max">
             <FormField
                 control={control}
                 name="imageKey"
@@ -40,7 +35,12 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
 
                     return (
                         <>
-                            <FormLabel htmlFor="imageKey" className="ml-3 font-semibold text-sm text-ring">{label}</FormLabel>
+                            <FormLabel
+                                htmlFor="imageKey"
+                                className="ml-3 font-semibold text-sm text-ring"
+                            >
+                                {label}
+                            </FormLabel>
                             {fieldValue && fieldValue.length > 0 ? (
                                 <ul className="mb-4 flex items-center gap-4">
                                     {fieldValue.map((key, i) => (
@@ -70,10 +70,14 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
                                 </ul>
                             ) : (
                                 <>
+                                    <div
+                                        aria-hidden="true"
+                                        className="w-72 h-60"
+                                    />
                                     <FormItem>
                                         <FormControl>
                                             <UploadButton
-                                                endpoint="media"
+                                                endpoint="single"
                                                 onUploadProgress={setLoading}
                                                 onClientUploadComplete={(res) => {
                                                     if (res) {

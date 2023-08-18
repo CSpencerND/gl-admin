@@ -7,15 +7,7 @@ import { Button } from "@/components/ui/button"
 import { SectionDiv } from "@/components/ui/divs"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 import { useLoading } from "@/lib/hooks/use-loading"
 import { useOpen } from "@/lib/hooks/use-open"
@@ -27,9 +19,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import * as z from "zod"
 
+import { cn } from "@/lib/utils"
 import type { CategoryParams } from "@/types"
 import type { Billboard, Category } from "@prisma/client"
-import { cn } from "@/lib/utils"
 
 type CategoryFormProps = {
     initialData: Category | null
@@ -141,57 +133,58 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
                     >
                         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
                             {/* <div className="flex flex-col gap-8"> */}
-                                <FormEntry
-                                    control={form.control}
-                                    name="name"
-                                    label="Category Name"
-                                    floating
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="billboardId"
-                                    render={({ field }) => (
-                                        <FormItem className="relative my-1">
-                                            <Select
-                                                disabled={isLoading}
-                                                onValueChange={field.onChange}
-                                                value={field.value}
-                                                defaultValue={field.value}
-                                            >
-                                                <FormControl>
-                                                    <SelectTrigger className="h-12">
-                                                        <SelectValue
-                                                            defaultValue={field.value}
-                                                            placeholder="Select A Billboard"
-                                                            className="!placeholder-transparent !peer"
-                                                        />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {billboards.map((billboard, i) => (
-                                                        <SelectItem
-                                                            key={i}
-                                                            value={billboard.id}
-                                                        >
-                                                            {billboard.label}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                            <FormLabel
-                                                className={cn(
-                                                    "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all",
-                                                    "peer-placeholder-shown:top-1 peer-placeholder-shown:text-base",
-                                                    "peer-focus:-top-5 peer-focus:text-sm peer-focus:text-ring"
-                                                )}
-                                            >
-                                                Billboard
-                                            </FormLabel>
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
+                            <FormEntry
+                                control={form.control}
+                                name="name"
+                                label="Category Name"
+                                floating
+                            />
+                            <FormField
+                                control={form.control}
+                                name="billboardId"
+                                render={({ field }) => (
+                                    <FormItem className="relative my-1">
+                                        <Select
+                                            disabled={isLoading}
+                                            onValueChange={field.onChange}
+                                            value={field.value}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger className="h-12">
+                                                    <SelectValue
+                                                        defaultValue={field.value}
+                                                        placeholder="Select A Billboard"
+                                                        className="!placeholder-transparent !peer"
+                                                    />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {billboards.map((billboard, i) => (
+                                                    <SelectItem
+                                                        key={i}
+                                                        value={billboard.id}
+                                                        className="h-12"
+                                                    >
+                                                        {billboard.label}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                        <FormLabel
+                                            className={cn(
+                                                "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all",
+                                                "peer-placeholder-shown:top-1 peer-placeholder-shown:text-base",
+                                                "peer-focus:-top-5 peer-focus:text-sm peer-focus:text-ring"
+                                            )}
+                                        >
+                                            Billboard
+                                        </FormLabel>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                         {/* </div> */}
                         <Button
                             disabled={isLoading}

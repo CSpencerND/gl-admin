@@ -27,24 +27,28 @@ const ProductsPage: NextPage<ProductsPageProps> = async ({ params: { storeId } }
         },
     })
 
-    const formattedProducts: ProductColumn[] = products.map(
-        ({ id, name, isFeatured, isArchived, price, createdAt }) => ({
+    const formattedProducts: ProductColumn[] = products.map((product) => {
+        const { id, name, isFeatured, isArchived, price, size, color, category, createdAt } = product
+
+        return {
             id,
             name,
             price: formatPrice(price),
-            storeId,
+            size: size.name,
+            color: color.value,
+            category: category.name,
             isArchived,
             isFeatured,
             createdAt: format(createdAt, "MMMM do, yyyy"),
-        })
-    )
+        }
+    })
 
     return (
         <MainDiv>
             <DataClient
                 data={formattedProducts}
                 columns={ProductColumns}
-                searchKey="label"
+                searchKey="name"
                 entityName="Products"
                 entityIdName="productId"
             />
