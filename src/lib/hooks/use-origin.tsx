@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 
 export const useOrigin = () => {
@@ -13,5 +11,9 @@ export const useOrigin = () => {
         return ""
     }
 
-    return typeof window !== "undefined" && window.location.origin ? window.location.origin : ""
+    if (typeof window === "undefined") {
+        return ""
+    }
+
+    return window.location.origin
 }
