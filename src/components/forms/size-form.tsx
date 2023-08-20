@@ -130,18 +130,18 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
                     >
                         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
                             {/* <div className="flex flex-col gap-8"> */}
-                                <FormEntry
-                                    control={form.control}
-                                    name="name"
-                                    label="Size Name"
-                                    floating
-                                />
-                                <FormEntry
-                                    control={form.control}
-                                    name="value"
-                                    label="Size Value"
-                                    floating
-                                />
+                            <FormEntry
+                                control={form.control}
+                                name="name"
+                                label="Size Name"
+                                floating
+                            />
+                            <FormEntry
+                                control={form.control}
+                                name="value"
+                                label="Size Value"
+                                floating
+                            />
                             {/* </div> */}
                         </div>
                         <Button
@@ -157,4 +157,3 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
         </>
     )
 }
-

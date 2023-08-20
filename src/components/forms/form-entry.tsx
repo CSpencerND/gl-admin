@@ -57,7 +57,7 @@ export const FormEntry: React.FC<FormEntryProps> = (props) => {
                 control={control}
                 name={name}
                 render={({ field }) => (
-                    <FormItem className="relative my-1 flex">
+                    <FormItem className="relative my-1">
                         <FormControl>
                             <Input
                                 type={type}

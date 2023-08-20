@@ -1,12 +1,15 @@
 "use client"
 
 import { TrashButton } from "@/components/trash-button"
-import { UploadButton, UploadFileResponse } from "@/lib/uploadthing"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
+import { UploadFileResponse } from "@/lib/uploadthing"
+import { ImagePlusIcon } from "lucide-react"
 import Image from "next/image"
 
-import { useMounted } from "@/lib/hooks/use-mounted"
 import { useLoading } from "@/lib/hooks/use-loading"
+import { useMounted } from "@/lib/hooks/use-mounted"
 
 import type { ProductFormValues } from "@/types"
 
@@ -66,17 +69,28 @@ export const ProductImageUpload: React.FC<ImageUploadProps> = (props) => {
                     />
                 )}
             </ul>
-            <UploadButton
-                endpoint="multi"
-                onUploadProgress={setLoading}
-                onClientUploadComplete={(res) => {
-                    if (!res) return
-                    onUpload(res)
-                }}
-                onUploadError={(error) => {
-                    console.log("[UPLOADTHING_ERROR]", JSON.stringify(error))
-                }}
-            />
+            <div className="space-y-2 sm:w-fit max-sm:grid max-sm:place-items-center">
+                <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => {}}
+                >
+                    <ImagePlusIcon className="size-sm mr-3" />
+                    Choose Images
+                </Button>
+                <p className="text-xs text-muted-foreground w-fit mx-auto">Images up to 2MB, Max 4</p>
+            </div>
+            {/* <UploadButton */}
+            {/*     endpoint="multi" */}
+            {/*     onUploadProgress={setLoading} */}
+            {/*     onClientUploadComplete={(res) => { */}
+            {/*         if (!res) return */}
+            {/*         onUpload(res) */}
+            {/*     }} */}
+            {/*     onUploadError={(error) => { */}
+            {/*         console.log("[UPLOADTHING_ERROR]", JSON.stringify(error)) */}
+            {/*     }} */}
+            {/* /> */}
         </div>
     )
 }

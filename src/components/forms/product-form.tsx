@@ -2,12 +2,13 @@
 
 import { FormEntry } from "@/components/forms/form-entry"
 import { ProductImageUpload } from "@/components/forms/product-image-upload"
+import { InfoPopover } from "@/components/info-popover"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { SectionDiv } from "@/components/ui/divs"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
@@ -19,19 +20,23 @@ import { useForm } from "react-hook-form"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
+import unionBy from "lodash.unionby"
 import * as z from "zod"
 
 import { cn } from "@/lib/utils"
 import type { ProductParams } from "@/types"
 import type { Category, Color, Image, Product, Size } from "@prisma/client"
-import { InfoIcon } from "lucide-react"
-import { InfoPopover } from "../info-popover"
 
 export type Images = {
     images: Image[]
 }
 
-type ProductFormProps = {
+export type BaseFormProps = {
+    entityName: string
+    routeSegment: string
+}
+
+type ProductFormProps = BaseFormProps & {
     initialData: (Product & Images) | null
     categories: Category[]
     sizes: Size[]
@@ -51,10 +56,9 @@ const schema = z.object({
     isArchived: z.boolean().default(false).optional(),
 })
 
-const ENTITY = "Product"
-const SEGMENT = "products"
+export const ProductForm: React.FC<ProductFormProps> = (props) => {
+    const { entityName, routeSegment, initialData, categories, sizes, colors } = props
 
-export const ProductForm: React.FC<ProductFormProps> = ({ initialData, categories, sizes, colors }) => {
     const { setOpen, setClosed, isOpen } = useOpen()
     const { isLoading, setLoading, setLoaded } = useLoading()
 
@@ -62,10 +66,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, categorie
     const router = useRouter()
     const toast = useToast().toast
 
-    const title = initialData ? `Edit ${ENTITY}` : `Create ${ENTITY}`
-    const description = initialData ? `Manage a ${ENTITY} for your store` : `Add A New ${ENTITY}`
-    const toastMessage = initialData ? `${ENTITY} Updated` : `${ENTITY} Created`
-    const action = initialData ? "Save Changes" : "Create"
+    const title = initialData ? `Edit ${entityName}` : `Create ${entityName}`
+    const description = initialData ? `Manage a ${entityName} for your store` : `Add A New ${entityName}`
+    const toastMessage = initialData ? `${entityName} Updated` : `${entityName} Created`
+    const action = initialData ? "Save Changes" : "Confirm"
 
     const defaultValues = {
         name: "",
@@ -92,16 +96,16 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, categorie
             setLoading()
 
             if (initialData) {
-                await axios.patch(`/api/${storeId}/${SEGMENT}/${productId}`, values)
+                await axios.patch(`/api/${storeId}/${routeSegment}/${productId}`, values)
             } else {
-                await axios.post(`/api/${storeId}/${SEGMENT}`, values)
+                await axios.post(`/api/${storeId}/${routeSegment}`, values)
             }
 
             router.refresh()
             toast({
                 title: toastMessage,
             })
-            router.push(`/${storeId}/${SEGMENT}`)
+            router.push(`/${storeId}/${routeSegment}`)
         } catch (error) {
             toast({
                 title: "Something went wrong :(",
@@ -116,17 +120,18 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, categorie
         try {
             setLoading()
 
-            await axios.delete(`/api/${storeId}/${SEGMENT}/${productId}`)
+            await axios.delete(`/api/${storeId}/${routeSegment}/${productId}`)
 
             router.refresh()
-            router.push(`/${storeId}/${SEGMENT}`)
+            router.push(`/${storeId}/${routeSegment}`)
 
             toast({
-                title: `${ENTITY} Deleted Successfully`,
+                title: `${entityName} Deleted Successfully`,
             })
         } catch (error) {
             toast({
-                title: "You must remove all categories associated with this product first",
+                title: "Something went wrong :(",
+                description: `${error}`,
             })
         } finally {
             setLoaded()
@@ -171,9 +176,12 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, categorie
                                     <FormControl>
                                         <ProductImageUpload
                                             imageUrls={field.value.map((image) => image.url)}
-                                            onChange={(newImageUrls) => {
-                                                const combinedUrls = [...field.value, ...newImageUrls]
-                                                field.onChange(combinedUrls)
+                                            onChange={(newImages) => {
+                                                console.log("[ OLD_IMAGES ]", field.value)
+                                                console.log("[ NEW_IMAGES ]", newImages)
+                                                const images = unionBy([...field.value, ...newImages], "url")
+                                                console.log("[ UPDATED_IMAGES ]", images)
+                                                field.onChange(images)
                                             }}
                                             onRemove={(url) =>
                                                 field.onChange([
@@ -190,8 +198,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, categorie
                         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
                             <FormEntry
                                 control={form.control}
-                                name="label"
+                                name="name"
                                 label="Product Name"
+                                type="text"
                                 floating
                             />
                             <FormEntry
@@ -399,13 +408,14 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, categorie
                                 )}
                             />
                         </div>
-                        <Button
-                            disabled={isLoading}
-                            type="submit"
-                            className="ml-auto"
-                        >
-                            {action}
-                        </Button>
+                        <div className="flex w-full justify-end max-sm:justify-center max-sm:grid max-sm:place-items-center">
+                            <Button
+                                disabled={isLoading}
+                                type="submit"
+                            >
+                                {action}
+                            </Button>
+                        </div>
                     </form>
                 </Form>
             </SectionDiv>
