@@ -18,7 +18,7 @@ const DashboardPage: NextPage<DashProps> = async ({ params }) => {
     return (
         <MainDiv>
             <SectionDiv>
-                Active Store: {store?.name}
+                Current Store: {store?.name}
             </SectionDiv>
         </MainDiv>
     )

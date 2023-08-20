@@ -40,6 +40,8 @@ const ProductPage: NextPage<ProductPageProps> = async ({ params: { storeId, prod
         <MainDiv>
             <ProductForm
                 initialData={product}
+                entityName="Product"
+                routeSegment="products"
                 {...{ categories, sizes, colors }}
             />
         </MainDiv>

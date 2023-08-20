@@ -20,7 +20,11 @@ const BillboardPage: NextPage<BillboardPageProps> = async ({ params }) => {
 
     return (
         <MainDiv>
-            <BillboardForm initialData={billboard} />
+            <BillboardForm
+                initialData={billboard}
+                entityName="Billboard"
+                routeSegment="billboards"
+            />
         </MainDiv>
     )
 }
