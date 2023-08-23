@@ -1,4 +1,3 @@
-import { TrashButton } from "@/components/trash-button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ImageIcon } from "lucide-react"
 import Image from "next/image"
@@ -6,12 +5,11 @@ import Image from "next/image"
 import { useLoading } from "@/lib/hooks/use-loading"
 import { useMounted } from "@/lib/hooks/use-mounted"
 
-type ImageUploadProps = {
-    onRemove: () => void
+type ImageUploadProps = React.PropsWithChildren<{
     images: string[]
-}
+}>
 
-export const ImageDisplay: React.FC<ImageUploadProps> = ({ images, onRemove }) => {
+export const ImageDisplay: React.FC<ImageUploadProps> = ({ images, children }) => {
     const { isLoading, setLoaded } = useLoading(true)
 
     useMounted()
@@ -28,12 +26,7 @@ export const ImageDisplay: React.FC<ImageUploadProps> = ({ images, onRemove }) =
                             hidden={!isLoading}
                             className="w-full h-full rounded-lg"
                         />
-                        <span className="z-10 absolute top-2 right-2">
-                            <TrashButton
-                                base="default"
-                                onClick={onRemove}
-                            />
-                        </span>
+                        <span className="z-10 absolute top-2 right-2">{children}</span>
                         <Image
                             src={image}
                             alt="Selected Image"

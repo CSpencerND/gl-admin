@@ -48,3 +48,22 @@ export function formatPrice(price: Decimal): string {
 
     return formatter.format(price.toNumber())
 }
+
+type SubmitActionText = "Save Changes" | "Confirm" | "Continue"
+
+/**
+ * Generate strings based on initial data and entity name.
+ * @param {boolean} hasInitialData - Pass `!!initialData` as the argument.
+ * @param {string} entityName - The name of the entity. e.g. "Billboard" | "Product" | "Category"
+ * @param {string} dependentEntity - The entity which will prevent removal if connected.
+ * i.e. "You must remove all `dependentEntity` associated with this `entityName` first"
+ */
+export function generateFormPageStrings(hasInitialData: boolean, entityName: string, dependentEntity: string) {
+    const headingTitle = hasInitialData ? `Edit ${entityName}` : `Create ${entityName}`
+    const headingDescription = hasInitialData ? `Manage a ${entityName} for your store` : `Add A New ${entityName}`
+    const submitActionText: SubmitActionText = hasInitialData ? "Save Changes" : "Confirm"
+    const toastSuccess = hasInitialData ? `${entityName} Updated` : `${entityName} Created`
+    const toastError = `You must remove all ${dependentEntity} associated with this ${entityName} first`
+
+    return { headingTitle, headingDescription, submitActionText, toastSuccess, toastError }
+}

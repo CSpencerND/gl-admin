@@ -1,4 +1,4 @@
-import { deleteFromUploadthing } from "@/lib/actions/uploadthing"
+import { deleteFilesFromServer } from "@/lib/actions/uploadthing"
 import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
@@ -97,7 +97,7 @@ export async function DELETE(_req: Request, { params: { storeId, billboardId } }
             },
         })
 
-        const uploadthing = await deleteFromUploadthing(billboard?.source?.key)
+        const uploadthing = await deleteFilesFromServer(billboard?.source?.key)
 
         return NextResponse.json([billboard, uploadthing])
     } catch (error) {

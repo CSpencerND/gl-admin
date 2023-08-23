@@ -34,6 +34,7 @@ const BillboardPage: NextPage<BillboardPageProps> = async ({ params: { billboard
                 initialData={billboard}
                 entityName="Billboard"
                 routeSegment="billboards"
+                dependentEntity="Categories"
             />
         </MainDiv>
     )

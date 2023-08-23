@@ -1,9 +1,13 @@
-export type { StoreFormValues } from "@/components/forms/settings-form"
+import type { UploadFileResponse as UFR } from "@/lib/uploadthing"
+
+export type UploadFileResponse = Omit<UFR, "fileUrl" | "fileKey" | "fileSize" | "fileName">
+
 export type { BillboardFormValues } from "@/components/forms/billboard-form"
 export type { CategoryFormValues } from "@/components/forms/category-form"
-export type { SizeFormValues } from "@/components/forms/size-form"
 export type { ColorFormValues } from "@/components/forms/color-form"
-export type { ProductFormValues, Images } from "@/components/forms/product-form"
+export type { Images, ProductFormValues } from "@/components/forms/product-form"
+export type { StoreFormValues } from "@/components/forms/settings-form"
+export type { SizeFormValues } from "@/components/forms/size-form"
 
 export type StoreParams<T = Record<string, string>> = {
     params: {

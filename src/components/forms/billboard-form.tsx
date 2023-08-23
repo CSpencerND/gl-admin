@@ -11,13 +11,14 @@ import { useLoading, useOpen, useToast } from "@/lib/hooks"
 import { useUploadThing } from "@/lib/uploadthing"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
-import { useForm, useFormState } from "react-hook-form"
+import { useForm } from "react-hook-form"
 
-import { deleteFromUploadthing } from "@/lib/actions/uploadthing"
+import { deleteFilesFromServer } from "@/lib/actions/uploadthing"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 
-import { isBase64Image } from "@/lib/utils"
+import { defaultSource } from "@/constants"
+import { generateFormPageStrings, isBase64Image } from "@/lib/utils"
 import axios from "axios"
 
 import type { BillboardParams } from "@/types"
@@ -27,6 +28,7 @@ type BillboardFormProps = {
     initialData: Billboard | null
     entityName: string
     routeSegment: string
+    dependentEntity: string
 }
 
 export type BillboardFormValues = z.infer<typeof schema>
@@ -41,15 +43,10 @@ const schema = z.object({
     }),
 })
 
-export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData, entityName, routeSegment }) => {
-    const [files, setFiles] = useState<File[]>([])
+export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
+    const { initialData, entityName, dependentEntity, routeSegment } = props
 
-    const defaultSource = {
-        name: "",
-        size: 0,
-        key: "",
-        url: "",
-    }
+    const [files, setFiles] = useState<File[]>([])
 
     const form = useForm<BillboardFormValues>({
         resolver: zodResolver(schema),
@@ -59,7 +56,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData, entit
         },
     })
 
-    const { isSubmitting } = useFormState({ control: form.control })
     const { startUpload } = useUploadThing("single")
 
     const { storeId, billboardId } = useParams() as BillboardParams["params"]
@@ -69,19 +65,18 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData, entit
     const { isLoading, setLoading, setLoaded } = useLoading()
     const { toast } = useToast()
 
-    const headingTitle = initialData ? `Edit ${entityName}` : `Create ${entityName}`
-    const headingDescription = initialData ? `Manage a ${entityName} for your store` : `Add A New ${entityName}`
-    const submitActionText = initialData ? "Save Changes" : "Confirm"
+    const formStrings = generateFormPageStrings(!!initialData, entityName, dependentEntity)
+    const { toastError, headingTitle, toastSuccess, submitActionText, headingDescription } = formStrings
 
-    const toastSuccess = initialData ? `${entityName} Updated` : `${entityName} Created`
-    const toastError = "You must remove all categories associated with this billboard first"
-
-    const removeFiles = async (fileKey: string) => {
+    const removeFiles = async () => {
+        const fileKey = form.getValues().source.key
         setFiles([])
         form.resetField("source")
 
         if (fileKey) {
-            await deleteFromUploadthing(fileKey)
+            setLoading()
+            await deleteFilesFromServer(fileKey)
+            setLoaded()
         }
 
         form.setValue("source", defaultSource)
@@ -89,6 +84,8 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData, entit
 
     const onSubmit = async (values: BillboardFormValues) => {
         if (!files) return
+
+        setLoading()
 
         const blob = values.source.url
         const hasImageChanged = isBase64Image(blob)
@@ -117,6 +114,8 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData, entit
                 title: "Something went wrong :(",
                 description: `${error}`,
             })
+        } finally {
+            setLoaded()
         }
     }
 
@@ -173,10 +172,13 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData, entit
                                     <FormLabel className="ml-3 font-semibold text-sm text-muted-foreground">
                                         Billboard Image
                                     </FormLabel>
-                                    <ImageDisplay
-                                        images={[field.value.url]}
-                                        onRemove={() => removeFiles(field.value.key)}
-                                    />
+                                    <ImageDisplay images={[field.value.url]}>
+                                        <TrashButton
+                                            disabled={isLoading}
+                                            base="default"
+                                            onClick={removeFiles}
+                                        />
+                                    </ImageDisplay>
                                     <FormControl>
                                         <ImagePicker
                                             setFiles={setFiles}
@@ -198,7 +200,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData, entit
                         </div>
                         <div className="flex w-full max-sm:justify-center max-sm:grid max-sm:place-items-center">
                             <SubmitButton
-                                isSubmitting={isSubmitting}
+                                isSubmitting={isLoading}
                                 submitActionText={submitActionText}
                             />
                         </div>

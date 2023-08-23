@@ -2,8 +2,9 @@
 
 import { utapi } from "uploadthing/server"
 
-export const deleteFromUploadthing = async (fileKey: string | undefined) => {
-    if (!fileKey) throw new ReferenceError("fileKey is undefined")
+export const deleteFilesFromServer = async (fileKey: string | undefined) => {
+    if (!fileKey) return
+    // if (!fileKey) throw new ReferenceError("fileKey is undefined")
 
     try {
         const res = await utapi.deleteFiles(fileKey)
