@@ -3,11 +3,10 @@
 import { FormEntry } from "@/components/forms/form-entry"
 import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
+import { SubmitButton } from "."
 
-import { useLoading } from "@/lib/hooks/use-loading"
-import { useModalStore } from "@/lib/hooks/use-modal"
-import { useToast } from "@/lib/hooks/use-toast"
-import { useForm } from "react-hook-form"
+import { useLoading, useModalStore, useToast } from "@/lib/hooks"
+import { useForm, useFormState } from "react-hook-form"
 
 import axios from "axios"
 
@@ -22,7 +21,6 @@ const schema = z.object({
 
 export function CreateStoreForm() {
     const closeModal = useModalStore((s) => s.setClosed)
-    const { isLoading, setLoading, setLoaded } = useLoading()
     const { toast } = useToast()
 
     const form = useForm<z.infer<typeof schema>>({
@@ -32,11 +30,12 @@ export function CreateStoreForm() {
         },
     })
 
+    const { isSubmitting } = useFormState({ control: form.control })
+
     async function onSubmit(values: z.infer<typeof schema>) {
         console.log(values)
 
         try {
-            setLoading()
             const response = await axios.post("/api/stores", values)
             window.location.assign(`/${response.data.id}`)
         } catch (error) {
@@ -46,7 +45,6 @@ export function CreateStoreForm() {
                 description: `${error}`,
             })
         } finally {
-            setLoaded()
         }
     }
 
@@ -57,24 +55,22 @@ export function CreateStoreForm() {
                     control={form.control}
                     name="name"
                     label="Store Name"
-                    isLoading={isLoading}
+                    isLoading={isSubmitting}
                     floating
                 />
-                <div className="flex w-full items-center justify-end space-x-4">
+                <div className="flex w-full items-center justify-end space-x-4 mt-8">
                     <Button
-                        disabled={isLoading}
+                        disabled={isSubmitting}
                         variant="outline"
                         type="button"
                         onClick={closeModal}
                     >
                         Cancel
                     </Button>
-                    <Button
-                        disabled={isLoading}
-                        type="submit"
-                    >
-                        Continue
-                    </Button>
+                    <SubmitButton
+                        isSubmitting={isSubmitting}
+                        submitActionText="Confirm"
+                    />
                 </div>
             </form>
         </Form>

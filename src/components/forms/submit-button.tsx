@@ -3,7 +3,7 @@ import { FancySpinner } from "@/components/ui/spinner"
 
 type SubmitButtonProps = {
     isSubmitting: boolean
-    submitActionText: "Save Changes" | "Confirm"
+    submitActionText: "Save Changes" | "Confirm" | "Continue"
 }
 
 export const SubmitButton: React.FC<SubmitButtonProps> = ({ isSubmitting, submitActionText }) => {

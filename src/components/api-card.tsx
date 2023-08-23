@@ -1,6 +1,6 @@
+import { CopyButton } from "@/components/copy-button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CopyButton } from "@/components/copy-button"
 
 import type { BadgeProps } from "@/components/ui/badge"
 
@@ -43,10 +43,10 @@ export const ApiCard: React.FC<ApiCardProps> = ({ method, env, quantity, content
                     <span className="font-normal text-xs">{quantity}</span>
                 </CardTitle>
             </CardHeader>
-            <CardContent>
-                <code className="flex items-center justify-between rounded-sm border border-border bg-secondary py-0.5 pl-2 pr-1 text-sm">
+            <CardContent className="relative">
+                <code className="flex items-center justify-between rounded-md border border-border h-14 px-4 text-sm whitespace-nowrap overflow-scroll">
                     {content}
-                    <CopyButton content={content} />
+                    <CopyButton content={content} contentName="API Route" className="absolute right-2" />
                 </code>
             </CardContent>
         </Card>

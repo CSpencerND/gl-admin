@@ -13,6 +13,7 @@ import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm, useFormState } from "react-hook-form"
 
+import { deleteFromUploadthing } from "@/lib/actions/uploadthing"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 
@@ -32,15 +33,30 @@ export type BillboardFormValues = z.infer<typeof schema>
 
 const schema = z.object({
     label: z.string().min(1),
-    imageKey: z.string(),
+    source: z.object({
+        name: z.string(),
+        size: z.number(),
+        key: z.string(),
+        url: z.string(),
+    }),
 })
 
 export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData, entityName, routeSegment }) => {
     const [files, setFiles] = useState<File[]>([])
 
+    const defaultSource = {
+        name: "",
+        size: 0,
+        key: "",
+        url: "",
+    }
+
     const form = useForm<BillboardFormValues>({
         resolver: zodResolver(schema),
-        defaultValues: initialData ?? { label: "", imageKey: "" },
+        defaultValues: initialData ?? {
+            label: "",
+            source: defaultSource,
+        },
     })
 
     const { isSubmitting } = useFormState({ control: form.control })
@@ -60,48 +76,48 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData, entit
     const toastSuccess = initialData ? `${entityName} Updated` : `${entityName} Created`
     const toastError = "You must remove all categories associated with this billboard first"
 
-    const removeFiles = () => {
+    const removeFiles = async (fileKey: string) => {
         setFiles([])
-        form.resetField("imageKey")
+        form.resetField("source")
+
+        if (fileKey) {
+            await deleteFromUploadthing(fileKey)
+        }
+
+        form.setValue("source", defaultSource)
     }
 
     const onSubmit = async (values: BillboardFormValues) => {
         if (!files) return
 
-        const blob = values.imageKey
+        const blob = values.source.url
         const hasImageChanged = isBase64Image(blob)
 
         if (hasImageChanged) {
             const uploadthingRes = await startUpload(files)
 
-            if (uploadthingRes) console.log(uploadthingRes[0])
-            // if(uploadthingRes && uploadthingRes[0].key) {
-            //     values.imageKey = uploadthingRes[0].key
-            // }
+            if (uploadthingRes) {
+                const { key, url, name, size } = uploadthingRes[0]
+                values.source = { key, url, name, size }
+            }
         }
 
-        // try {
-        //     setLoading()
+        try {
+            if (initialData) {
+                await axios.patch(`/api/${storeId}/${routeSegment}/${billboardId}`, values)
+            } else {
+                await axios.post(`/api/${storeId}/${routeSegment}`, values)
+            }
 
-        //     if (initialData) {
-        //         await axios.patch(`/api/${storeId}/${routeSegment}/${billboardId}`, values)
-        //     } else {
-        //         await axios.post(`/api/${storeId}/${routeSegment}`, values)
-        //     }
-
-        //     refresh()
-        //     toast({
-        //         title: toastSuccess,
-        //     })
-        //     router.push(`/${storeId}/${routeSegment}`)
-        // } catch (error) {
-        //     toast({
-        //         title: "Something went wrong :(",
-        //         description: `${error}`,
-        //     })
-        // } finally {
-        //     setLoaded()
-        // }
+            refresh()
+            toast({ title: toastSuccess })
+            push(`/${storeId}/${routeSegment}`)
+        } catch (error) {
+            toast({
+                title: "Something went wrong :(",
+                description: `${error}`,
+            })
+        }
     }
 
     const onDelete = async () => {
@@ -112,10 +128,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData, entit
 
             refresh()
             push(`/${storeId}/${routeSegment}`)
-
-            toast({
-                title: `${entityName} Deleted Successfully`,
-            })
+            toast({ title: `${entityName} Deleted Successfully` })
         } catch (error) {
             toast({
                 title: toastError,
@@ -154,15 +167,15 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({ initialData, entit
                     >
                         <FormField
                             control={form.control}
-                            name="imageKey"
+                            name="source"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="ml-3 font-semibold text-sm text-muted-foreground">
                                         Billboard Image
                                     </FormLabel>
                                     <ImageDisplay
-                                        images={[field.value]}
-                                        onRemove={removeFiles}
+                                        images={[field.value.url]}
+                                        onRemove={() => removeFiles(field.value.key)}
                                     />
                                     <FormControl>
                                         <ImagePicker

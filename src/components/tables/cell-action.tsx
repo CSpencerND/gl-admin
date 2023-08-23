@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { CopyIcon, MoreHorizontalIcon, PenSquareIcon, TrashIcon } from "lucide-react"
 
+import { useCopy } from "@/lib/hooks"
 import { useLoading } from "@/lib/hooks/use-loading"
 import { useOpen } from "@/lib/hooks/use-open"
 import { useToast } from "@/lib/hooks/use-toast"
@@ -33,6 +34,7 @@ export function CellAction<TColumn extends ColumnType>(props: CellActionProps<TC
     const { storeId } = useParams() as StoreParams["params"]
     const { isLoading, setLoading, setLoaded } = useLoading()
     const { isOpen, setOpen, setClosed } = useOpen()
+    const { onCopyContent, contentName } = useCopy(data.id, "ID")
     const { toast } = useToast()
 
     const onDelete = async () => {
@@ -48,16 +50,12 @@ export function CellAction<TColumn extends ColumnType>(props: CellActionProps<TC
             })
         } catch (error) {
             toast({
-                title: "You must remove all categories associated with this billboards first",
+                title: `You must remove all other data associated with this ${entityName} first`,
             })
         } finally {
             setLoaded()
             setClosed()
         }
-    }
-
-    const onCopy = () => {
-        navigator.clipboard.writeText(data.id)
     }
 
     return (
@@ -81,9 +79,9 @@ export function CellAction<TColumn extends ColumnType>(props: CellActionProps<TC
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel className="sr-only">Actions</DropdownMenuLabel>
-                    <DropdownMenuItem onClick={onCopy}>
+                    <DropdownMenuItem onClick={onCopyContent}>
                         <CopyIcon className="size-sm mr-2" />
-                        Copy ID
+                        Copy {contentName}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => router.push(`/${storeId}/${pathSegment}/${data.id}`)}>
                         <PenSquareIcon className="size-sm mr-2" />

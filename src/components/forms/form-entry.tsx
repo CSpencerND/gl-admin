@@ -70,7 +70,7 @@ export const FormEntry: React.FC<FormEntryProps> = (props) => {
                         <FormLabel
                             className={cn(
                                 "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all",
-                                "peer-placeholder-shown:top-1 peer-placeholder-shown:text-base",
+                                "peer-placeholder-shown:top-1 peer-placeholder-shown:text-base peer-placeholder-shown:cursor-text",
                                 "peer-focus:-top-5 peer-focus:text-sm peer-focus:text-ring"
                             )}
                         >

@@ -1,4 +1,4 @@
-import { DataClient } from "@/components/data-client"
+import { DataClient } from "@/components/tables/data-client"
 import { SizeColumns } from "@/components/tables/size-columns"
 import { MainDiv } from "@/components/ui/divs"
 

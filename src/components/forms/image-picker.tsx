@@ -49,27 +49,30 @@ export function ImagePicker<TFieldValues extends FieldValues>(props: ImagePicker
             fileReader.onload = async (e) => {
                 const imageDataUrl = e.target?.result?.toString() ?? ""
 
-                field.onChange(imageDataUrl)
+                field.onChange({
+                    ...field.value,
+                    url: imageDataUrl,
+                })
             }
 
             fileReader.readAsDataURL(selectedFile)
         }
     }
 
+    const disabled: boolean = field.value.length > 0 || field.value.url
+
     return (
-        <div className="space-y-2 !mt-8 sm:w-fit max-sm:grid max-sm:place-items-center">
+        <div className="space-y-2 !mt-8 sm:w-fit grid place-items-center">
             <Button
                 asChild
                 type="button"
                 variant="secondary"
             >
-                <label
-                    className={cn("flex", field.value.length > 0 ? "pointer-events-none opacity-50" : "cursor-pointer")}
-                >
+                <label className={cn(disabled ? "pointer-events-none opacity-50" : "cursor-pointer")}>
                     <Input
                         type="file"
                         accept="image/*"
-                        disabled={field.value.length > 0}
+                        disabled={disabled}
                         onChange={handleImage}
                         className="hidden"
                     />
@@ -78,9 +81,9 @@ export function ImagePicker<TFieldValues extends FieldValues>(props: ImagePicker
                 </label>
             </Button>
             {maxFileSize && maxFileCount ? (
-                <p className="text-xs text-muted-foreground w-fit mx-auto">
-                    {`${maxFileCount} Image up to ${maxFileSize}`}
-                </p>
+                <div className="text-xs text-muted-foreground w-fit mx-auto">
+                    <p>{`${maxFileCount} image(s) - ${maxFileSize} - webp please`}</p>
+                </div>
             ) : (
                 <p className="h-4" />
             )}

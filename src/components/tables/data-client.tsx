@@ -9,8 +9,8 @@ import { PlusCircleIcon } from "lucide-react"
 
 import { useParams, useRouter } from "next/navigation"
 
-import type { ComponentProps } from "react"
 import type { StoreParams } from "@/types"
+import type { ComponentProps } from "react"
 
 type DataClientProps<TData, TValue> = ComponentProps<typeof DataTable<TData, TValue>> & ComponentProps<typeof ApiList>
 

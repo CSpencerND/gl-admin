@@ -7,7 +7,7 @@ import type { BillboardFormValues, StoreParams } from "@/types"
 export async function POST(req: Request, { params: { storeId } }: StoreParams) {
     try {
         const { userId } = auth()
-        const { label, imageKey } = (await req.json()) as BillboardFormValues
+        const { label, source } = (await req.json()) as BillboardFormValues
 
         if (!userId) {
             return new NextResponse("You must be logged in", { status: 401 })
@@ -17,7 +17,7 @@ export async function POST(req: Request, { params: { storeId } }: StoreParams) {
             return new NextResponse("Label is required", { status: 400 })
         }
 
-        if (!imageKey) {
+        if (!source) {
             return new NextResponse("Image URL is required", { status: 400 })
         }
 
@@ -41,8 +41,12 @@ export async function POST(req: Request, { params: { storeId } }: StoreParams) {
         const billboard = await prismadb.billboard.create({
             data: {
                 label,
-                imageKey,
                 storeId,
+                source: {
+                    create: {
+                        ...source,
+                    },
+                },
             },
         })
 
@@ -63,6 +67,16 @@ export async function GET(_req: Request, { params: { storeId } }: StoreParams) {
             where: {
                 storeId,
             },
+            include: {
+                source: {
+                    select: {
+                        url: true,
+                        key: true,
+                        name: true,
+                        size: true,
+                    }
+                }
+            }
         })
 
         return NextResponse.json(billboards)

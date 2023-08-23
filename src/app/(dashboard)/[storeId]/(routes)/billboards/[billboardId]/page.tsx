@@ -11,10 +11,20 @@ type BillboardPageProps = {
     }
 }
 
-const BillboardPage: NextPage<BillboardPageProps> = async ({ params }) => {
+const BillboardPage: NextPage<BillboardPageProps> = async ({ params: { billboardId: id } }) => {
     const billboard = await prismadb.billboard.findUnique({
         where: {
-            id: params.billboardId,
+            id,
+        },
+        include: {
+            source: {
+                select: {
+                    key: true,
+                    name: true,
+                    url: true,
+                    size: true,
+                },
+            },
         },
     })
 

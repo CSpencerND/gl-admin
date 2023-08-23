@@ -1,3 +1,4 @@
+export { useCopy } from "./use-copy"
 export { useHydrated } from "./use-hydrated"
 export { useLoading } from "./use-loading"
 export { useModalStore } from "./use-modal"
