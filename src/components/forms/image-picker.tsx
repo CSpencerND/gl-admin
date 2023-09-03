@@ -138,7 +138,6 @@ function Multi(props: ImagePickerProps<ProductFormValues, "images">) {
         setFiles(files)
 
         const imageDataUrls = await Promise.all(files.map(readFile))
-        console.log(typeof imageDataUrls, imageDataUrls)
 
         const newImages = imageDataUrls.map((imageDataUrl) => ({
             ...imageSource.default,
@@ -146,7 +145,7 @@ function Multi(props: ImagePickerProps<ProductFormValues, "images">) {
         }))
 
         const initialImages = field.value
-        const mergedImages = unionBy(initialImages, newImages, "url")
+        const mergedImages = unionBy(initialImages, newImages, "url").filter((image) => image.url)
 
         field.onChange(mergedImages)
     }
@@ -182,10 +181,6 @@ function Multi(props: ImagePickerProps<ProductFormValues, "images">) {
 
         return false
     }
-
-    // useEffect(() => {
-    //     console.log(images)
-    // }, [images])
 
     return (
         <div className="space-y-2 !mt-8 sm:w-fit grid place-items-center">
