@@ -8,7 +8,7 @@ import type { BillboardFormValues, BillboardParams } from "@/types"
 export async function PATCH(req: Request, { params: { storeId, billboardId } }: BillboardParams) {
     try {
         const { userId } = auth()
-        const { label, source } = (await req.json()) as BillboardFormValues
+        const { label, image } = (await req.json()) as BillboardFormValues
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })
@@ -18,7 +18,7 @@ export async function PATCH(req: Request, { params: { storeId, billboardId } }: 
             return new NextResponse("Label Is Required", { status: 400 })
         }
 
-        if (!source) {
+        if (!image) {
             return new NextResponse("Image URL Is Required", { status: 400 })
         }
 
@@ -45,9 +45,9 @@ export async function PATCH(req: Request, { params: { storeId, billboardId } }: 
             },
             data: {
                 label,
-                source: {
+                image: {
                     update: {
-                        data: source,
+                        data: image,
                     },
                 },
             },
@@ -89,7 +89,7 @@ export async function DELETE(_req: Request, { params: { storeId, billboardId } }
                 id: billboardId,
             },
             include: {
-                source: {
+                image: {
                     select: {
                         key: true,
                     },
@@ -97,7 +97,7 @@ export async function DELETE(_req: Request, { params: { storeId, billboardId } }
             },
         })
 
-        const uploadthing = await deleteFilesFromServer(billboard?.source?.key)
+        const uploadthing = await deleteFilesFromServer(billboard?.image?.key)
 
         return NextResponse.json([billboard, uploadthing])
     } catch (error) {
@@ -118,7 +118,7 @@ export async function GET(_req: Request, { params: { billboardId } }: BillboardP
                 id: billboardId,
             },
             include: {
-                source: {
+                image: {
                     select: {
                         name: true,
                         size: true,

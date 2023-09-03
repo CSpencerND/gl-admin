@@ -58,7 +58,7 @@ type SubmitActionText = "Save Changes" | "Confirm" | "Continue"
  * @param {string} dependentEntity - The entity which will prevent removal if connected.
  * i.e. "You must remove all `dependentEntity` associated with this `entityName` first"
  */
-export function generateFormPageStrings(hasInitialData: boolean, entityName: string, dependentEntity: string) {
+export function generateFormPageStrings(hasInitialData: boolean, entityName: string, dependentEntity?: string) {
     const headingTitle = hasInitialData ? `Edit ${entityName}` : `Create ${entityName}`
     const headingDescription = hasInitialData ? `Manage a ${entityName} for your store` : `Add A New ${entityName}`
     const submitActionText: SubmitActionText = hasInitialData ? "Save Changes" : "Confirm"

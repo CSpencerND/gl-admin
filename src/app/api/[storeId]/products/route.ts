@@ -7,6 +7,7 @@ import type { ProductFormValues, StoreParams } from "@/types"
 export async function POST(req: Request, { params: { storeId } }: StoreParams) {
     try {
         const { userId } = auth()
+
         const { name, price, categoryId, colorId, sizeId, images, isArchived, isFeatured } =
             (await req.json()) as ProductFormValues
 
@@ -67,9 +68,7 @@ export async function POST(req: Request, { params: { storeId } }: StoreParams) {
                 isArchived,
                 images: {
                     createMany: {
-                        data: [ 
-                            ...images.map((image: { url: string }) => image),
-                        ],
+                        data: images,
                     },
                 },
             },

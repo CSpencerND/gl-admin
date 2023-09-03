@@ -14,7 +14,7 @@ const ProductPage: NextPage<ProductPageProps> = async ({ params: { storeId, prod
             id: productId,
         },
         include: {
-            images: true,
+            images: true
         },
     })
 

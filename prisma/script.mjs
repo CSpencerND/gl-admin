@@ -13,30 +13,30 @@ async function clean() {
 async function main() {
     await clean()
 
-    const bb = await prisma.billboard.create({
-        data: {
-            label: faker.person.jobTitle(),
-            storeId: faker.database.mongodbObjectId(),
-            source: {
-                create: {
-                    key: faker.database.mongodbObjectId(),
-                    name: faker.person.firstName(),
-                    size: faker.number.int({ max: 100 }),
-                    url: faker.lorem.slug(),
-                },
-            },
-        },
-        include: {
-            source: {
-                select: {
-                    name: true,
-                    key: true,
-                    url: true,
-                    size: true
-                }
-            }
-        }
-    })
+    // const bb = await prisma.billboard.create({
+    //     data: {
+    //         label: faker.person.jobTitle(),
+    //         storeId: faker.database.mongodbObjectId(),
+    //         image: {
+    //             create: {
+    //                 key: faker.database.mongodbObjectId(),
+    //                 name: faker.person.firstName(),
+    //                 size: faker.number.int({ max: 100 }),
+    //                 url: faker.lorem.slug(),
+    //             },
+    //         },
+    //     },
+    //     include: {
+    //         image: {
+    //             select: {
+    //                 name: true,
+    //                 key: true,
+    //                 url: true,
+    //                 size: true
+    //             }
+    //         }
+    //     }
+    // })
 
     // const src = await prisma.imageSource.create({
     //     data: {
@@ -53,7 +53,7 @@ async function main() {
     //         id: bb.id,
     //     },
     //     include: {
-    //         source: {
+    //         image: {
     //             select: {
     //                 name: true,
     //                 key: true,
@@ -64,7 +64,7 @@ async function main() {
     //     },
     // })
 
-    console.log(bb)
+    console.log(res)
 }
 
 main()

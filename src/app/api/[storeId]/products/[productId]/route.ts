@@ -80,7 +80,7 @@ export async function PATCH(req: Request, { params: { storeId, productId } }: Pr
             data: {
                 images: {
                     createMany: {
-                        data: [...images.map((image: { url: string }) => image)],
+                        data: images
                     },
                 },
             },

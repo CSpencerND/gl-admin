@@ -61,15 +61,18 @@ export const MainNav: React.FC<MainNavProps> = ({ children, className, ...props 
 
     return (
         <menu
-            className={cn("flex items-center gap-4 lg:gap-8", className)}
+            className={cn("flex items-center", className)}
             {...props}
         >
             {routes.map((route, i) => (
-                <li key={i}>
+                <li
+                    key={i}
+                    className={cn("hover:scale-110 transition-transform", route.active ? "scale-110" : "")}
+                >
                     <Link
                         href={route.href}
                         className={cn(
-                            "text-sm font-medium text-muted-foreground transition-colors hover:text-primary",
+                            "p-4 text-sm font-medium text-muted-foreground transition-colors hover:text-primary",
                             route.active ? "text-foreground" : ""
                         )}
                     >

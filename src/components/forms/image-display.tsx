@@ -2,49 +2,54 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ImageIcon } from "lucide-react"
 import Image from "next/image"
 
-import { useLoading } from "@/lib/hooks/use-loading"
-import { useMounted } from "@/lib/hooks/use-mounted"
+import { useLoading, useMounted } from "@/lib/hooks"
 
-type ImageUploadProps = React.PropsWithChildren<{
-    images: string[]
-}>
+type ImageUploadProps = {
+    imageUrls: string[]
+    children: React.ReactNode | ((url: string) => React.ReactNode)
+}
 
-export const ImageDisplay: React.FC<ImageUploadProps> = ({ images, children }) => {
-    const { isLoading, setLoaded } = useLoading(true)
-
+export const ImageDisplay: React.FC<ImageUploadProps> = ({ imageUrls, children }) => {
     useMounted()
 
+    const { isLoading, setLoaded } = useLoading(true)
+
+    if (imageUrls.length === 0 || imageUrls.every((url) => !url)) {
+        return (
+            <div
+                aria-hidden="true"
+                className="w-72 h-72 grid place-items-center border-2 border-input rounded-lg"
+            >
+                <ImageIcon className="size-3xl stroke-border" />
+            </div>
+        )
+    }
+
     return (
-        <ul className="space-y-8">
-            {images.map((image, i) =>
-                image ? (
+        <ul className="flex gap-4 items-center overflow-x-scroll">
+            {imageUrls.map((url, i) => {
+                return url ? (
                     <li
                         key={i}
-                        className="relative w-72 h-72 rounded-lg overflow-hidden"
+                        className="relative w-72 h-72 rounded-lg overflow-hidden flex-none"
                     >
                         <Skeleton
                             hidden={!isLoading}
                             className="w-full h-full rounded-lg"
                         />
-                        <span className="z-10 absolute top-2 right-2">{children}</span>
+                        <span className="z-10 absolute top-2 right-2">
+                            {typeof children === "function" ? children(url) : children}
+                        </span>
                         <Image
-                            src={image}
+                            src={url}
                             alt="Selected Image"
                             fill
                             className="object-cover"
                             onLoadingComplete={setLoaded}
                         />
                     </li>
-                ) : (
-                    <div
-                        key={i}
-                        aria-hidden="true"
-                        className="w-72 h-72 grid place-items-center ring-1 ring-input rounded-lg"
-                    >
-                        <ImageIcon className="size-3xl stroke-border" />
-                    </div>
-                )
-            )}
+                ) : null
+            })}
         </ul>
     )
 }

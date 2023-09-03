@@ -7,7 +7,7 @@ import type { BillboardFormValues, StoreParams } from "@/types"
 export async function POST(req: Request, { params: { storeId } }: StoreParams) {
     try {
         const { userId } = auth()
-        const { label, source } = (await req.json()) as BillboardFormValues
+        const { label, image } = (await req.json()) as BillboardFormValues
 
         if (!userId) {
             return new NextResponse("You must be logged in", { status: 401 })
@@ -17,7 +17,7 @@ export async function POST(req: Request, { params: { storeId } }: StoreParams) {
             return new NextResponse("Label is required", { status: 400 })
         }
 
-        if (!source) {
+        if (!image) {
             return new NextResponse("Image URL is required", { status: 400 })
         }
 
@@ -42,9 +42,9 @@ export async function POST(req: Request, { params: { storeId } }: StoreParams) {
             data: {
                 label,
                 storeId,
-                source: {
+                image: {
                     create: {
-                        ...source,
+                        ...image,
                     },
                 },
             },
@@ -68,7 +68,7 @@ export async function GET(_req: Request, { params: { storeId } }: StoreParams) {
                 storeId,
             },
             include: {
-                source: {
+                image: {
                     select: {
                         url: true,
                         key: true,

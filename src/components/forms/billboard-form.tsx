@@ -1,11 +1,11 @@
 "use client"
 
+import { FormEntry, ImageDisplay, ImagePicker, SubmitButton } from "@/components/forms"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
 import { SectionDiv } from "@/components/ui/divs"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
-import { FormEntry, ImageDisplay, ImagePicker, SubmitButton } from "."
 
 import { useLoading, useOpen, useToast } from "@/lib/hooks"
 import { useUploadThing } from "@/lib/uploadthing"
@@ -15,32 +15,22 @@ import { useForm } from "react-hook-form"
 
 import { deleteFilesFromServer } from "@/lib/actions/uploadthing"
 import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
 import * as z from "zod"
 
-import { defaultSource } from "@/constants"
+import { imageSource } from "@/constants"
 import { generateFormPageStrings, isBase64Image } from "@/lib/utils"
-import axios from "axios"
 
-import type { BillboardParams } from "@/types"
+import type { BillboardParams, FormProps } from "@/types"
 import type { Billboard } from "@prisma/client"
 
-type BillboardFormProps = {
-    initialData: Billboard | null
-    entityName: string
-    routeSegment: string
-    dependentEntity: string
-}
+type BillboardFormProps = FormProps<Billboard>
 
 export type BillboardFormValues = z.infer<typeof schema>
 
 const schema = z.object({
     label: z.string().min(1),
-    source: z.object({
-        name: z.string(),
-        size: z.number(),
-        key: z.string(),
-        url: z.string(),
-    }),
+    image: imageSource.zod,
 })
 
 export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
@@ -52,7 +42,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
         resolver: zodResolver(schema),
         defaultValues: initialData ?? {
             label: "",
-            source: defaultSource,
+            image: imageSource.default,
         },
     })
 
@@ -69,9 +59,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
     const { toastError, headingTitle, toastSuccess, submitActionText, headingDescription } = formStrings
 
     const removeFiles = async () => {
-        const fileKey = form.getValues().source.key
         setFiles([])
-        form.resetField("source")
+        form.resetField("image")
+
+        const fileKey = form.getValues().image.key
 
         if (fileKey) {
             setLoading()
@@ -79,7 +70,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
             setLoaded()
         }
 
-        form.setValue("source", defaultSource)
+        form.setValue("image", imageSource.default)
     }
 
     const onSubmit = async (values: BillboardFormValues) => {
@@ -87,7 +78,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
 
         setLoading()
 
-        const blob = values.source.url
+        const blob = values.image.url
         const hasImageChanged = isBase64Image(blob)
 
         if (hasImageChanged) {
@@ -95,7 +86,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
 
             if (uploadthingRes) {
                 const { key, url, name, size } = uploadthingRes[0]
-                values.source = { key, url, name, size }
+                values.image = { key, url, name, size }
             }
         }
 
@@ -166,13 +157,13 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
                     >
                         <FormField
                             control={form.control}
-                            name="source"
+                            name="image"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="ml-3 font-semibold text-sm text-muted-foreground">
                                         Billboard Image
                                     </FormLabel>
-                                    <ImageDisplay images={[field.value.url]}>
+                                    <ImageDisplay imageUrls={[field.value.url]}>
                                         <TrashButton
                                             disabled={isLoading}
                                             base="default"
@@ -180,10 +171,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
                                         />
                                     </ImageDisplay>
                                     <FormControl>
-                                        <ImagePicker
-                                            setFiles={setFiles}
-                                            form={form}
+                                        <ImagePicker.Single
                                             field={field}
+                                            form={form}
+                                            setFiles={setFiles}
                                         />
                                     </FormControl>
                                     <FormMessage />

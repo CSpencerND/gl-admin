@@ -67,18 +67,18 @@ model Color {
 }
 
 model Product {
-    id         String         @id @default(cuid())
+    id         String        @id @default(cuid())
     storeId    String
-    store      Store          @relation("StoreToProduct", fields: [storeId], references: [id])
+    store      Store         @relation("StoreToProduct", fields: [storeId], references: [id])
     categoryId String
-    category   Category       @relation("CategoryToProduct", fields: [categoryId], references: [id])
+    category   Category      @relation("CategoryToProduct", fields: [categoryId], references: [id])
     sizeId     String
-    size       Size           @relation(fields: [sizeId], references: [id])
+    size       Size          @relation(fields: [sizeId], references: [id])
     colorId    String
-    color      Color          @relation(fields: [colorId], references: [id])
-    images     ProductImage[]
+    color      Color         @relation(fields: [colorId], references: [id])
     name       String
     price      Decimal
+    images     ImageSource[]
 
     isFeatured Boolean @default(false)
     isArchived Boolean @default(false)
@@ -93,31 +93,21 @@ model Product {
 }
 
 model ImageSource {
-    key            String        @id
-    size           Int
-    name           String
-    url            String
-    billboardId    String?       @unique
-    billboard      Billboard?    @relation(fields: [billboardId], references: [id], onDelete: Cascade)
-    productImageId String?       @unique
-    productImage   ProductImage? @relation(fields: [productImageId], references: [id], onDelete: Cascade)
+    key         String     @id
+    size        Int
+    name        String
+    url         String
+    billboardId String?    @unique
+    billboard   Billboard? @relation(fields: [billboardId], references: [id], onDelete: Cascade)
+    productId   String?
+    product     Product?   @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@index([url])
-}
-
-model ProductImage {
-    id        String       @id @default(uuid())
-    productId String
-    product   Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
-    source    ImageSource?
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
     @@index([productId])
+    @@index([billboardId])
 }
 
 model Billboard {
@@ -125,7 +115,7 @@ model Billboard {
     storeId    String
     store      Store        @relation("StoreToBillboard", fields: [storeId], references: [id])
     label      String
-    source     ImageSource?
+    image      ImageSource?
     categories Category[]   @relation("BillboardToCategory")
 
     createdAt DateTime @default(now())

@@ -1,4 +1,4 @@
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
 import { cn } from "@/lib/utils"
@@ -24,26 +24,29 @@ export const FormEntry: React.FC<FormEntryProps> = (props) => {
                 control={control}
                 name={name}
                 render={({ field }) => (
-                    <FormItem className="relative my-1 flex items-center gap-4">
-                        <FormControl>
-                            <div className="flex items-center gap-4">
-                                <Input
-                                    type={type}
-                                    placeholder={label}
-                                    className={cn("!placeholder-transparent h-12")}
-                                    disabled={isLoading}
-                                    {...field}
-                                />
-                                <span
-                                    aria-hidden="true"
-                                    className="border p-5 rounded-full"
-                                    style={{ backgroundColor: field.value }}
-                                />
-                            </div>
-                        </FormControl>
-                        <FormLabel className="absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all">
-                            {label}
-                        </FormLabel>
+                    <FormItem>
+                        <div className="relative my-1 flex items-center gap-4">
+                            <FormControl>
+                                <div className="flex items-center gap-4">
+                                    <Input
+                                        type={type}
+                                        placeholder={label}
+                                        className={cn("!placeholder-transparent h-12")}
+                                        disabled={isLoading}
+                                        {...field}
+                                    />
+                                    <span
+                                        aria-hidden="true"
+                                        className="border p-5 rounded-full"
+                                        style={{ backgroundColor: field.value }}
+                                    />
+                                </div>
+                            </FormControl>
+                            <FormLabel className="absolute -top-3 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all">
+                                {label}
+                            </FormLabel>
+                        </div>
+                        <FormDescription>Use an eyedropper</FormDescription>
                         <FormMessage />
                     </FormItem>
                 )}

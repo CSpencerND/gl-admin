@@ -13,16 +13,13 @@ if &shortmess =~ 'A'
 else
   set shortmess=aoO
 endif
-badd +5 src/components/forms/image-display.tsx
-badd +70 src/components/forms/billboard-form.tsx
-badd +46 ~/Code/ecommerce-admin/src/components/forms/image-picker.tsx
-badd +16 src/app/(dashboard)/\[storeId]/(routes)/products/page.tsx
-badd +54 src/lib/utils.ts
-badd +37 src/app/(dashboard)/\[storeId]/(routes)/billboards/\[billboardId]/page.tsx
+badd +42 src/components/forms/product-form.tsx
+badd +149 src/components/forms/image-picker.tsx
+badd +2 src/components/forms/image-display.tsx
 argglobal
 %argdel
 $argadd ./
-edit src/lib/utils.ts
+edit src/components/forms/image-display.tsx
 wincmd t
 let s:save_winminheight = &winminheight
 let s:save_winminwidth = &winminwidth
@@ -31,9 +28,9 @@ set winheight=1
 set winminwidth=0
 set winwidth=1
 argglobal
-balt src/app/(dashboard)/\[storeId]/(routes)/products/page.tsx
+balt src/components/forms/image-picker.tsx
 setlocal fdm=manual
-setlocal fde=
+setlocal fde=0
 setlocal fmr={{{,}}}
 setlocal fdi=#
 setlocal fdl=0
@@ -42,12 +39,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 54 - ((38 * winheight(0) + 27) / 54)
+let s:l = 2 - ((1 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 54
-normal! 03|
+keepjumps 2
+normal! 0
 tabnext 1
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
