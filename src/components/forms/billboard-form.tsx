@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Heading } from "@/components/ui/heading"
 import { Input } from "@/components/ui/input"
 import { ImagePlusIcon } from "lucide-react"
+import { ImagePicker } from "@/components/forms"
 
 import { useLoading, useOpen, useToast } from "@/lib/hooks"
 import { useUploadThing } from "@/lib/uploadthing"
@@ -222,38 +223,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
                                         />
                                     </ImageDisplay>
                                     <FormControl>
-                                        <div className="space-y-2 !mt-8 sm:w-fit grid place-items-center">
-                                            <Button
-                                                asChild
-                                                type="button"
-                                                variant="secondary"
-                                            >
-                                                <label
-                                                    className={cn(
-                                                        field.value
-                                                            ? "pointer-events-none opacity-50"
-                                                            : "cursor-pointer"
-                                                    )}
-                                                >
-                                                    <Input
-                                                        type="file"
-                                                        accept="image/*"
-                                                        disabled={!!field.value}
-                                                        onChange={(e) => onChange(e, field)}
-                                                        className="hidden"
-                                                    />
-                                                    <ImagePlusIcon className="size-sm mr-3" />
-                                                    Choose Image
-                                                </label>
-                                            </Button>
-                                            {maxFileSize && maxFileCount ? (
-                                                <div className="text-xs text-muted-foreground w-fit mx-auto">
-                                                    <p>{`${maxFileCount} image(s) - ${maxFileSize} - webp please`}</p>
-                                                </div>
-                                            ) : (
-                                                <p className="h-4" />
-                                            )}
-                                        </div>
+                                        <ImagePicker.Single
+                                            hasValue={!!field.value}
+                                            handleChange={(e) => onChange(e, field)}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

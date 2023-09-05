@@ -20,68 +20,15 @@ function ImagePicker<TFieldValues extends FieldValues, TName extends FieldPath<T
     // props: ImagePickerProps<TFieldValues, TName>
 }
 
-function Single(props: ImagePickerProps<BillboardFormValues, "image">) {
-    const { setFiles, form, field } = props
+type SinglePickerProps = {
+    hasValue: boolean
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 
+function Single({ hasValue, handleChange }: SinglePickerProps) {
     const { permittedFileInfo } = useUploadThing("single")
     const maxFileSize = permittedFileInfo?.config.image?.maxFileSize
     const maxFileCount = permittedFileInfo?.config.image?.maxFileCount
-
-    const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault()
-
-        const file = e.target.files?.[0]
-        if (!file) return
-
-        const hasError = validateFile(file)
-        if (hasError) return
-
-        form.clearErrors(field.name)
-        setFiles([file])
-
-        const imageDataUrl = await readFile(file)
-
-        const newImage = {
-            ...imageData.default,
-            url: imageDataUrl,
-        } satisfies UploadFileResponse
-
-        field.onChange(newImage)
-    }
-
-    const readFile = (file: File) => {
-        return new Promise<string>((resolve, reject) => {
-            const fr = new FileReader()
-
-            fr.onload = (e) => {
-                if (e.target) {
-                    resolve(e.target.result as string)
-                }
-            }
-
-            fr.onerror = () => {
-                reject(new Error("Error reading file"))
-            }
-
-            fr.readAsDataURL(file)
-        })
-    }
-
-    const validateFile = (selectedFile: File) => {
-        if (!selectedFile.type.includes("image")) {
-            form.setError(field.name, { message: fileError.type })
-            return true
-        }
-
-        if (selectedFile.size > 2 * 1024 ** 2) {
-            form.setError(field.name, { message: fileError.size })
-            return true
-        }
-
-        return false
-    }
-
-    const disabled: boolean = !!field.value?.url
 
     return (
         <div className="space-y-2 !mt-8 sm:w-fit grid place-items-center">
@@ -90,12 +37,12 @@ function Single(props: ImagePickerProps<BillboardFormValues, "image">) {
                 type="button"
                 variant="secondary"
             >
-                <label className={cn(disabled ? "pointer-events-none opacity-50" : "cursor-pointer")}>
+                <label className={cn(hasValue ? "pointer-events-none opacity-50" : "cursor-pointer")}>
                     <Input
                         type="file"
                         accept="image/*"
-                        disabled={disabled}
-                        onChange={handleImage}
+                        disabled={hasValue}
+                        onChange={(e) => handleChange(e)}
                         className="hidden"
                     />
                     <ImagePlusIcon className="size-sm mr-3" />
