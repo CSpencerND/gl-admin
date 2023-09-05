@@ -1,15 +1,11 @@
 "use client"
 
-import { FormEntry, ImageDisplay, SubmitButton } from "@/components/forms"
+import { FormEntry, ImageDisplay, ImagePicker, SubmitButton } from "@/components/forms"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
-import { Button } from "@/components/ui/button"
 import { SectionDiv } from "@/components/ui/divs"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
-import { Input } from "@/components/ui/input"
-import { ImagePlusIcon } from "lucide-react"
-import { ImagePicker } from "@/components/forms"
 
 import { useLoading, useOpen, useToast } from "@/lib/hooks"
 import { useUploadThing } from "@/lib/uploadthing"
@@ -22,7 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import * as z from "zod"
 
-import { cn, generateFormPageStrings, isBase64Image, readImageFile, validateImageFile } from "@/lib/utils"
+import { generateFormPageStrings, isBase64Image, readImageFile, validateImageFile } from "@/lib/utils"
 
 import type { BillboardParams, FormProps } from "@/types"
 import type { Billboard } from "@prisma/client"
@@ -69,9 +65,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
     const { toastError, headingTitle, toastSuccess, submitActionText, headingDescription } = formStrings
 
     const { startUpload } = useUploadThing("single")
-    const { permittedFileInfo } = useUploadThing("single")
-    const maxFileSize = permittedFileInfo?.config.image?.maxFileSize
-    const maxFileCount = permittedFileInfo?.config.image?.maxFileCount
 
     type CBB = ControllerRenderProps<BillboardFormValues, "url">
 
