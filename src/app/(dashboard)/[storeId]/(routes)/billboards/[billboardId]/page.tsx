@@ -16,16 +16,6 @@ const BillboardPage: NextPage<BillboardPageProps> = async ({ params: { billboard
         where: {
             id,
         },
-        include: {
-            image: {
-                select: {
-                    key: true,
-                    name: true,
-                    url: true,
-                    size: true,
-                },
-            },
-        },
     })
 
     return (

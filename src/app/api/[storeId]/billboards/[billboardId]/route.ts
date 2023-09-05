@@ -8,7 +8,7 @@ import type { BillboardFormValues, BillboardParams } from "@/types"
 export async function PATCH(req: Request, { params: { storeId, billboardId } }: BillboardParams) {
     try {
         const { userId } = auth()
-        const { label, image } = (await req.json()) as BillboardFormValues
+        const { label, key, name, url, size } = (await req.json()) as BillboardFormValues
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })
@@ -18,8 +18,8 @@ export async function PATCH(req: Request, { params: { storeId, billboardId } }: 
             return new NextResponse("Label Is Required", { status: 400 })
         }
 
-        if (!image) {
-            return new NextResponse("Image URL Is Required", { status: 400 })
+        if (!url || !key || !name || !size) {
+            return new NextResponse("An Image Is Required", { status: 400 })
         }
 
         if (!billboardId) {
@@ -45,11 +45,10 @@ export async function PATCH(req: Request, { params: { storeId, billboardId } }: 
             },
             data: {
                 label,
-                image: {
-                    update: {
-                        data: image,
-                    },
-                },
+                name,
+                key,
+                size,
+                url,
             },
         })
         return NextResponse.json(billboard)
@@ -88,16 +87,9 @@ export async function DELETE(_req: Request, { params: { storeId, billboardId } }
             where: {
                 id: billboardId,
             },
-            include: {
-                image: {
-                    select: {
-                        key: true,
-                    },
-                },
-            },
         })
 
-        const uploadthing = await deleteFilesFromServer(billboard?.image?.key)
+        const uploadthing = await deleteFilesFromServer(billboard?.key)
 
         return NextResponse.json([billboard, uploadthing])
     } catch (error) {
@@ -116,16 +108,6 @@ export async function GET(_req: Request, { params: { billboardId } }: BillboardP
         const billboard = await prismadb.billboard.findUnique({
             where: {
                 id: billboardId,
-            },
-            include: {
-                image: {
-                    select: {
-                        name: true,
-                        size: true,
-                        key: true,
-                        url: true,
-                    },
-                },
             },
         })
 

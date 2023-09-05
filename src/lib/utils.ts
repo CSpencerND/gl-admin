@@ -67,3 +67,33 @@ export function generateFormPageStrings(hasInitialData: boolean, entityName: str
 
     return { headingTitle, headingDescription, submitActionText, toastSuccess, toastError }
 }
+
+export const readImageFile = async (file: File) => {
+    return new Promise<string>((resolve, reject) => {
+        const fr = new FileReader()
+
+        fr.onload = (e) => {
+            if (e.target) {
+                resolve(e.target.result as string)
+            }
+        }
+
+        fr.onerror = () => {
+            reject(new Error("Error reading file"))
+        }
+
+        fr.readAsDataURL(file)
+    })
+}
+
+export const validateImageFile = (selectedFile: File) => {
+    if (!selectedFile.type.includes("image")) {
+        return "Only jpg, jpeg, png and webp files are accepted"
+    }
+
+    if (selectedFile.size > 2 * 1024 ** 2) {
+        return "Only jpg, jpeg, png and webp files are accepted"
+    }
+
+    return 0
+}

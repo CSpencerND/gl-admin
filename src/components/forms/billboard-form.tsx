@@ -1,25 +1,27 @@
 "use client"
 
-import { FormEntry, ImageDisplay, ImagePicker, SubmitButton } from "@/components/forms"
+import { FormEntry, ImageDisplay, SubmitButton } from "@/components/forms"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
+import { Button } from "@/components/ui/button"
 import { SectionDiv } from "@/components/ui/divs"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
+import { Input } from "@/components/ui/input"
+import { ImagePlusIcon } from "lucide-react"
 
 import { useLoading, useOpen, useToast } from "@/lib/hooks"
 import { useUploadThing } from "@/lib/uploadthing"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, type ControllerRenderProps } from "react-hook-form"
 
 import { deleteFilesFromServer } from "@/lib/actions/uploadthing"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import * as z from "zod"
 
-import { imageSource } from "@/constants"
-import { generateFormPageStrings, isBase64Image } from "@/lib/utils"
+import { cn, generateFormPageStrings, isBase64Image, readImageFile, validateImageFile } from "@/lib/utils"
 
 import type { BillboardParams, FormProps } from "@/types"
 import type { Billboard } from "@prisma/client"
@@ -30,23 +32,30 @@ export type BillboardFormValues = z.infer<typeof schema>
 
 const schema = z.object({
     label: z.string().min(1),
-    image: imageSource.zod,
+    url: z.string().min(1, { message: "An image is required" }),
+    name: z.string(),
+    key: z.string(),
+    size: z.number(),
 })
+
+const defaultValues = {
+    label: "",
+    url: "",
+    name: "",
+    key: "",
+    size: 0,
+}
 
 export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
     const { initialData, entityName, dependentEntity, routeSegment } = props
 
-    const [files, setFiles] = useState<File[]>([])
+    const [filesAdded, setFilesAdded] = useState<File[]>([])
+    const [filesDeleted, setFilesDeleted] = useState<string | string[]>([])
 
     const form = useForm<BillboardFormValues>({
         resolver: zodResolver(schema),
-        defaultValues: initialData ?? {
-            label: "",
-            image: imageSource.default,
-        },
+        defaultValues: initialData ?? defaultValues,
     })
-
-    const { startUpload } = useUploadThing("single")
 
     const { storeId, billboardId } = useParams() as BillboardParams["params"]
     const { refresh, push } = useRouter()
@@ -58,40 +67,78 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
     const formStrings = generateFormPageStrings(!!initialData, entityName, dependentEntity)
     const { toastError, headingTitle, toastSuccess, submitActionText, headingDescription } = formStrings
 
-    const removeFiles = async () => {
-        setFiles([])
-        form.resetField("image")
+    const { startUpload } = useUploadThing("single")
+    const { permittedFileInfo } = useUploadThing("single")
+    const maxFileSize = permittedFileInfo?.config.image?.maxFileSize
+    const maxFileCount = permittedFileInfo?.config.image?.maxFileCount
 
-        const fileKey = form.getValues().image.key
+    type CBB = ControllerRenderProps<BillboardFormValues, "url">
 
-        if (fileKey) {
-            setLoading()
-            await deleteFilesFromServer(fileKey)
-            setLoaded()
+    const onChange = async (e: React.ChangeEvent<HTMLInputElement>, field: CBB) => {
+        e.preventDefault()
+
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        const fieldError = validateImageFile(file)
+        if (fieldError) {
+            form.setError(field.name, {
+                message: fieldError,
+            })
+            throw new Error(fieldError)
         }
 
-        form.setValue("image", imageSource.default)
+        form.clearErrors(field.name)
+        setFilesAdded([file])
+
+        const imageDataUrl = (await readImageFile(file)) ?? ""
+
+        if (imageDataUrl) {
+            field.onChange(imageDataUrl)
+        }
+    }
+
+    const onRemove = async () => {
+        const { key } = form.getValues()
+        if (key) {
+            setFilesDeleted(key)
+
+            toast({
+                title: "File queued up for deletion",
+                description: "It will be deleted on for submission",
+            })
+        }
+
+        setFilesAdded([])
+
+        form.setValue("url", "")
+        form.setValue("key", "")
+        form.setValue("name", "")
+        form.setValue("size", 0)
     }
 
     const onSubmit = async (values: BillboardFormValues) => {
-        if (!files) return
+        if (!filesAdded && !filesDeleted) return
 
         setLoading()
 
-        const blob = values.image.url
-        const hasImageChanged = isBase64Image(blob)
+        const hasImageChanged = isBase64Image(values.url)
 
         if (hasImageChanged) {
-            const uploadthingRes = await startUpload(files)
+            const uploadthingRes = await startUpload(filesAdded)
 
             if (uploadthingRes) {
-                const { key, url, name, size } = uploadthingRes[0]
-                values.image = { key, url, name, size }
+                const { label } = values
+                values = { label, ...uploadthingRes[0] }
+                console.log(values)
             }
         }
 
         try {
             if (initialData) {
+                if (filesDeleted) {
+                    await deleteFilesFromServer(filesDeleted)
+                }
                 await axios.patch(`/api/${storeId}/${routeSegment}/${billboardId}`, values)
             } else {
                 await axios.post(`/api/${storeId}/${routeSegment}`, values)
@@ -112,13 +159,17 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
 
     const onDelete = async () => {
         try {
-            setLoading()
+            const { key } = form.getValues()
 
-            await axios.delete(`/api/${storeId}/${routeSegment}/${billboardId}`)
+            if (key) {
+                setLoading()
+                await deleteFilesFromServer(key)
+                await axios.delete(`/api/${storeId}/${routeSegment}/${billboardId}`)
 
-            refresh()
-            push(`/${storeId}/${routeSegment}`)
-            toast({ title: `${entityName} Deleted Successfully` })
+                refresh()
+                push(`/${storeId}/${routeSegment}`)
+                toast({ title: `${entityName} Deleted Successfully` })
+            }
         } catch (error) {
             toast({
                 title: toastError,
@@ -157,25 +208,52 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
                     >
                         <FormField
                             control={form.control}
-                            name="image"
+                            name="url"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="ml-3 font-semibold text-sm text-muted-foreground">
                                         Billboard Image
                                     </FormLabel>
-                                    <ImageDisplay imageUrls={[field.value.url]}>
+                                    <ImageDisplay imageUrls={[field.value]}>
                                         <TrashButton
                                             disabled={isLoading}
                                             base="default"
-                                            onClick={removeFiles}
+                                            onClick={onRemove}
                                         />
                                     </ImageDisplay>
                                     <FormControl>
-                                        <ImagePicker.Single
-                                            field={field}
-                                            form={form}
-                                            setFiles={setFiles}
-                                        />
+                                        <div className="space-y-2 !mt-8 sm:w-fit grid place-items-center">
+                                            <Button
+                                                asChild
+                                                type="button"
+                                                variant="secondary"
+                                            >
+                                                <label
+                                                    className={cn(
+                                                        field.value
+                                                            ? "pointer-events-none opacity-50"
+                                                            : "cursor-pointer"
+                                                    )}
+                                                >
+                                                    <Input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        disabled={!!field.value}
+                                                        onChange={(e) => onChange(e, field)}
+                                                        className="hidden"
+                                                    />
+                                                    <ImagePlusIcon className="size-sm mr-3" />
+                                                    Choose Image
+                                                </label>
+                                            </Button>
+                                            {maxFileSize && maxFileCount ? (
+                                                <div className="text-xs text-muted-foreground w-fit mx-auto">
+                                                    <p>{`${maxFileCount} image(s) - ${maxFileSize} - webp please`}</p>
+                                                </div>
+                                            ) : (
+                                                <p className="h-4" />
+                                            )}
+                                        </div>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

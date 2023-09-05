@@ -2,15 +2,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ImagePlusIcon } from "lucide-react"
 
-import { fileError, imageSource } from "@/constants"
-import { useUploadThing } from "@/lib/uploadthing"
+import { UploadFileResponse, useUploadThing } from "@/lib/uploadthing"
 import { cn } from "@/lib/utils"
-import { useEffect, useState } from "react"
 
-import type { BillboardFormValues, ProductFormValues, UploadFileResponse } from "@/types"
+import type { BillboardFormValues, ProductFormValues } from "@/types"
 import type { ControllerRenderProps, FieldPath, FieldValues, UseFormReturn } from "react-hook-form"
 import unionBy from "lodash.unionby"
-import union from "lodash.union"
+import { imageData } from "@/constants"
 
 type ImagePickerProps<TFieldValues extends FieldValues, TName extends FieldPath<TFieldValues>> = {
     form: UseFormReturn<TFieldValues, any, undefined>
@@ -44,7 +42,7 @@ function Single(props: ImagePickerProps<BillboardFormValues, "image">) {
         const imageDataUrl = await readFile(file)
 
         const newImage = {
-            ...imageSource.default,
+            ...imageData.default,
             url: imageDataUrl,
         } satisfies UploadFileResponse
 
@@ -83,7 +81,7 @@ function Single(props: ImagePickerProps<BillboardFormValues, "image">) {
         return false
     }
 
-    const disabled: boolean = !!field.value.url
+    const disabled: boolean = !!field.value?.url
 
     return (
         <div className="space-y-2 !mt-8 sm:w-fit grid place-items-center">
@@ -139,13 +137,14 @@ function Multi(props: ImagePickerProps<ProductFormValues, "images">) {
 
         const imageDataUrls = await Promise.all(files.map(readFile))
 
-        const newImages = imageDataUrls.map((imageDataUrl) => ({
+        const newImages = imageDataUrls.map((imageDataUrl, i) => ({
             ...imageSource.default,
+            name: files[i].name,
             url: imageDataUrl,
         }))
 
         const initialImages = field.value
-        const mergedImages = unionBy(initialImages, newImages, "url").filter((image) => image.url)
+        const mergedImages = unionBy(initialImages, newImages, "name").filter((image) => image.name)
 
         field.onChange(mergedImages)
     }
@@ -216,17 +215,6 @@ ImagePicker.Single = Single
 ImagePicker.Multi = Multi
 
 export { ImagePicker }
-
-//         const newImage = {
-//             ...imageSource.default,
-//             url: imageDataUrl,
-//         } satisfies UploadFileResponse
-//
-//         if (i === 0) {
-//             field.onChange([newImage])
-//         } else {
-//             field.onChange([...field.value, newImage])
-//         }
 
 // type SinglePickerProps = {
 //     field: ControllerRenderProps<

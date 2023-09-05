@@ -4,7 +4,9 @@ export function useMounted() {
     const [isMounted, setMounted] = useState<boolean>(false)
 
     useEffect(() => {
-        setMounted(true)
+        if (typeof window !== "undefined") {
+            setMounted(true)
+        }
     }, [])
 
     if (!isMounted) return null

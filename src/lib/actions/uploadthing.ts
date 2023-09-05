@@ -1,16 +1,28 @@
 "use server"
 
+import prismadb from "@/lib/prismadb"
 import { utapi } from "uploadthing/server"
 
-export const deleteFilesFromServer = async (fileKey: string | undefined) => {
-    if (!fileKey) return
-    // if (!fileKey) throw new ReferenceError("fileKey is undefined")
+export const deleteFilesFromServer = async (fileKeys: string | string[]) => {
+    if (!fileKeys || fileKeys?.length === 0) return
 
     try {
-        const res = await utapi.deleteFiles(fileKey)
-        return res
+        const uploadthingResponse = await utapi.deleteFiles(fileKeys)
+
+        if (uploadthingResponse && Array.isArray(fileKeys)) {
+            const prismaResponse = await prismadb.productImage.deleteMany({
+                where: {
+                    key: {
+                        in: fileKeys,
+                    },
+                },
+            })
+            return { uploadthingResponse, prismaResponse }
+        }
+
+        return uploadthingResponse
     } catch (error) {
         console.log("[UPLOADTHING_DELETE]", error)
-        return error
+        throw error
     }
 }

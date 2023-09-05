@@ -15,8 +15,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useLoading, useOpen, useToast } from "@/lib/hooks"
 import { useUploadThing } from "@/lib/uploadthing"
 import { useParams, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { useState } from "react"
+import { ControllerRenderProps, useForm } from "react-hook-form"
 
 import { deleteFilesFromServer } from "@/lib/actions/uploadthing"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -24,13 +24,14 @@ import axios from "axios"
 import * as z from "zod"
 
 import { imageSource } from "@/constants"
-import { cn, generateFormPageStrings } from "@/lib/utils"
-import unionBy from "lodash.unionby"
+import { cn, generateFormPageStrings, isBase64Image } from "@/lib/utils"
 
 import type { FormProps, ProductParams } from "@/types"
-import type { Category, Color, Product, Size } from "@prisma/client"
+import type { Category, Color, Image, Product, Size } from "@prisma/client"
 
-type ProductFormProps = FormProps<Product> & {
+type TProduct = Product & { images: Image[] }
+
+type ProductFormProps = FormProps<TProduct> & {
     categories: Category[]
     sizes: Size[]
     colors: Color[]
@@ -84,63 +85,106 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
     const formStrings = generateFormPageStrings(!!initialData, entityName)
     const { headingTitle, toastSuccess, submitActionText, headingDescription } = formStrings
 
-    const removeFiles = async (url: string) => {
-        // console.log(url)
+    const removeFile = async (url: string, field: ControllerRenderProps<ProductFormValues, "images">) => {
+        /** WARN: Ideally, the image deletion from uploadthing would only be queued up from here,
+         *  and the actual deletion would occur on form submission
+         */
 
         setFiles((files) => files.filter((file) => !url.includes(file.name)))
-        // console.log(files)
 
-        // form.resetField("images")
+        const fileKey = form.getValues().images.find((image) => image.url === url)?.key
 
-        // const fileKeys = form.getValues().images.map((image) => image.key)
+        if (fileKey) {
+            setLoading()
+            await deleteFilesFromServer(fileKey)
+            setLoaded()
+        }
 
-        // if (fileKey) {
-        //     setLoading()
-        //     await deleteFilesFromServer(fileKey)
-        //     setLoaded()
-        // }
-        //
-        // form.setValue("image", image.default)
+        field.onChange([...field.value.filter((current) => current.url !== url)])
+
+        if (field.value.length === 0) {
+            setFiles([])
+            form.resetField("images")
+            form.setValue("images", [imageSource.default])
+        }
     }
 
     const onSubmit = async (values: ProductFormValues) => {
-        console.log("[PRODUCT_FORM_VALUES]", values.images)
-        // try {
-        //     setLoading()
-        //
-        //     if (initialData) {
-        //         await axios.patch(`/api/${storeId}/${routeSegment}/${productId}`, values)
-        //     } else {
-        //         await axios.post(`/api/${storeId}/${routeSegment}`, values)
-        //     }
-        //
-        //     refresh()
-        //     toast({
-        //         title: toastSuccess,
-        //     })
-        //     push(`/${storeId}/${routeSegment}`)
-        // } catch (error) {
-        //     toast({
-        //         title: "Something went wrong :(",
-        //         description: `${error}`,
-        //     })
-        // } finally {
-        //     setLoaded()
-        // }
+        if (!files) return
+
+        setLoading()
+
+        const images = values.images
+
+        const haveImagesChanged = images.map((image) => {
+            const blob = image.url
+            return isBase64Image(blob)
+        })
+
+        const changedImages = images.filter((_, index) => haveImagesChanged[index])
+
+        if (changedImages.length > 0) {
+            const uploadthingRes = await startUpload(files)
+
+            if (uploadthingRes) {
+                const filteredRes = uploadthingRes.map((image) => {
+                    const { key, url, name, size } = image
+                    return {
+                        key,
+                        url,
+                        name,
+                        size,
+                    }
+                })
+                values.images = filteredRes
+            }
+        }
+
+        try {
+            if (initialData) {
+                await axios.patch(`/api/${storeId}/${routeSegment}/${productId}`, values)
+            } else {
+                await axios.post(`/api/${storeId}/${routeSegment}`, values)
+            }
+
+            refresh()
+            toast({
+                title: toastSuccess,
+            })
+            push(`/${storeId}/${routeSegment}`)
+        } catch (error) {
+            // if (changedImages.length === 0) {
+            //     toast({ title: "Nothing has changed", description: "The data is identicle" })
+            //     setLoaded()
+            // } else {
+            console.log(JSON.stringify(error, null, 4))
+            toast({
+                title: "Something went wrong :(",
+                description: `${error}`,
+            })
+            // }
+        } finally {
+            setLoaded()
+        }
     }
 
     const onDelete = async () => {
         try {
             setLoading()
 
-            await axios.delete(`/api/${storeId}/${routeSegment}/${productId}`)
+            const fileKeys = form.getValues().images.map((image) => image.key)
 
-            refresh()
-            push(`/${storeId}/${routeSegment}`)
+            if (fileKeys.length > 0) {
+                await axios.delete(`/api/${storeId}/${routeSegment}/${productId}`)
+                await deleteFilesFromServer(fileKeys)
 
-            toast({
-                title: `${entityName} Deleted Successfully`,
-            })
+                refresh()
+                push(`/${storeId}/${routeSegment}`)
+
+                toast({
+                    title: `${entityName} Deleted Successfully`,
+                })
+            }
         } catch (error) {
             toast({
                 title: "Something went wrong :(",
@@ -187,17 +231,12 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
                                         <FormLabel className="ml-3 font-semibold text-sm text-muted-foreground">
                                             Product Images
                                         </FormLabel>
-                                        <ImageDisplay imageUrls={field.value.map((value) => value.url)}>
+                                        <ImageDisplay imageUrls={field.value?.map((value) => value?.url)}>
                                             {(url) => (
                                                 <TrashButton
                                                     disabled={isLoading}
                                                     base="default"
-                                                    onClick={() => {
-                                                        field.onChange([
-                                                            ...field.value.filter((current) => current.url !== url),
-                                                        ])
-                                                        removeFiles(url)
-                                                    }}
+                                                    onClick={() => removeFile(url, field)}
                                                 />
                                             )}
                                         </ImageDisplay>
