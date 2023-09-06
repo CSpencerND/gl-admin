@@ -9,7 +9,7 @@ export const deleteFilesFromServer = async (fileKeys: string | string[]) => {
     try {
         const uploadthingResponse = await utapi.deleteFiles(fileKeys)
 
-        if (uploadthingResponse && Array.isArray(fileKeys)) {
+        if (uploadthingResponse.success && Array.isArray(fileKeys)) {
             const prismaResponse = await prismadb.productImage.deleteMany({
                 where: {
                     key: {
