@@ -13,7 +13,13 @@ async function clean() {
 async function main() {
     // await clean()
 
-    const res = await prisma.billboard.findMany()
+    // const res = await prisma.product.findMany({
+    //     include: {
+    //         images: true,
+    //     },
+    // })
+
+    const res = await prisma.productImage.findMany()
 
     console.log(res)
 }
