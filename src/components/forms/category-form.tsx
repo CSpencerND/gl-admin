@@ -59,7 +59,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
     const onSubmit = async (values: CategoryFormValues) => {
         const isFormDirty = form.formState.isDirty
 
-        if (!isFormDirty) {
+        if (initialData && !isFormDirty) {
             toast({ title: "Nothing has changed", description: "The data is identicle" })
             return
         }

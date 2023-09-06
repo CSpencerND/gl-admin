@@ -114,7 +114,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
     const onSubmit = async (values: BillboardFormValues) => {
         const isFormDirty = form.formState.isDirty
 
-        if (!isFormDirty) {
+        if (initialData && !isFormDirty) {
             toast({ title: "Nothing has changed", description: "The data is identicle" })
             return
         }

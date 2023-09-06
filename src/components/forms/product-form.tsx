@@ -23,13 +23,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import * as z from "zod"
 
-import { imageSource } from "@/constants"
-import { cn, generateFormPageStrings, isBase64Image } from "@/lib/utils"
+import { imageData } from "@/constants"
+import { cn, generateFormPageStrings, isBase64Image, readImageFile, validateImageFile } from "@/lib/utils"
+import unionBy from "lodash.unionby"
 
 import type { FormProps, ProductParams } from "@/types"
-import type { Category, Color, Image, Product, Size } from "@prisma/client"
+import type { Category, Color, Product, ProductImage, Size } from "@prisma/client"
 
-type TProduct = Product & { images: Image[] }
+type TProduct = Product & { images: ProductImage[] }
 
 type ProductFormProps = FormProps<TProduct> & {
     categories: Category[]
@@ -45,7 +46,7 @@ const schema = z.object({
     categoryId: z.string(),
     colorId: z.string(),
     sizeId: z.string(),
-    images: imageSource.zod.array(),
+    images: imageData.zod.array(),
     isFeatured: z.boolean().default(false).optional(),
     isArchived: z.boolean().default(false).optional(),
 })
@@ -53,11 +54,12 @@ const schema = z.object({
 export const ProductForm: React.FC<ProductFormProps> = (props) => {
     const { entityName, routeSegment, initialData, categories, sizes, colors } = props
 
-    const [files, setFiles] = useState<File[]>([])
+    const [filesAdded, setFilesAdded] = useState<File[]>([])
+    const [filesDeleted, setFilesDeleted] = useState<string | string[]>([])
 
     const defaultValues = {
         name: "",
-        images: [imageSource.default],
+        images: [imageData.default],
         price: 0,
         categoryId: "",
         colorId: "",
@@ -85,32 +87,82 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
     const formStrings = generateFormPageStrings(!!initialData, entityName)
     const { headingTitle, toastSuccess, submitActionText, headingDescription } = formStrings
 
-    const removeFile = async (url: string, field: ControllerRenderProps<ProductFormValues, "images">) => {
-        /** WARN: Ideally, the image deletion from uploadthing would only be queued up from here,
-         *  and the actual deletion would occur on form submission
-         */
+    type PBB = ControllerRenderProps<ProductFormValues, "images">
 
-        setFiles((files) => files.filter((file) => !url.includes(file.name)))
+    const onChange = async (e: React.ChangeEvent<HTMLInputElement>, field: PBB) => {
+        e.preventDefault()
 
-        const fileKey = form.getValues().images.find((image) => image.url === url)?.key
+        if (!e.target.files) return
+        const files = Array.from(e.target.files)
 
-        if (fileKey) {
-            setLoading()
-            await deleteFilesFromServer(fileKey)
-            setLoaded()
+        const fieldErrors = files.map((file) => validateImageFile(file))
+        const firstError = fieldErrors.find((error) => error !== 0)
+
+        if (firstError) {
+            form.setError(field.name, {
+                message: firstError,
+            })
+            throw new Error(firstError)
         }
 
-        field.onChange([...field.value.filter((current) => current.url !== url)])
+        form.clearErrors(field.name)
+        setFilesAdded((prevFiles) => [...prevFiles, ...files])
 
-        if (field.value.length === 0) {
-            setFiles([])
-            form.resetField("images")
-            form.setValue("images", [imageSource.default])
+        const urlPromises = files.map(async (file) => {
+            return (await readImageFile(file)) ?? ""
+        })
+
+        const imageDataUrls = await Promise.all(urlPromises)
+
+        if (imageDataUrls) {
+            const newImages = imageDataUrls.map((url, i) => {
+                return {
+                    ...imageData.default,
+                    name: files[i].name,
+                    url: url,
+                }
+            })
+
+            const initialImages = field.value
+            const mergedImages = unionBy(initialImages, newImages, "name").filter((image) => image.name)
+
+            field.onChange(mergedImages)
         }
     }
 
+    const onRemove = async (url: string, field: PBB) => {
+        const currentFieldValue = field.value.find((image) => image.url === url)
+        const targetFile = filesAdded.find((file) => file.name === currentFieldValue?.name)
+
+        if (currentFieldValue?.key) {
+            setFilesDeleted(currentFieldValue.key)
+
+            toast({
+                title: "File queued up for deletion",
+                description: "It will be deleted on for submission",
+            })
+        }
+
+        setFilesAdded((files) => files.filter((file) => file !== targetFile))
+
+        const filteredImages = [...form.getValues().images.filter((current) => current.url !== url)]
+        field.onChange(filteredImages)
+    }
+
     const onSubmit = async (values: ProductFormValues) => {
-        if (!files) return
+        const isFormDirty = form.formState.isDirty
+        const isImagesDirty = form.getFieldState("images").isDirty
+
+        if (initialData && !isFormDirty && !isImagesDirty) {
+            toast({ title: "Nothing has changed", description: "The data is identicle" })
+            return
+        }
+
+        if (!filesAdded && !filesDeleted) return
+
+        console.log("[ADDED]", filesAdded)
+        console.log("[DELETED]", filesDeleted)
+        console.log("[FORM_VALUES]", values)
 
         setLoading()
 
@@ -123,25 +175,19 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
 
         const changedImages = images.filter((_, index) => haveImagesChanged[index])
 
-        if (changedImages.length > 0) {
-            const uploadthingRes = await startUpload(files)
+        if (changedImages && changedImages.length > 0) {
+            const uploadthingRes = await startUpload(filesAdded)
 
             if (uploadthingRes) {
-                const filteredRes = uploadthingRes.map((image) => {
-                    const { key, url, name, size } = image
-                    return {
-                        key,
-                        url,
-                        name,
-                        size,
-                    }
-                })
-                values.images = filteredRes
+                values.images = uploadthingRes
             }
         }
 
         try {
             if (initialData) {
+                if (filesDeleted && filesDeleted.length > 0) {
+                    await deleteFilesFromServer(filesDeleted)
+                }
                 await axios.patch(`/api/${storeId}/${routeSegment}/${productId}`, values)
             } else {
                 await axios.post(`/api/${storeId}/${routeSegment}`, values)
@@ -170,20 +216,18 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
 
     const onDelete = async () => {
         try {
-            setLoading()
+            const keys = form.getValues().images.map((image) => image.key)
 
-            const fileKeys = form.getValues().images.map((image) => image.key)
+            if (keys && keys.length > 0) {
+                setLoading()
 
-            if (fileKeys.length > 0) {
                 await axios.delete(`/api/${storeId}/${routeSegment}/${productId}`)
-                await deleteFilesFromServer(fileKeys)
+                await deleteFilesFromServer(keys)
 
                 refresh()
                 push(`/${storeId}/${routeSegment}`)
 
-                toast({
-                    title: `${entityName} Deleted Successfully`,
-                })
+                toast({ title: `${entityName} Deleted Successfully` })
             }
         } catch (error) {
             toast({
@@ -236,15 +280,14 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
                                                 <TrashButton
                                                     disabled={isLoading}
                                                     base="default"
-                                                    onClick={() => removeFile(url, field)}
+                                                    onClick={() => onRemove(url, field)}
                                                 />
                                             )}
                                         </ImageDisplay>
                                         <FormControl>
                                             <ImagePicker.Multi
-                                                field={field}
-                                                form={form}
-                                                setFiles={setFiles}
+                                                hasValue={!!field.value}
+                                                handleChange={(e) => onChange(e, field)}
                                             />
                                         </FormControl>
                                         <FormMessage />
