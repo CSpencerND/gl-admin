@@ -18,10 +18,10 @@ async function main() {
     //         images: true,
     //     },
     // })
+    // console.log(res)
 
     const res = await prisma.productImage.findMany()
-
-    console.log(res)
+    console.log(res.length)
 }
 
 main()
