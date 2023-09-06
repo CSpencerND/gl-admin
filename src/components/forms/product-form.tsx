@@ -139,7 +139,7 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
 
             toast({
                 title: "File queued up for deletion",
-                description: "It will be deleted on for submission",
+                description: "It will be deleted on form submission",
             })
         }
 
@@ -150,10 +150,6 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
     }
 
     const onSubmit = async (values: ProductFormValues) => {
-        console.log("[ADDED]", filesAdded)
-        console.log("[DELETED]", filesDeleted)
-        console.log("[FORM_VALUES]", values)
-
         const isFormDirty = form.formState.isDirty
         const isImagesDirty = form.getFieldState("images").isDirty
 
@@ -164,26 +160,27 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
 
         if (!filesAdded && !filesDeleted) return
 
-        setLoading()
-
-        const images = values.images
-
-        const haveImagesChanged = images.map((image) => {
-            const blob = image.url
-            return isBase64Image(blob)
-        })
-
-        const changedImages = images.filter((_, index) => haveImagesChanged[index])
-
-        if (changedImages && changedImages.length > 0) {
-            const uploadthingRes = await startUpload(filesAdded)
-
-            if (uploadthingRes) {
-                values.images = uploadthingRes
-            }
-        }
-
         try {
+            setLoading()
+
+            const images = values.images
+
+            const haveImagesChanged = images.map((image) => {
+                const blob = image.url
+                return isBase64Image(blob)
+            })
+
+            const changedImages = images.filter((_, index) => haveImagesChanged[index])
+
+            if (changedImages && changedImages.length > 0) {
+                const uploadthingRes = await startUpload(filesAdded)
+
+                if (uploadthingRes) {
+                    const mergedImages = unionBy([...uploadthingRes, ...values.images], "name")
+                    values.images = mergedImages
+                }
+            }
+
             if (initialData) {
                 if (filesDeleted && filesDeleted.length > 0) {
                     await deleteFilesFromServer(filesDeleted)
@@ -199,7 +196,6 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
             })
             push(`/${storeId}/${routeSegment}`)
         } catch (error) {
-            console.log(JSON.stringify(error, null, 4))
             toast({
                 title: "Something went wrong :(",
                 description: `${error}`,
