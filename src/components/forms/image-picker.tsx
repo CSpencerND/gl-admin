@@ -38,7 +38,8 @@ function Single({ hasValue, handleChange }: ImagePickerProps) {
             </Button>
             {maxFileSize && maxFileCount ? (
                 <div className="text-xs text-muted-foreground w-fit mx-auto">
-                    <p>{`${maxFileCount} image(s) - ${maxFileSize} - webp please`}</p>
+                    {/* <p>{`up to ${maxFileCount} image(s) - ${maxFileSize} - webp please`}</p> */}
+                    <p>prefer webp</p>
                 </div>
             ) : (
                 <p className="h-4" />
@@ -68,12 +69,13 @@ function Multi({ handleChange }: ImagePickerProps) {
                         className="hidden"
                     />
                     <ImagePlusIcon className="size-sm mr-3" />
-                    Choose Image
+                    Choose Image(s)
                 </label>
             </Button>
             {maxFileSize && maxFileCount ? (
-                <div className="text-xs text-muted-foreground w-fit mx-auto">
-                    <p>{`${maxFileCount} image(s) - ${maxFileSize} - webp please`}</p>
+                <div className="text-xs text-muted-foreground w-fit text-center space-y-1">
+                    {/* <p>{`${maxFileCount} image(s) at once @ ${maxFileSize} max`}</p> */}
+                    <p>prefer webp</p>
                 </div>
             ) : (
                 <p className="h-4" />

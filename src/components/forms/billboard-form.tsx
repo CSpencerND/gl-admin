@@ -99,7 +99,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
 
             toast({
                 title: "File queued up for deletion",
-                description: "It will be deleted on for submission",
+                description: "It will be deleted on form submission",
             })
         }
 
