@@ -42,7 +42,7 @@ export const ImageDisplay: React.FC<ImageUploadProps> = ({ imageUrls, children }
                         </span>
                         <Image
                             src={url}
-                            alt="Selected Image"
+                            alt="Image"
                             fill
                             className="object-cover"
                             onLoadingComplete={setLoaded}
