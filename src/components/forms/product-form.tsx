@@ -150,6 +150,10 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
     }
 
     const onSubmit = async (values: ProductFormValues) => {
+        console.log("[ADDED]", filesAdded)
+        console.log("[DELETED]", filesDeleted)
+        console.log("[FORM_VALUES]", values)
+
         const isFormDirty = form.formState.isDirty
         const isImagesDirty = form.getFieldState("images").isDirty
 
@@ -159,10 +163,6 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
         }
 
         if (!filesAdded && !filesDeleted) return
-
-        console.log("[ADDED]", filesAdded)
-        console.log("[DELETED]", filesDeleted)
-        console.log("[FORM_VALUES]", values)
 
         setLoading()
 
@@ -199,16 +199,11 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
             })
             push(`/${storeId}/${routeSegment}`)
         } catch (error) {
-            // if (changedImages.length === 0) {
-            //     toast({ title: "Nothing has changed", description: "The data is identicle" })
-            //     setLoaded()
-            // } else {
             console.log(JSON.stringify(error, null, 4))
             toast({
                 title: "Something went wrong :(",
                 description: `${error}`,
             })
-            // }
         } finally {
             setLoaded()
         }
