@@ -112,6 +112,13 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
     }
 
     const onSubmit = async (values: BillboardFormValues) => {
+        const isFormDirty = form.formState.isDirty
+
+        if (!isFormDirty) {
+            toast({ title: "Nothing has changed", description: "The data is identicle" })
+            return
+        }
+
         if (!filesAdded && !filesDeleted) return
 
         setLoading()
@@ -124,7 +131,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
             if (uploadthingRes) {
                 const { label } = values
                 values = { label, ...uploadthingRes[0] }
-                console.log(values)
             }
         }
 
@@ -157,16 +163,20 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
 
             if (key) {
                 setLoading()
+
                 await deleteFilesFromServer(key)
                 await axios.delete(`/api/${storeId}/${routeSegment}/${billboardId}`)
 
                 refresh()
                 push(`/${storeId}/${routeSegment}`)
+
                 toast({ title: `${entityName} Deleted Successfully` })
             }
         } catch (error) {
             toast({
-                title: toastError,
+                // title: toastError,
+                title: "Something went wrong :(",
+                description: `${error}`,
             })
         } finally {
             setLoaded()
