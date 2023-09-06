@@ -2,7 +2,7 @@ import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
-import { ProductFormValues, ProductParams } from "@/types"
+import type { ProductFormValues, ProductParams } from "@/types"
 
 export async function PATCH(req: Request, { params: { storeId, productId } }: ProductParams) {
     try {
@@ -68,7 +68,7 @@ export async function PATCH(req: Request, { params: { storeId, productId } }: Pr
                 isFeatured,
                 isArchived,
                 images: {
-                    deleteMany: [],
+                    deleteMany: {},
                 },
             },
         })
