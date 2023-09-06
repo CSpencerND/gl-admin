@@ -115,7 +115,8 @@ model Billboard {
 }
 
 model ProductImage {
-    key      String  @id
+    id       String  @id @default(cuid())
+    key      String
     size     Int
     name     String
     url      String
@@ -124,8 +125,8 @@ model ProductImage {
     fileName String?
     fileUrl  String?
 
-    productId String?
-    product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+    productId String
+    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
