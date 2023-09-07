@@ -26,7 +26,7 @@ export const ImageDisplay: React.FC<ImageUploadProps> = ({ imageUrls, children }
     }
 
     return (
-        <ul className="flex gap-4 items-center overflow-x-scroll">
+        <ul className="flex gap-4 items-center overflow-x-scroll rounded-lg pb-2">
             {imageUrls.map((url, i) => {
                 return url ? (
                     <li
