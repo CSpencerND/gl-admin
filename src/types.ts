@@ -1,6 +1,3 @@
-// export type { UploadFileResponse } from "@/lib/uploadthing"
-// export type UploadFileResponse = Omit<UFR, "fileUrl" | "fileKey" | "fileSize" | "fileName">
-
 export type { BillboardFormValues } from "@/components/forms/billboard-form"
 export type { CategoryFormValues } from "@/components/forms/category-form"
 export type { ColorFormValues } from "@/components/forms/color-form"
@@ -17,13 +14,6 @@ export type ImageData = {
     fileSize?: number
     fileKey?: string
     fileUrl?: string
-}
-
-export type FormProps<TModel> = {
-    initialData: TModel | null
-    entityName: string
-    routeSegment: string
-    dependentEntity?: string
 }
 
 export type StoreParams<T = Record<string, string>> = {
@@ -51,6 +41,17 @@ export type ColorParams = StoreParams<{
 export type ProductParams = StoreParams<{
     productId: string
 }>
+
+export type OrderParams = StoreParams<{
+    orderId: string
+}>
+
+export type FormProps<TModel> = {
+    initialData: TModel | null
+    entityName: string
+    routeSegment: string
+    dependentEntity?: string
+}
 
 export type ColumnType<T = {}> = {
     id: string

@@ -6,6 +6,7 @@ import { DataTable } from "@/components/ui/data-table"
 import { SectionDiv } from "@/components/ui/divs"
 import { Heading } from "@/components/ui/heading"
 import { PlusCircleIcon } from "lucide-react"
+import { OrderColumns, type OrderColumn } from "./order-columns"
 
 import { useParams, useRouter } from "next/navigation"
 
@@ -14,7 +15,7 @@ import type { ComponentProps } from "react"
 
 type DataClientProps<TData, TValue> = ComponentProps<typeof DataTable<TData, TValue>> & ComponentProps<typeof ApiList>
 
-export function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>) {
+function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>) {
     const { columns, data, searchKey, entityName, entityIdName } = props
 
     const router = useRouter()
@@ -53,3 +54,26 @@ export function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>)
         </>
     )
 }
+
+type OrderDataClientProps = {
+    data: OrderColumn[]
+}
+
+function OrderDataClient({ data }: OrderDataClientProps) {
+    return (
+        <SectionDiv>
+            <Heading
+                title={`Orders (${data.length})`}
+                description={`Manage orders for your store`}
+            />
+            <DataTable
+                data={data}
+                searchKey="products"
+                columns={OrderColumns}
+                className="font-mono"
+            />
+        </SectionDiv>
+    )
+}
+
+export { DataClient, OrderDataClient }
