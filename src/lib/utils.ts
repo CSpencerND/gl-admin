@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
-import type { Decimal } from "@prisma/client/runtime/library"
+import { Decimal } from "@prisma/client/runtime/library"
 
 export function cn(...inputs: ClassValue[]): string {
     return twMerge(clsx(inputs))
@@ -40,13 +40,13 @@ export function formatThreadCount(count: number): string {
     }
 }
 
-export function formatPrice(price: Decimal): string {
+export function formatPrice(price: number | Decimal): string {
     const formatter = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
     })
 
-    return formatter.format(price.toNumber())
+    return typeof price === "number" ? formatter.format(price) : formatter.format(price.toNumber())
 }
 
 type SubmitActionText = "Save Changes" | "Confirm" | "Continue"
