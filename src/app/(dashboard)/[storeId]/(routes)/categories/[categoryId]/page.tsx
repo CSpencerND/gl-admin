@@ -15,7 +15,7 @@ const CategoryPage: NextPage<CategoryPageProps> = async ({ params: { storeId, ca
         },
     })
 
-    const billboards = await prismadb.billboard.findMany({
+    const banners = await prismadb.banner.findMany({
         where: {
             storeId,
         },
@@ -25,7 +25,7 @@ const CategoryPage: NextPage<CategoryPageProps> = async ({ params: { storeId, ca
         <MainDiv>
             <CategoryForm
                 initialData={category}
-                billboards={billboards}
+                banners={banners}
             />
         </MainDiv>
     )

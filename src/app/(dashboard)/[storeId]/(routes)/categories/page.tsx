@@ -17,17 +17,17 @@ const CategoriesPage: NextPage<CategoriesPageProps> = async ({ params: { storeId
             storeId,
         },
         include: {
-            billboard: true,
+            banner: true,
         },
         orderBy: {
             createdAt: "desc",
         },
     })
 
-    const formattedCategories: CategoryColumn[] = categories.map(({ id, name, billboard, createdAt }) => ({
+    const formattedCategories: CategoryColumn[] = categories.map(({ id, name, banner, createdAt }) => ({
         id,
         name,
-        billboardLabel: billboard.label,
+        banner: banner.label,
         createdAt: format(createdAt, "MMMM do, yyyy"),
     }))
 

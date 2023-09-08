@@ -55,7 +55,7 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, isLo
     return (
         <Modal
             title="Upload An Image"
-            description="This image will be used as a billboard for your store"
+            description="This image will be used as a banner for your store"
             isOpen={isOpen}
             onClose={onClose}
             // icon={<AlertIcon className="stroke-warning-foreground size-xl" />}
@@ -76,7 +76,7 @@ export const ImageUploadModal: React.FC<ImageUploadModalProps> = ({ isOpen, isLo
                             const json = JSON.stringify(res)
                             console.log("Files: ", json)
                             toast({
-                                title: "Billboard Created",
+                                title: "Banner Created",
                             })
                         }
                     }}

@@ -3,12 +3,12 @@ import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
-import type { BillboardFormValues, BillboardParams } from "@/types"
+import type { BannerFormValues, BannerParams } from "@/types"
 
-export async function PATCH(req: Request, { params: { storeId, billboardId } }: BillboardParams) {
+export async function PATCH(req: Request, { params: { storeId, bannerId } }: BannerParams) {
     try {
         const { userId } = auth()
-        const { label, key, name, url, size } = (await req.json()) as BillboardFormValues
+        const { label, key, name, url, size } = (await req.json()) as BannerFormValues
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })
@@ -22,8 +22,8 @@ export async function PATCH(req: Request, { params: { storeId, billboardId } }: 
             return new NextResponse("An Image Is Required", { status: 400 })
         }
 
-        if (!billboardId) {
-            return new NextResponse("Billboard ID is required", { status: 400 })
+        if (!bannerId) {
+            return new NextResponse("Banner ID is required", { status: 400 })
         }
 
         const storeMatchByUserId = await prismadb.store.findFirst({
@@ -39,9 +39,9 @@ export async function PATCH(req: Request, { params: { storeId, billboardId } }: 
             })
         }
 
-        const billboard = await prismadb.billboard.update({
+        const banner = await prismadb.banner.update({
             where: {
-                id: billboardId,
+                id: bannerId,
             },
             data: {
                 label,
@@ -51,14 +51,14 @@ export async function PATCH(req: Request, { params: { storeId, billboardId } }: 
                 url,
             },
         })
-        return NextResponse.json(billboard)
+        return NextResponse.json(banner)
     } catch (error) {
-        console.log("[BILLBOARD_PATCH]", error)
+        console.log("[BANNER_PATCH]", error)
         return new NextResponse("Internal Error", { status: 500 })
     }
 }
 
-export async function DELETE(_req: Request, { params: { storeId, billboardId } }: BillboardParams) {
+export async function DELETE(_req: Request, { params: { storeId, bannerId } }: BannerParams) {
     try {
         const { userId } = auth()
 
@@ -66,8 +66,8 @@ export async function DELETE(_req: Request, { params: { storeId, billboardId } }
             return new NextResponse("You must be logged in", { status: 401 })
         }
 
-        if (!billboardId) {
-            return new NextResponse("Billboard ID is required", { status: 400 })
+        if (!bannerId) {
+            return new NextResponse("Banner ID is required", { status: 400 })
         }
 
         const storeMatchByUserId = await prismadb.store.findFirst({
@@ -83,37 +83,37 @@ export async function DELETE(_req: Request, { params: { storeId, billboardId } }
             })
         }
 
-        const billboard = await prismadb.billboard.delete({
+        const banner = await prismadb.banner.delete({
             where: {
-                id: billboardId,
+                id: bannerId,
             },
         })
 
-        const uploadthing = await deleteFilesFromServer(billboard?.key)
+        const uploadthing = await deleteFilesFromServer(banner?.key)
 
-        return NextResponse.json([billboard, uploadthing])
+        return NextResponse.json([banner, uploadthing])
     } catch (error) {
-        console.log("[BILLBOARD_DELETE]", error)
+        console.log("[BANNER_DELETE]", error)
 
         return new NextResponse("Internal Error", { status: 500 })
     }
 }
 
-export async function GET(_req: Request, { params: { billboardId } }: BillboardParams) {
+export async function GET(_req: Request, { params: { bannerId } }: BannerParams) {
     try {
-        if (!billboardId) {
-            return new NextResponse("Billboard ID is required", { status: 400 })
+        if (!bannerId) {
+            return new NextResponse("Banner ID is required", { status: 400 })
         }
 
-        const billboard = await prismadb.billboard.findUnique({
+        const banner = await prismadb.banner.findUnique({
             where: {
-                id: billboardId,
+                id: bannerId,
             },
         })
 
-        return NextResponse.json(billboard)
+        return NextResponse.json(banner)
     } catch (error) {
-        console.log("[BILLBOARD_GET]", error)
+        console.log("[BANNER_GET]", error)
         return new NextResponse("Internal Error", { status: 500 })
     }
 }

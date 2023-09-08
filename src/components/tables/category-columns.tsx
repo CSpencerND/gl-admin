@@ -11,7 +11,7 @@ type CellActionProps = {
 
 export type CategoryColumn = ColumnType<{
     name: string
-    billboardLabel: string
+    bannerLabel: string
 }>
 
 const CategoryCellAction: React.FC<CellActionProps> = ({ data }) => {
@@ -30,9 +30,9 @@ export const CategoryColumns: ColumnDef<CategoryColumn>[] = [
         header: "Name",
     },
     {
-        accessorKey: "billboard",
-        header: "Billboard",
-        cell: ({ row }) => row.original.billboardLabel,
+        accessorKey: "banner",
+        header: "Banner",
+        cell: ({ row }) => row.original.bannerLabel,
     },
     {
         accessorKey: "createdAt",

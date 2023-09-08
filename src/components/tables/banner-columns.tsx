@@ -6,24 +6,24 @@ import type { ColumnDef } from "@tanstack/react-table"
 import type { ColumnType } from "@/types"
 
 type CellActionProps = {
-    data: BillboardColumn
+    data: BannerColumn
 }
 
-export type BillboardColumn = ColumnType<{
+export type BannerColumn = ColumnType<{
     label: string
 }>
 
-const BillboardCellAction: React.FC<CellActionProps> = ({ data }) => {
+const BannerCellAction: React.FC<CellActionProps> = ({ data }) => {
     return (
         <CellAction
             data={data}
-            entityName="Billboard"
-            pathSegment="billboards"
+            entityName="Banner"
+            pathSegment="banners"
         />
     )
 }
 
-export const BillboardColumns: ColumnDef<BillboardColumn>[] = [
+export const BannerColumns: ColumnDef<BannerColumn>[] = [
     {
         accessorKey: "label",
         header: "Label",
@@ -34,6 +34,6 @@ export const BillboardColumns: ColumnDef<BillboardColumn>[] = [
     },
     {
         id: "actions",
-        cell: ({ row }) => <BillboardCellAction data={row.original} />,
+        cell: ({ row }) => <BannerCellAction data={row.original} />,
     },
 ]

@@ -20,12 +20,12 @@ import * as z from "zod"
 
 import { generateFormPageStrings, isBase64Image, readImageFile, validateImageFile } from "@/lib/utils"
 
-import type { BillboardParams, FormProps } from "@/types"
-import type { Billboard } from "@prisma/client"
+import type { BannerParams, FormProps } from "@/types"
+import type { Banner } from "@prisma/client"
 
-type BillboardFormProps = FormProps<Billboard>
+type BannerFormProps = FormProps<Banner>
 
-export type BillboardFormValues = z.infer<typeof schema>
+export type BannerFormValues = z.infer<typeof schema>
 
 const schema = z.object({
     label: z.string().min(1),
@@ -43,18 +43,18 @@ const defaultValues = {
     size: 0,
 }
 
-export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
+export const BannerForm: React.FC<BannerFormProps> = (props) => {
     const { initialData, entityName, dependentEntity, routeSegment } = props
 
     const [filesAdded, setFilesAdded] = useState<File[]>([])
     const [filesDeleted, setFilesDeleted] = useState<string | string[]>([])
 
-    const form = useForm<BillboardFormValues>({
+    const form = useForm<BannerFormValues>({
         resolver: zodResolver(schema),
         defaultValues: initialData ?? defaultValues,
     })
 
-    const { storeId, billboardId } = useParams() as BillboardParams["params"]
+    const { storeId, bannerId } = useParams() as BannerParams["params"]
     const { refresh, push } = useRouter()
 
     const { setOpen, setClosed, isOpen } = useOpen()
@@ -66,7 +66,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
 
     const { startUpload } = useUploadThing("single")
 
-    type CBB = ControllerRenderProps<BillboardFormValues, "url">
+    type CBB = ControllerRenderProps<BannerFormValues, "url">
 
     const onChange = async (e: React.ChangeEvent<HTMLInputElement>, field: CBB) => {
         e.preventDefault()
@@ -111,7 +111,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
         form.setValue("size", 0)
     }
 
-    const onSubmit = async (values: BillboardFormValues) => {
+    const onSubmit = async (values: BannerFormValues) => {
         const isFormDirty = form.formState.isDirty
 
         if (initialData && !isFormDirty) {
@@ -139,7 +139,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
                 if (filesDeleted) {
                     await deleteFilesFromServer(filesDeleted)
                 }
-                await axios.patch(`/api/${storeId}/${routeSegment}/${billboardId}`, values)
+                await axios.patch(`/api/${storeId}/${routeSegment}/${bannerId}`, values)
             } else {
                 await axios.post(`/api/${storeId}/${routeSegment}`, values)
             }
@@ -165,7 +165,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
                 setLoading()
 
                 await deleteFilesFromServer(key)
-                await axios.delete(`/api/${storeId}/${routeSegment}/${billboardId}`)
+                await axios.delete(`/api/${storeId}/${routeSegment}/${bannerId}`)
 
                 refresh()
                 push(`/${storeId}/${routeSegment}`)
@@ -216,7 +216,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel className="ml-3 font-semibold text-sm text-muted-foreground">
-                                        Billboard Image
+                                        Banner Image
                                     </FormLabel>
                                     <ImageDisplay imageUrls={[field.value]}>
                                         <TrashButton
@@ -239,7 +239,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = (props) => {
                             <FormEntry
                                 control={form.control}
                                 name="label"
-                                label="Billboard Label"
+                                label="Banner Label"
                                 floating
                             />
                         </div>

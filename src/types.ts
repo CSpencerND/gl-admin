@@ -1,4 +1,4 @@
-export type { BillboardFormValues } from "@/components/forms/billboard-form"
+export type { BannerFormValues } from "@/components/forms/banner-form"
 export type { CategoryFormValues } from "@/components/forms/category-form"
 export type { ColorFormValues } from "@/components/forms/color-form"
 export type { ProductFormValues } from "@/components/forms/product-form"
@@ -22,8 +22,8 @@ export type StoreParams<T = Record<string, string>> = {
     } & T
 }
 
-export type BillboardParams = StoreParams<{
-    billboardId: string
+export type BannerParams = StoreParams<{
+    bannerId: string
 }>
 
 export type CategoryParams = StoreParams<{

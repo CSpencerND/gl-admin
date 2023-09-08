@@ -7,7 +7,7 @@ import type { CategoryFormValues, StoreParams } from "@/types"
 export async function POST(req: Request, { params: { storeId } }: StoreParams) {
     try {
         const { userId } = auth()
-        const { name, billboardId } = (await req.json()) as CategoryFormValues
+        const { name, bannerId } = (await req.json()) as CategoryFormValues
 
         if (!userId) {
             return new NextResponse("You must be logged in", { status: 401 })
@@ -17,8 +17,8 @@ export async function POST(req: Request, { params: { storeId } }: StoreParams) {
             return new NextResponse("Name is required", { status: 400 })
         }
 
-        if (!billboardId) {
-            return new NextResponse("Billboard ID is required", { status: 400 })
+        if (!bannerId) {
+            return new NextResponse("Banner ID is required", { status: 400 })
         }
 
         if (!storeId) {
@@ -41,7 +41,7 @@ export async function POST(req: Request, { params: { storeId } }: StoreParams) {
         const category = await prismadb.category.create({
             data: {
                 name,
-                billboardId,
+                bannerId,
                 storeId,
             },
         })

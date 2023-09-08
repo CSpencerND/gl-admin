@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
-import { Decimal } from "@prisma/client/runtime/library"
+import type { Decimal } from "@prisma/client/runtime/library"
 
 export function cn(...inputs: ClassValue[]): string {
     return twMerge(clsx(inputs))
@@ -54,7 +54,7 @@ type SubmitActionText = "Save Changes" | "Confirm" | "Continue"
 /**
  * Generate strings based on initial data and entity name.
  * @param {boolean} hasInitialData - Pass `!!initialData` as the argument.
- * @param {string} entityName - The name of the entity. e.g. "Billboard" | "Product" | "Category"
+ * @param {string} entityName - The name of the entity. e.g. "Banner" | "Product" | "Category"
  * @param {string} dependentEntity - The entity which will prevent removal if connected.
  * i.e. "You must remove all `dependentEntity` associated with this `entityName` first"
  */

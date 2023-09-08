@@ -21,24 +21,24 @@ import * as z from "zod"
 
 import { cn } from "@/lib/utils"
 import type { CategoryParams } from "@/types"
-import type { Billboard, Category } from "@prisma/client"
+import type { Banner, Category } from "@prisma/client"
 
 type CategoryFormProps = {
     initialData: Category | null
-    billboards: Billboard[]
+    banners: Banner[]
 }
 
 export type CategoryFormValues = z.infer<typeof schema>
 
 const schema = z.object({
     name: z.string().min(1),
-    billboardId: z.string(),
+    bannerId: z.string(),
 })
 
 const ENTITY = "Category"
 const SEGMENT = "categories"
 
-export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboards }) => {
+export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, banners }) => {
     const { setOpen, setClosed, isOpen } = useOpen()
     const { isLoading, setLoading, setLoaded } = useLoading()
 
@@ -53,7 +53,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
 
     const form = useForm<CategoryFormValues>({
         resolver: zodResolver(schema),
-        defaultValues: initialData ?? { name: "", billboardId: "" },
+        defaultValues: initialData ?? { name: "", bannerId: "" },
     })
 
     const onSubmit = async (values: CategoryFormValues) => {
@@ -146,7 +146,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
                             />
                             <FormField
                                 control={form.control}
-                                name="billboardId"
+                                name="bannerId"
                                 render={({ field }) => (
                                     <FormItem className="relative my-1">
                                         <Select
@@ -159,19 +159,19 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
                                                 <SelectTrigger className="h-12">
                                                     <SelectValue
                                                         defaultValue={field.value}
-                                                        placeholder="Select A Billboard"
+                                                        placeholder="Select A Banner"
                                                         className="!placeholder-transparent !peer"
                                                     />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                {billboards.map((billboard, i) => (
+                                                {banners.map((banner, i) => (
                                                     <SelectItem
                                                         key={i}
-                                                        value={billboard.id}
+                                                        value={banner.id}
                                                         className="h-12"
                                                     >
-                                                        {billboard.label}
+                                                        {banner.label}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
@@ -184,7 +184,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, billboa
                                                 "peer-focus:-top-5 peer-focus:text-sm peer-focus:text-ring"
                                             )}
                                         >
-                                            Billboard
+                                            Banner
                                         </FormLabel>
                                     </FormItem>
                                 )}

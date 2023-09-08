@@ -7,7 +7,7 @@ import { CategoryFormValues, CategoryParams } from "@/types"
 export async function PATCH(req: Request, { params: { storeId, categoryId } }: CategoryParams) {
     try {
         const { userId } = auth()
-        const { name, billboardId } = (await req.json()) as CategoryFormValues
+        const { name, bannerId } = (await req.json()) as CategoryFormValues
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })
@@ -17,8 +17,8 @@ export async function PATCH(req: Request, { params: { storeId, categoryId } }: C
             return new NextResponse("Name Is Required", { status: 400 })
         }
 
-        if (!billboardId) {
-            return new NextResponse("Billboard ID Is Required", { status: 400 })
+        if (!bannerId) {
+            return new NextResponse("Banner ID Is Required", { status: 400 })
         }
 
         if (!categoryId) {
@@ -44,7 +44,7 @@ export async function PATCH(req: Request, { params: { storeId, categoryId } }: C
             },
             data: {
                 name,
-                billboardId,
+                bannerId,
             },
         })
         return NextResponse.json(category)

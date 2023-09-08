@@ -2,12 +2,12 @@ import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
-import type { BillboardFormValues, StoreParams } from "@/types"
+import type { BannerFormValues, StoreParams } from "@/types"
 
 export async function POST(req: Request, { params: { storeId } }: StoreParams) {
     try {
         const { userId } = auth()
-        const { label, url, key, name, size } = (await req.json()) as BillboardFormValues
+        const { label, url, key, name, size } = (await req.json()) as BannerFormValues
 
         if (!userId) {
             return new NextResponse("You must be logged in", { status: 401 })
@@ -38,7 +38,7 @@ export async function POST(req: Request, { params: { storeId } }: StoreParams) {
             })
         }
 
-        const billboard = await prismadb.billboard.create({
+        const banner = await prismadb.banner.create({
             data: {
                 label,
                 storeId,
@@ -49,9 +49,9 @@ export async function POST(req: Request, { params: { storeId } }: StoreParams) {
             },
         })
 
-        return NextResponse.json(billboard)
+        return NextResponse.json(banner)
     } catch (error) {
-        console.log("[BILLBOARDS_POST]", error)
+        console.log("[BANNERS_POST]", error)
         return new NextResponse("Internal Error", { status: 500 })
     }
 }
@@ -62,15 +62,15 @@ export async function GET(_req: Request, { params: { storeId } }: StoreParams) {
             return new NextResponse("Store ID is required", { status: 400 })
         }
 
-        const billboards = await prismadb.billboard.findMany({
+        const banners = await prismadb.banner.findMany({
             where: {
                 storeId,
             },
         })
 
-        return NextResponse.json(billboards)
+        return NextResponse.json(banner)
     } catch (error) {
-        console.log("[BILLBOARDS_GET]", error)
+        console.log("[BANNERS_GET]", error)
         return new NextResponse("Internal Error", { status: 500 })
     }
 }
