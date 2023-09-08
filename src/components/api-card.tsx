@@ -5,13 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { BadgeProps } from "@/components/ui/badge"
 
 type Env = {
-    method?: undefined
+    method?: null
     env: string
 }
 
 type Method = {
     method: "GET" | "POST" | "PATCH" | "DELETE"
-    env?: undefined
+    env?: null
 }
 
 type TitleProps = Env | Method
