@@ -4,13 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 import type { BadgeProps } from "@/components/ui/badge"
 
-type TitleProps = {
+type Env = {
     method?: undefined
     env: string
-} | {
+}
+
+type Method = {
     method: "GET" | "POST" | "PATCH" | "DELETE"
     env?: undefined
 }
+
+type TitleProps = Env | Method
 
 type ApiCardProps = React.ComponentProps<typeof Card> & {
     content: string
@@ -46,7 +50,11 @@ export const ApiCard: React.FC<ApiCardProps> = ({ method, env, quantity, content
             <CardContent className="relative">
                 <code className="flex items-center justify-between rounded-md border border-border h-14 px-4 text-sm whitespace-nowrap overflow-scroll">
                     {content}
-                    <CopyButton content={content} contentName="API Route" className="absolute right-2" />
+                    <CopyButton
+                        content={env ? `${env}=${content}` : content}
+                        contentName="API Route"
+                        className="absolute right-2"
+                    />
                 </code>
             </CardContent>
         </Card>
