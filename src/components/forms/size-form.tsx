@@ -54,9 +54,10 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
     })
 
     const onSubmit = async (values: SizeFormValues) => {
-        const isFormDirty = form.formState.isDirty
+        const dirtyFields = form.formState.dirtyFields
+        const areFieldsDirty = Object.values(dirtyFields).some((value) => value)
 
-        if (initialData && !isFormDirty) {
+        if (initialData && !areFieldsDirty) {
             toast({ title: "Nothing has changed", description: "The data is identicle" })
             return
         }

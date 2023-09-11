@@ -150,10 +150,17 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
     }
 
     const onSubmit = async (values: ProductFormValues) => {
-        const isFormDirty = form.formState.isDirty
+        const dirtyFields = form.formState.dirtyFields
+        const areFieldsDirty = Object.values(dirtyFields).some((value) => value)
+
+        if (initialData && !areFieldsDirty) {
+            toast({ title: "Nothing has changed", description: "The data is identicle" })
+            return
+        }
+
         const isImagesDirty = form.getFieldState("images").isDirty
 
-        if (initialData && !isFormDirty && !isImagesDirty) {
+        if (initialData && !areFieldsDirty && !isImagesDirty) {
             toast({ title: "Nothing has changed", description: "The data is identicle" })
             return
         }

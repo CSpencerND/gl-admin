@@ -57,9 +57,10 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, banners
     })
 
     const onSubmit = async (values: CategoryFormValues) => {
-        const isFormDirty = form.formState.isDirty
+        const dirtyFields = form.formState.dirtyFields
+        const areFieldsDirty = Object.values(dirtyFields).some((value) => value)
 
-        if (initialData && !isFormDirty) {
+        if (initialData && !areFieldsDirty) {
             toast({ title: "Nothing has changed", description: "The data is identicle" })
             return
         }

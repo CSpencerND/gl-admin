@@ -56,9 +56,10 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
     })
 
     const onSubmit = async (values: ColorFormValues) => {
-        const isFormDirty = form.formState.isDirty
+        const dirtyFields = form.formState.dirtyFields
+        const areFieldsDirty = Object.values(dirtyFields).some((value) => value)
 
-        if (initialData && !isFormDirty) {
+        if (initialData && !areFieldsDirty) {
             toast({ title: "Nothing has changed", description: "The data is identicle" })
             return
         }
