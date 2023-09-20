@@ -4,6 +4,7 @@ export type { ColorFormValues } from "@/components/forms/color-form"
 export type { ProductFormValues } from "@/components/forms/product-form"
 export type { StoreFormValues } from "@/components/forms/settings-form"
 export type { SizeFormValues } from "@/components/forms/size-form"
+export type { GraphData } from "@/lib/actions/get-graph-revenue"
 
 export type ImageData = {
     name: string
@@ -57,3 +58,7 @@ export type ColumnType<T = {}> = {
     id: string
     createdAt: string
 } & T
+
+export type CheckoutRequest = {
+    productIds: string[]
+}

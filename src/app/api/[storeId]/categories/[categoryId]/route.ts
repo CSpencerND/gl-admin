@@ -102,6 +102,9 @@ export async function GET(_req: Request, { params: { categoryId } }: CategoryPar
             where: {
                 id: categoryId,
             },
+            include: {
+                banner: true,
+            },
         })
 
         return NextResponse.json(category)

@@ -1,13 +1,16 @@
 "use client"
 
-import * as React from "react"
-import { useTheme } from "next-themes"
-
 import { Button } from "@/components/ui/button"
 import { Moon, Sun } from "lucide-react"
 
+import { useTheme } from "next-themes"
+import { useHydrated } from "@/lib/hooks"
+
 export function ThemeToggler() {
     const { setTheme, theme } = useTheme()
+
+    const hydrated = useHydrated()
+    if (!hydrated) return null
 
     return (
         <Button

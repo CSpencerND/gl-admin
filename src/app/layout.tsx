@@ -1,4 +1,4 @@
-// TODO: ADD tRPC?
+// PERF: MAYBE ADD tRPC?
 
 import { ModalProvider } from "@/components/modals/modal-provider"
 import { TailwindIndicator } from "@/components/theme/tailwind-indicator"
@@ -26,11 +26,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 suppressHydrationWarning
             >
                 <body className={inter.className}>
-                    <ThemeProvider attribute="class">
+                    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
                         <Toaster />
                         <ModalProvider />
                         {children}
-                        <TailwindIndicator />
                     </ThemeProvider>
                 </body>
             </html>

@@ -1,9 +1,10 @@
 import { MainNav } from "@/components/main-nav"
 import { StoreSwitcher } from "@/components/store-switcher"
+import { ThemeToggler } from "./theme/theme-toggler"
 
+import prismadb from "@/lib/prismadb"
 import { UserButton, auth } from "@clerk/nextjs"
 import { dark } from "@clerk/themes"
-import prismadb from "@/lib/prismadb"
 
 import { redirect } from "next/navigation"
 
@@ -18,8 +19,8 @@ export const Navbar: React.FC<NavbarProps> = async () => {
 
     const stores = await prismadb.store.findMany({
         where: {
-            userId
-        }
+            userId,
+        },
     })
 
     return (
@@ -31,7 +32,11 @@ export const Navbar: React.FC<NavbarProps> = async () => {
                     <MainNav />
                 </nav>
                 <div className="ml-auto flex items-center gap-8">
-                    <UserButton afterSignOutUrl="/" appearance={{ baseTheme: dark }} />
+                    <ThemeToggler />
+                    <UserButton
+                        afterSignOutUrl="/"
+                        appearance={{ baseTheme: dark }}
+                    />
                 </div>
             </div>
         </header>
