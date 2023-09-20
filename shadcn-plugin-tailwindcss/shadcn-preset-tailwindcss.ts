@@ -1,3 +1,4 @@
+/** @ts-ignore */
 import animate from "tailwindcss-animate"
 import shadcn from "./shadcn-plugin-tailwindcss"
 
