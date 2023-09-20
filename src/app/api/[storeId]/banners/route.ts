@@ -68,7 +68,7 @@ export async function GET(_req: Request, { params: { storeId } }: StoreParams) {
             },
         })
 
-        return NextResponse.json(banner)
+        return NextResponse.json(banners)
     } catch (error) {
         console.log("[BANNERS_GET]", error)
         return new NextResponse("Internal Error", { status: 500 })
