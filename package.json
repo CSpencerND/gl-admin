@@ -8,7 +8,8 @@
         "start": "next start",
         "lint": "next lint",
         "db": "pnpm dlx prisma generate && pnpm dlx prisma db push",
-        "script": "nodemon ./prisma/script.mjs"
+        "script": "nodemon ./prisma/script.mjs",
+        "postinstall": "prisma generate"
     },
     "dependencies": {
         "@clerk/nextjs": "^4.23.2",
