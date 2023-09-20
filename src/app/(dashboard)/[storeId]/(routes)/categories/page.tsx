@@ -27,7 +27,7 @@ const CategoriesPage: NextPage<CategoriesPageProps> = async ({ params: { storeId
     const formattedCategories: CategoryColumn[] = categories.map(({ id, name, banner, createdAt }) => ({
         id,
         name,
-        banner: banner.label,
+        bannerLabel: banner.label,
         createdAt: format(createdAt, "MMMM do, yyyy"),
     }))
 
