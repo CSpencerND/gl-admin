@@ -1,7 +1,6 @@
 export { useCopy } from "./use-copy"
 export { useHydrated } from "./use-hydrated"
 export { useLoading } from "./use-loading"
-export { useLog } from "./use-log"
 export { useModalStore } from "./use-modal"
 export { useMounted } from "./use-mounted"
 export { useOpen } from "./use-open"
