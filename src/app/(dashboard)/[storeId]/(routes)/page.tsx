@@ -13,10 +13,12 @@ import type { NextPage } from "next"
 type DashProps = StoreParams
 
 const DashboardPage: NextPage<DashProps> = async ({ params: { storeId } }) => {
-    const totalRevenue = await getTotalRevenue(storeId)
-    const salesCount = await getSalesCount(storeId)
-    const stockCount = await getStockCount(storeId)
-    const graphRevenue = await getGraphRevenue(storeId)
+    const [totalRevenue, salesCount, stockCount, graphRevenue] = await Promise.all([
+        getTotalRevenue(storeId),
+        getSalesCount(storeId),
+        getStockCount(storeId),
+        getGraphRevenue(storeId),
+    ])
 
     return (
         <MainDiv>
