@@ -100,7 +100,7 @@ export const OverviewStyleToggle = () => {
     return (
         <TooltipProvider>
             <Tooltip>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                     <Button
                         onClick={setChartStyle}
                         size="icon"
@@ -112,14 +112,14 @@ export const OverviewStyleToggle = () => {
                             <LineChartIcon className="size-sm" />
                         )}
                     </Button>
-                    <TooltipContent
-                        className="origin-[--radix-tooltip-content-transform-origin]"
-                        role="tooltip"
-                        align="end"
-                    >
-                        Toggle Chart Style
-                    </TooltipContent>
                 </TooltipTrigger>
+                <TooltipContent
+                    className="origin-[--radix-tooltip-content-transform-origin]"
+                    role="tooltip"
+                    align="end"
+                >
+                    Toggle Chart Style
+                </TooltipContent>
             </Tooltip>
         </TooltipProvider>
     )
