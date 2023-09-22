@@ -1,7 +1,6 @@
 // PERF: MAYBE ADD tRPC?
 
 import { ModalProvider } from "@/components/modals/modal-provider"
-import { TailwindIndicator } from "@/components/theme/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { ClerkProvider } from "@clerk/nextjs"
@@ -21,12 +20,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <ClerkProvider>
-            <html
-                lang="en"
-                suppressHydrationWarning
-            >
+            <html lang="en">
                 <body className={inter.className}>
-                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem
+                    >
                         <Toaster />
                         <ModalProvider />
                         {children}
