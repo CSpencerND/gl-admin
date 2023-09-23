@@ -61,6 +61,8 @@ export async function POST(req: Request, { params }: StoreParams) {
         },
     })
 
+    const reqOrigin = req.headers.get("origin")
+
     const session = await stripe.checkout.sessions.create({
         line_items,
         mode: "payment",
@@ -68,12 +70,12 @@ export async function POST(req: Request, { params }: StoreParams) {
         phone_number_collection: {
             enabled: true,
         },
-        success_url: "/cart?success=1",
-        cancel_url: "/cart?canceled=1",
+        success_url: `${reqOrigin}/cart?success=1`,
+        cancel_url: `${reqOrigin}/cart?canceled=1`,
         metadata: {
             orderId: order.id,
         },
     })
 
-    return NextResponse.json({ url: session.url }, { headers: corsHeaders })
+    return NextResponse.json({ sessionId: session.id }, { headers: corsHeaders })
 }
