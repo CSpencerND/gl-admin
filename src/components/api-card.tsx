@@ -48,7 +48,7 @@ export const ApiCard: React.FC<ApiCardProps> = ({ method, env, quantity, content
                 </CardTitle>
             </CardHeader>
             <CardContent className="relative">
-                <code className="flex items-center justify-between rounded-md border border-border h-14 px-4 text-sm whitespace-nowrap overflow-scroll">
+                <code className="flex items-center justify-between rounded-md border border-border h-14 px-4 text-sm whitespace-nowrap overflow-scroll bg-background">
                     {content}
                     <CopyButton
                         content={env ? `${env}=${content}` : content}

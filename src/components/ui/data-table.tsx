@@ -12,8 +12,11 @@ import {
     getPaginationRowModel,
     useReactTable,
 } from "@tanstack/react-table"
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
 import { useState } from "react"
+
+import { cn } from "@/lib/utils"
 
 export type DataTableProps<TData, TValue> = {
     columns: ColumnDef<TData, TValue>[]
@@ -37,6 +40,11 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, className }
         },
     })
 
+    const pageCount = table.getPageCount()
+    const currentPage = table.getState().pagination.pageIndex + 1
+    const canPrevPage = table.getCanPreviousPage()
+    const canNextPage = table.getCanNextPage()
+
     return (
         <div className={className}>
             <div className="flex items-center py-4">
@@ -47,7 +55,6 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, className }
                     className="max-w-sm"
                 />
             </div>
-            {/* <div className="rounded-lg ring-1 ring-border"> */}
             <div className="rounded-lg">
                 <Table>
                     <TableHeader>
@@ -92,26 +99,31 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, className }
                     </TableBody>
                 </Table>
             </div>
-            {table.getRowModel().rows?.length > table.getState().pagination.pageSize ? (
-                <div className="flex items-center justify-end space-x-2 py-4">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                    >
-                        Previous
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                    >
-                        Next
-                    </Button>
-                </div>
-            ) : null}
+            <div className={cn(pageCount > 1 ? "flex items-center justify-end gap-2 pt-2" : "hidden")}>
+                <Button
+                    // variant="outline"
+                    variant={canPrevPage ? "outline" : "ghost"}
+                    size="icon"
+                    onClick={() => table.previousPage()}
+                    disabled={!canPrevPage}
+                    // className={cn(!canPrevPage ? "hidden" : "")}
+                >
+                    <ChevronLeftIcon />
+                </Button>
+                <p>
+                    {currentPage} of {pageCount}
+                </p>
+                <Button
+                    // variant="outline"
+                    variant={canNextPage ? "outline" : "ghost"}
+                    size="icon"
+                    onClick={() => table.nextPage()}
+                    disabled={!canNextPage}
+                    // className={cn(!canNextPage ? "hidden" : "")}
+                >
+                    <ChevronRightIcon />
+                </Button>
+            </div>
         </div>
     )
 }

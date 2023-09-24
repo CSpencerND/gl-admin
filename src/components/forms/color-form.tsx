@@ -4,9 +4,11 @@ import { FormEntry } from "@/components/forms/form-entry"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { SectionDiv } from "@/components/ui/divs"
-import { Form } from "@/components/ui/form"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
+import { Input } from "@/components/ui/input"
 
 import { useLoading } from "@/lib/hooks/use-loading"
 import { useOpen } from "@/lib/hooks/use-open"
@@ -14,6 +16,7 @@ import { useToast } from "@/lib/hooks/use-toast"
 import { useParams, useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
+import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import * as z from "zod"
@@ -119,48 +122,67 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                 isLoading={isLoading}
             />
             <SectionDiv>
-                <div className="flex items-center justify-between">
-                    <Heading
-                        title={title}
-                        description={description}
-                    />
-                    {initialData ? (
-                        <TrashButton
-                            disabled={isLoading}
-                            onClick={setOpen}
+                <Card>
+                    <div className="flex items-center justify-between">
+                        <Heading
+                            title={title}
+                            description={description}
                         />
-                    ) : null}
-                </div>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="w-full space-y-8"
-                    >
-                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-                            {/* <div className="flex flex-col gap-8"> */}
-                            <FormEntry
-                                control={form.control}
-                                name="name"
-                                label="Color Name"
-                                floating
+                        {initialData ? (
+                            <TrashButton
+                                disabled={isLoading}
+                                onClick={setOpen}
+                                className="self-start"
                             />
-                            <FormEntry
-                                control={form.control}
-                                name="value"
-                                label="Color Value"
-                                colorIndicator
-                            />
-                            {/* </div> */}
-                        </div>
-                        <Button
-                            disabled={isLoading}
-                            type="submit"
-                            className="ml-auto"
+                        ) : null}
+                    </div>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="w-full space-y-8"
                         >
-                            {action}
-                        </Button>
-                    </form>
-                </Form>
+                            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+                                <FormEntry
+                                    control={form.control}
+                                    name="name"
+                                    label="Color Name"
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="value"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="ml-3">Color Value</FormLabel>
+                                            <FormControl>
+                                                <div className="flex items-center gap-4">
+                                                    <Input
+                                                        placeholder="Color Value"
+                                                        disabled={isLoading}
+                                                        {...field}
+                                                    />
+                                                    <span
+                                                        aria-hidden="true"
+                                                        className="border p-4 rounded-full"
+                                                        style={{ backgroundColor: field.value }}
+                                                    />
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <Button
+                                disabled={isLoading}
+                                type="submit"
+                                className="ml-auto"
+                            >
+                                {action}
+                            </Button>
+                        </form>
+                    </Form>
+                </Card>
             </SectionDiv>
         </>
     )

@@ -32,7 +32,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
         >
             <DialogContent
                 asModal
-                className={cn("!prose dark:!prose-invert p-8 prose-headings:!mt-0 prose-h2:!mb-1.5", className)}
+                className={cn("!prose dark:!prose-invert p-8 prose-headings:!mt-0 prose-h2:!mb-1.5 bg-card", className)}
             >
                 {!asAlert ? (
                     <DialogHeader>

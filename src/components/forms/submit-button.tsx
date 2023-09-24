@@ -12,7 +12,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({ isSubmitting, submit
             disabled={isSubmitting}
             type="submit"
         >
-            {isSubmitting ? <FancySpinner isLoading={isSubmitting} /> : submitActionText}
+            {isSubmitting ? <FancySpinner isLoading={isSubmitting} className="stroke-current fill-current" /> : submitActionText}
         </Button>
     )
 }

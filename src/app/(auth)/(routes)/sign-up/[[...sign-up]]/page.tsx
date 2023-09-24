@@ -1,25 +1,29 @@
-// "use client"
+"use client"
 
 import { SignUp } from "@clerk/nextjs"
 
-import { dark } from "@clerk/themes"
+// import { dark } from "@clerk/themes"
 // import { useTheme } from "next-themes"
 
-import type { NextPage } from "next"
+export default function SignUpPage() {
+    // const { resolvedTheme } = useTheme()
 
-const SignUpPage: NextPage = () => {
-    // const { theme } = useTheme()
-
-    // if (theme === "dark")
     return (
         <SignUp
-            appearance={{
-                baseTheme: dark,
-            }}
+            // appearance={{
+            //     baseTheme: resolvedTheme === "dark" ? dark : undefined,
+            //     variables: {
+            //         colorPrimary: "rgb(13 148 136)",
+            //         // colorDanger: "",
+            //         // colorSuccess: "",
+            //         // colorWarning: "",
+            //         // colorTextOnPrimaryBackground: "",
+            //         // colorTextSecondary: "",
+            //         // colorBackground: "",
+            //         // colorInputText: "",
+            //         // colorInputBackground: "",
+            //     },
+            // }}
         />
     )
-
-    // return <SignUp />
 }
-
-export default SignUpPage

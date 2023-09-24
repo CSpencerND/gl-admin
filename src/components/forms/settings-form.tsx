@@ -5,6 +5,7 @@ import { FormEntry } from "@/components/forms/form-entry"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { SectionDiv } from "@/components/ui/divs"
 import { Form } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
@@ -90,43 +91,44 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
                 onConfirm={onDelete}
                 isLoading={isLoading}
             />
-            <div className="flex items-center justify-between">
-                <Heading
-                    title="Settings"
-                    description="Manage store preferences"
-                />
-                {initialData ? (
-                    <TrashButton
-                        disabled={isLoading}
-                        onClick={setOpen}
-                    />
-                ) : null}
-            </div>
             <SectionDiv>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="w-full space-y-8"
-                    >
-                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-                            <FormEntry
-                                control={form.control}
-                                name="name"
-                                label="Store Name"
-                                isLoading={isLoading}
-                                floating
+                <Card>
+                    <div className="flex items-center justify-between">
+                        <Heading
+                            title="Settings"
+                            description="Manage store preferences"
+                        />
+                        {initialData ? (
+                            <TrashButton
+                                disabled={isLoading}
+                                onClick={setOpen}
+                                className="self-start"
                             />
-                        </div>
-                        <Button
-                            // variant="secondary"
-                            disabled={isLoading}
-                            type="submit"
-                            className="ml-auto"
+                        ) : null}
+                    </div>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="w-full space-y-8"
                         >
-                            Save Changes
-                        </Button>
-                    </form>
-                </Form>
+                            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+                                <FormEntry
+                                    control={form.control}
+                                    name="name"
+                                    label="Store Name"
+                                    isLoading={isLoading}
+                                />
+                            </div>
+                            <Button
+                                disabled={isLoading}
+                                type="submit"
+                                className="ml-auto"
+                            >
+                                Save Changes
+                            </Button>
+                        </form>
+                    </Form>
+                </Card>
             </SectionDiv>
             <SectionDiv>
                 <ApiCard
