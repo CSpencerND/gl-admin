@@ -173,6 +173,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                                                         {...field}
                                                     />
                                                     <Button
+                                                        aria-labelledby="colorValueDescription"
                                                         type="button"
                                                         className="rounded-full size-lg"
                                                         size="icon"
@@ -191,7 +192,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                                                     <ColorPicker open={isShowColorPicker} initialValue={initialData?.value} />
                                                 </div>
                                             </FormControl>
-                                            <FormDescription className="pl-3">
+                                            <FormDescription id="colorValueDescription" className="pl-3">
                                                 click the icon for a color picker
                                             </FormDescription>
                                             <FormMessage />
