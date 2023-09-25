@@ -24,22 +24,22 @@ function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>) {
 
     return (
         <>
-            <SectionDiv className="">
+            <SectionDiv>
+                <div className="flex items-center justify-between">
+                    <Heading
+                        title={`${entityName} (${data.length})`}
+                        description={`Manage ${entityName} for your store`}
+                        className="p-2"
+                    />
+                    <Button
+                        onClick={() => router.push(`/${storeId}/${entityName.toLowerCase()}/new`)}
+                        className="self-start"
+                    >
+                        <PlusCircleIcon className="mr-3 size-sm" />
+                        Add New
+                    </Button>
+                </div>
                 <Card>
-                    <div className="flex items-center justify-between">
-                        <Heading
-                            title={`${entityName} (${data.length})`}
-                            description={`Manage ${entityName} for your store`}
-                            className="p-2"
-                        />
-                        <Button
-                            onClick={() => router.push(`/${storeId}/${entityName.toLowerCase()}/new`)}
-                            className="self-start"
-                        >
-                            <PlusCircleIcon className="mr-3 size-sm" />
-                            Add New
-                        </Button>
-                    </div>
                     <DataTable
                         data={data}
                         searchKey={searchKey}
@@ -69,12 +69,12 @@ type OrderDataClientProps = {
 function OrderDataClient({ data }: OrderDataClientProps) {
     return (
         <SectionDiv>
+            <Heading
+                title={`Orders (${data.length})`}
+                description={`Manage orders for your store`}
+                className="p-2"
+            />
             <Card>
-                <Heading
-                    title={`Orders (${data.length})`}
-                    description={`Manage orders for your store`}
-                    className="p-2"
-                />
                 <DataTable
                     data={data}
                     searchKey="products"

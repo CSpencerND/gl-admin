@@ -248,20 +248,20 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
                 isLoading={isLoading}
             />
             <SectionDiv>
-                <Card>
-                    <div className="flex items-center justify-between">
-                        <Heading
-                            title={headingTitle}
-                            description={headingDescription}
+                <div className="flex items-center justify-between pl-2">
+                    <Heading
+                        title={headingTitle}
+                        description={headingDescription}
+                    />
+                    {initialData ? (
+                        <TrashButton
+                            disabled={isLoading}
+                            onClick={setOpen}
+                            className="self-start"
                         />
-                        {initialData ? (
-                            <TrashButton
-                                disabled={isLoading}
-                                onClick={setOpen}
-                                className="self-start"
-                            />
-                        ) : null}
-                    </div>
+                    ) : null}
+                </div>
+                <Card>
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}

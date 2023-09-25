@@ -118,20 +118,20 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
                 isLoading={isLoading}
             />
             <SectionDiv>
-                <Card>
-                    <div className="flex items-center justify-between">
-                        <Heading
-                            title={title}
-                            description={description}
+                <div className="flex items-center justify-between pl-2">
+                    <Heading
+                        title={title}
+                        description={description}
+                    />
+                    {initialData ? (
+                        <TrashButton
+                            disabled={isLoading}
+                            onClick={setOpen}
+                            className="self-start"
                         />
-                        {initialData ? (
-                            <TrashButton
-                                disabled={isLoading}
-                                onClick={setOpen}
-                                className="self-start"
-                            />
-                        ) : null}
-                    </div>
+                    ) : null}
+                </div>
+                <Card>
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
