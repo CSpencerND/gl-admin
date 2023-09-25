@@ -3,6 +3,7 @@ import { Hue, Saturation, useColor, type IColor } from "react-color-palette"
 import "react-color-palette/css"
 
 import { useHydrated } from "@/lib/hooks"
+import { useCallback, useEffect } from "react"
 import { create } from "zustand"
 
 type UseColorPicker = {
@@ -23,19 +24,41 @@ export const useColorPicker = create<UseColorPicker>()((set) => ({
 
 type ColorPickerProps = {
     open: boolean
+    initialValue: string | undefined
 }
 
-export const ColorPicker: React.FC<ColorPickerProps> = ({ open }) => {
+// interface IColor {
+//     readonly hex: string
+//     readonly rgb: IColorRgb
+//     readonly hsv: IColorHsv
+// }
+
+export const ColorPicker: React.FC<ColorPickerProps> = ({ open, initialValue }) => {
     const color = useColorPicker((s) => s.color)
     const setColor = useColorPicker((s) => s.setColor)
     const closeColorPicker = useColorPicker((s) => s.closeColorPicker)
 
     const [libColor, libSetColor] = useColor(color)
 
-    const onColorChange = (c: IColor) => {
-        libSetColor(c)
-        setColor(c.hex)
-    }
+    const onColorChange = useCallback(
+        (c: IColor) => {
+            libSetColor(c)
+            setColor(c.hex)
+        },
+        [libSetColor, setColor]
+    )
+
+    useEffect(() => {
+        if (!initialValue) return
+
+        const colorObject = {
+            hex: initialValue,
+            rgb: { r: 0, g: 0, b: 0, a: 0 },
+            hsv: { h: 0, s: 0, v: 0, a: 0 },
+        } satisfies IColor
+
+        onColorChange(colorObject)
+    }, [initialValue, onColorChange])
 
     const hydrated = useHydrated()
     if (!hydrated) return null

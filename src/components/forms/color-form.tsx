@@ -188,7 +188,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                                                             }}
                                                         />
                                                     </Button>
-                                                    <ColorPicker open={isShowColorPicker} />
+                                                    <ColorPicker open={isShowColorPicker} initialValue={initialData?.value} />
                                                 </div>
                                             </FormControl>
                                             <FormDescription className="pl-3">
