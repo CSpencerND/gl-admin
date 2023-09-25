@@ -1,7 +1,9 @@
+import Link from "next/link"
+
 import { MainNav } from "@/components/main-nav"
 import { StoreSwitcher } from "@/components/store-switcher"
-import { ThemeToggler } from "./theme/theme-toggler"
 import { UserButton, auth } from "@clerk/nextjs"
+import { ThemeToggler } from "./theme/theme-toggler"
 
 import prismadb from "@/lib/prismadb"
 
@@ -26,15 +28,15 @@ export const Navbar: React.FC<NavbarProps> = async () => {
         <header className="border-b sticky top-0 backdrop-blur-lg">
             <div className="container flex gap-8 items-center px-8 h-[74px]">
                 <nav className="flex items-center gap-8">
-                    <h1 aria-label="Gryffyn Labs Enterprise">GLE</h1>
+                    <Link href="/" className="py-2 rounded-lg">
+                        <h1 aria-label="Gryffyn Labs Enterprise">GLE</h1>
+                    </Link>
                     <StoreSwitcher items={stores} />
                     <MainNav />
                 </nav>
                 <div className="ml-auto flex items-center gap-8">
                     <ThemeToggler />
-                    <UserButton
-                        afterSignOutUrl="/"
-                    />
+                    <UserButton afterSignOutUrl="/" />
                 </div>
             </div>
         </header>
