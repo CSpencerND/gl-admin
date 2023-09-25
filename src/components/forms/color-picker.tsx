@@ -1,5 +1,5 @@
 import { Modal } from "@/components/ui/modal"
-import { ColorPicker as ColorPickerComponent, useColor } from "react-color-palette"
+import { Hue, Saturation, useColor, type IColor } from "react-color-palette"
 import "react-color-palette/css"
 
 import { useHydrated } from "@/lib/hooks"
@@ -17,7 +17,7 @@ export const useColorPicker = create<UseColorPicker>()((set) => ({
     isShowColorPicker: false,
     openColorPicker: () => set({ isShowColorPicker: true }),
     closeColorPicker: () => set({ isShowColorPicker: false }),
-    color: "#000000",
+    color: "#ff0000",
     setColor: (e: string) => set({ color: e }),
 }))
 
@@ -32,6 +32,11 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ open }) => {
 
     const [libColor, libSetColor] = useColor(color)
 
+    const onColorChange = (c: IColor) => {
+        libSetColor(c)
+        setColor(c.hex)
+    }
+
     const hydrated = useHydrated()
     if (!hydrated) return null
 
@@ -39,16 +44,15 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ open }) => {
         <Modal
             isOpen={open}
             onClose={closeColorPicker}
-            className="p-0"
         >
-            <ColorPickerComponent
-                hideAlpha
-                hideInput={["rgb", "hsv"]}
+            <Saturation
+                height={384}
                 color={libColor}
-                onChange={(c) => {
-                    libSetColor(c)
-                    setColor(c.hex)
-                }}
+                onChange={onColorChange}
+            />
+            <Hue
+                color={libColor}
+                onChange={onColorChange}
             />
         </Modal>
     )
