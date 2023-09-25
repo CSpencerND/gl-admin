@@ -74,6 +74,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ open, initialValue }) 
                     color={libColor}
                     onChange={onColorChange}
                 />
+                <div
+                    className="p-4 rounded-md"
+                    style={{ backgroundColor: color }}
+                />
             </div>
         </Modal>
     )
