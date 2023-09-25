@@ -27,12 +27,6 @@ type ColorPickerProps = {
     initialValue: string | undefined
 }
 
-// interface IColor {
-//     readonly hex: string
-//     readonly rgb: IColorRgb
-//     readonly hsv: IColorHsv
-// }
-
 export const ColorPicker: React.FC<ColorPickerProps> = ({ open, initialValue }) => {
     const color = useColorPicker((s) => s.color)
     const setColor = useColorPicker((s) => s.setColor)
@@ -53,9 +47,9 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ open, initialValue }) 
 
         const colorObject = {
             hex: initialValue,
-            rgb: { r: 0, g: 0, b: 0, a: 0 },
-            hsv: { h: 0, s: 0, v: 0, a: 0 },
-        } satisfies IColor
+            rgb: {},
+            hsv: {},
+        } as IColor
 
         onColorChange(colorObject)
     }, [initialValue, onColorChange])
