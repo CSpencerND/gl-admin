@@ -6,7 +6,7 @@ import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { SectionDiv } from "@/components/ui/divs"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
 import { Input } from "@/components/ui/input"
 import { ColorPicker, useColorPicker } from "./color-picker"
@@ -191,6 +191,9 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                                                     <ColorPicker open={isShowColorPicker} />
                                                 </div>
                                             </FormControl>
+                                            <FormDescription className="pl-3">
+                                                click the icon for a color picker
+                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}
