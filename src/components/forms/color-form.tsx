@@ -6,17 +6,19 @@ import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { SectionDiv } from "@/components/ui/divs"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
 import { Input } from "@/components/ui/input"
+import { ColorPicker, useColorPicker } from "./color-picker"
 
 import { useLoading } from "@/lib/hooks/use-loading"
 import { useOpen } from "@/lib/hooks/use-open"
 import { useToast } from "@/lib/hooks/use-toast"
 import { useParams, useRouter } from "next/navigation"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 
-import { cn } from "@/lib/utils"
+import { isHexCode } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import * as z from "zod"
@@ -41,6 +43,10 @@ const ENTITY = "Color"
 const SEGMENT = "colors"
 
 export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
+    const isShowColorPicker = useColorPicker((s) => s.isShowColorPicker)
+    const openColorPicker = useColorPicker((s) => s.openColorPicker)
+    const color = useColorPicker((s) => s.color)
+
     const { setOpen, setClosed, isOpen } = useOpen()
     const { isLoading, setLoading, setLoaded } = useLoading()
 
@@ -113,6 +119,10 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
         }
     }
 
+    useEffect(() => {
+        form.setValue("value", color)
+    }, [color, form])
+
     return (
         <>
             <AlertModal
@@ -122,20 +132,20 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                 isLoading={isLoading}
             />
             <SectionDiv>
-                <Card>
-                    <div className="flex items-center justify-between">
-                        <Heading
-                            title={title}
-                            description={description}
+                <div className="flex items-center justify-between pl-2">
+                    <Heading
+                        title={title}
+                        description={description}
+                    />
+                    {initialData ? (
+                        <TrashButton
+                            disabled={isLoading}
+                            onClick={setOpen}
+                            className="self-start"
                         />
-                        {initialData ? (
-                            <TrashButton
-                                disabled={isLoading}
-                                onClick={setOpen}
-                                className="self-start"
-                            />
-                        ) : null}
-                    </div>
+                    ) : null}
+                </div>
+                <Card>
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
@@ -155,17 +165,30 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                                         <FormItem>
                                             <FormLabel className="ml-3">Color Value</FormLabel>
                                             <FormControl>
-                                                <div className="flex items-center gap-4">
+                                                <div className="flex items-center gap-4 relative">
                                                     <Input
                                                         placeholder="Color Value"
                                                         disabled={isLoading}
+                                                        maxLength={7}
                                                         {...field}
                                                     />
-                                                    <span
-                                                        aria-hidden="true"
-                                                        className="border p-4 rounded-full"
-                                                        style={{ backgroundColor: field.value }}
-                                                    />
+                                                    <Button
+                                                        type="button"
+                                                        className="rounded-full size-lg"
+                                                        size="icon"
+                                                        variant="ghost"
+                                                        onClick={openColorPicker}
+                                                    >
+                                                        <span
+                                                            className="border p-4 rounded-full"
+                                                            style={{
+                                                                backgroundColor: isHexCode(field.value)
+                                                                    ? field.value
+                                                                    : color,
+                                                            }}
+                                                        />
+                                                    </Button>
+                                                    <ColorPicker open={isShowColorPicker} />
                                                 </div>
                                             </FormControl>
                                             <FormMessage />
