@@ -7,6 +7,7 @@ import { SectionDiv } from "@/components/ui/divs"
 import { Heading } from "@/components/ui/heading"
 import { PlusCircleIcon } from "lucide-react"
 import { OrderColumns, type OrderColumn } from "./order-columns"
+import { Card } from "@/components/ui/card"
 
 import { useParams, useRouter } from "next/navigation"
 
@@ -23,23 +24,29 @@ function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>) {
 
     return (
         <>
-            <SectionDiv className="">
+            <SectionDiv>
                 <div className="flex items-center justify-between">
                     <Heading
                         title={`${entityName} (${data.length})`}
                         description={`Manage ${entityName} for your store`}
+                        className="p-2"
                     />
-                    <Button onClick={() => router.push(`/${storeId}/${entityName.toLowerCase()}/new`)}>
+                    <Button
+                        onClick={() => router.push(`/${storeId}/${entityName.toLowerCase()}/new`)}
+                        className="self-start"
+                    >
                         <PlusCircleIcon className="mr-3 size-sm" />
                         Add New
                     </Button>
                 </div>
-                <DataTable
-                    data={data}
-                    searchKey={searchKey}
-                    columns={columns}
-                    className="font-mono"
-                />
+                <Card>
+                    <DataTable
+                        data={data}
+                        searchKey={searchKey}
+                        columns={columns}
+                        className="font-mono"
+                    />
+                </Card>
             </SectionDiv>
             <SectionDiv className="">
                 <Heading
@@ -65,13 +72,16 @@ function OrderDataClient({ data }: OrderDataClientProps) {
             <Heading
                 title={`Orders (${data.length})`}
                 description={`Manage orders for your store`}
+                className="p-2"
             />
-            <DataTable
-                data={data}
-                searchKey="products"
-                columns={OrderColumns}
-                className="font-mono"
-            />
+            <Card>
+                <DataTable
+                    data={data}
+                    searchKey="products"
+                    columns={OrderColumns}
+                    className="font-mono"
+                />
+            </Card>
         </SectionDiv>
     )
 }

@@ -1,10 +1,9 @@
 import { MainNav } from "@/components/main-nav"
 import { StoreSwitcher } from "@/components/store-switcher"
 import { ThemeToggler } from "./theme/theme-toggler"
+import { UserButton, auth } from "@clerk/nextjs"
 
 import prismadb from "@/lib/prismadb"
-import { UserButton, auth } from "@clerk/nextjs"
-import { dark } from "@clerk/themes"
 
 import { redirect } from "next/navigation"
 
@@ -35,7 +34,6 @@ export const Navbar: React.FC<NavbarProps> = async () => {
                     <ThemeToggler />
                     <UserButton
                         afterSignOutUrl="/"
-                        appearance={{ baseTheme: dark }}
                     />
                 </div>
             </div>

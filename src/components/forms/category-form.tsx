@@ -4,6 +4,7 @@ import { FormEntry } from "@/components/forms/form-entry"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { SectionDiv } from "@/components/ui/divs"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
@@ -120,7 +121,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, banners
                 isLoading={isLoading}
             />
             <SectionDiv>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between pl-2">
                     <Heading
                         title={title}
                         description={description}
@@ -129,78 +130,78 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, banners
                         <TrashButton
                             disabled={isLoading}
                             onClick={setOpen}
+                            className="self-start"
                         />
                     ) : null}
                 </div>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="w-full space-y-8"
-                    >
-                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-                            {/* <div className="flex flex-col gap-8"> */}
-                            <FormEntry
-                                control={form.control}
-                                name="name"
-                                label="Category Name"
-                                floating
-                            />
-                            <FormField
-                                control={form.control}
-                                name="bannerId"
-                                render={({ field }) => (
-                                    <FormItem className="relative my-1">
-                                        <Select
-                                            disabled={isLoading}
-                                            onValueChange={field.onChange}
-                                            value={field.value}
-                                            defaultValue={field.value}
-                                        >
-                                            <FormControl>
-                                                <SelectTrigger className="h-12">
-                                                    <SelectValue
-                                                        defaultValue={field.value}
-                                                        placeholder="Select A Banner"
-                                                        className="!placeholder-transparent !peer"
-                                                    />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                {banners.map((banner, i) => (
-                                                    <SelectItem
-                                                        key={i}
-                                                        value={banner.id}
-                                                        className="h-12"
-                                                    >
-                                                        {banner.label}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                        <FormLabel
-                                            className={cn(
-                                                "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all",
-                                                "peer-placeholder-shown:top-1 peer-placeholder-shown:text-base",
-                                                "peer-focus:-top-5 peer-focus:text-sm peer-focus:text-ring"
-                                            )}
-                                        >
-                                            Banner
-                                        </FormLabel>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        {/* </div> */}
-                        <Button
-                            disabled={isLoading}
-                            type="submit"
-                            className="ml-auto"
+                <Card>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="w-full space-y-8"
                         >
-                            {action}
-                        </Button>
-                    </form>
-                </Form>
+                            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+                                <FormEntry
+                                    control={form.control}
+                                    name="name"
+                                    label="Category Name"
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="bannerId"
+                                    render={({ field }) => (
+                                        <FormItem className="relative my-1">
+                                            <Select
+                                                disabled={isLoading}
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                                defaultValue={field.value}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger className="h-12">
+                                                        <SelectValue
+                                                            defaultValue={field.value}
+                                                            placeholder="Select A Banner"
+                                                            className="!placeholder-transparent !peer"
+                                                        />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {banners.map((banner, i) => (
+                                                        <SelectItem
+                                                            key={i}
+                                                            value={banner.id}
+                                                            className="h-12"
+                                                        >
+                                                            {banner.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                            <FormLabel
+                                                className={cn(
+                                                    "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all",
+                                                    "peer-placeholder-shown:top-1 peer-placeholder-shown:text-base",
+                                                    "peer-focus:-top-5 peer-focus:text-sm peer-focus:text-ring"
+                                                )}
+                                            >
+                                                Banner
+                                            </FormLabel>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <Button
+                                disabled={isLoading}
+                                type="submit"
+                                className="ml-auto"
+                            >
+                                {action}
+                            </Button>
+                        </form>
+                    </Form>
+                </Card>
             </SectionDiv>
         </>
     )

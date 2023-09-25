@@ -97,3 +97,9 @@ export const validateImageFile = (selectedFile: File) => {
 
     return 0
 }
+
+export const isHexCode = (input: string): boolean => {
+    const hexColorPattern = /^#([0-9A-Fa-f]{3}){1,2}$/
+
+    return hexColorPattern.test(input)
+}

@@ -18,7 +18,7 @@ export const ImageDisplay: React.FC<ImageUploadProps> = ({ imageUrls, children }
         return (
             <div
                 aria-hidden="true"
-                className="w-72 h-72 grid place-items-center border-2 border-input rounded-lg"
+                className="w-72 h-72 grid place-items-center border-2 border-input rounded-lg bg-background"
             >
                 <ImageIcon className="size-3xl stroke-border" />
             </div>

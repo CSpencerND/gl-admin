@@ -1,5 +1,7 @@
 import plugin from "tailwindcss/plugin"
-import theme from "./themes"
+import { zinc as theme } from "./themes"
+
+export { theme }
 
 export default plugin(
     function({ addBase, addUtilities }) {

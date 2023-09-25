@@ -8,7 +8,6 @@ export const TrashButton: React.FC<TrashButtonProps> = ({ disabled, onClick, ...
     return (
         <Button
             type="button"
-            // base="soft"
             variant="destructive"
             size="icon"
             disabled={disabled}

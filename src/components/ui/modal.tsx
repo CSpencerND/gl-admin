@@ -7,23 +7,26 @@ import { AlertTriangleIcon as AlertIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 type ModalProps = React.PropsWithChildren & {
-    title: string
-    description: string
+    title?: string
+    description?: string
     icon?: React.ReactNode
     asAlert?: boolean
     isOpen: boolean
     onClose: () => void
+    includeCloseButton?: boolean
     className?: string
 }
 
 export const Modal: React.FC<ModalProps> = (props) => {
-    const { title, description, icon, asAlert, isOpen, onClose, children, className } = props
+    const { title, description, icon, asAlert, isOpen, onClose, children, includeCloseButton, className } = props
 
     const onChange = (open: boolean) => {
         if (!open) {
             onClose()
         }
     }
+
+    const isTitleOrDesc = !!title || !!description
 
     return (
         <Dialog
@@ -32,18 +35,24 @@ export const Modal: React.FC<ModalProps> = (props) => {
         >
             <DialogContent
                 asModal
-                className={cn("!prose dark:!prose-invert p-8 prose-headings:!mt-0 prose-h2:!mb-1.5", className)}
+                includeCloseButton={includeCloseButton}
+                className={cn("!prose dark:!prose-invert p-8 prose-headings:!mt-0 prose-h2:!mb-1.5 bg-card", className)}
             >
                 {!asAlert ? (
-                    <DialogHeader>
-                        <DialogTitle className="flex flex-row gap-4">
-                            {icon}
-                            {title}
-                        </DialogTitle>
-                        <DialogDescription>{description}</DialogDescription>
-                    </DialogHeader>
+                    isTitleOrDesc ? (
+                        <DialogHeader>
+                            <DialogTitle className="flex flex-row gap-4">
+                                {icon}
+                                {title}
+                            </DialogTitle>
+                            <DialogDescription>{description}</DialogDescription>
+                        </DialogHeader>
+                    ) : null
                 ) : (
-                    <Alert variant="warning" className="border-none p-0 space-x-4">
+                    <Alert
+                        variant="warning"
+                        className="border-none p-0 space-x-4"
+                    >
                         {!icon ? <AlertIcon className="size-xl " /> : icon}
                         <AlertTitle className="text-2xl mb-1.5">{title}</AlertTitle>
                         <AlertDescription className="text-base text-muted-foreground">{description}</AlertDescription>

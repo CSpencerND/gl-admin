@@ -21,7 +21,7 @@ const DashboardPage: NextPage<DashProps> = async ({ params: { storeId } }) => {
     ])
 
     return (
-        <MainDiv>
+        <MainDiv className="space-y-4">
             <Heading
                 title="Dashboard"
                 description="Overview of your store"
@@ -65,7 +65,7 @@ const DashboardPage: NextPage<DashProps> = async ({ params: { storeId } }) => {
                 <div className="grid gap-4 grid-cols-3">
                     <Card className="col-span-4">
                         <CardHeader>
-                            <CardTitle className="flex justify-between items-center">
+                            <CardTitle className="flex justify-between items-center pl-2">
                                 Overview
                                 <OverviewStyleToggle />
                             </CardTitle>

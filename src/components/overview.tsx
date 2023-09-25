@@ -39,13 +39,13 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                 <BarChart data={data}>
                     <XAxis
                         dataKey="name"
-                        stroke="#888888"
+                        stroke="#71717a"
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
                     />
                     <YAxis
-                        stroke="#888888"
+                        stroke="#71717a"
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -53,7 +53,7 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                     />
                     <Bar
                         dataKey="total"
-                        fill="#00d8db"
+                        fill="#0d968b"
                         radius={[4, 4, 0, 0]}
                     />
                 </BarChart>
@@ -68,13 +68,13 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                 <LineChart data={data}>
                     <XAxis
                         dataKey="name"
-                        stroke="#888888"
+                        stroke="#71717a"
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
                     />
                     <YAxis
-                        stroke="#888888"
+                        stroke="#71717a"
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -82,7 +82,8 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                     />
                     <Line
                         dataKey="total"
-                        fill="#00d8db"
+                        fill="#0d968b"
+                        stroke="#0d968b"
                     />
                 </LineChart>
             </ResponsiveContainer>

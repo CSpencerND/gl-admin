@@ -4,6 +4,7 @@ import { FormEntry } from "@/components/forms/form-entry"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { SectionDiv } from "@/components/ui/divs"
 import { Form } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
@@ -117,7 +118,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
                 isLoading={isLoading}
             />
             <SectionDiv>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between pl-2">
                     <Heading
                         title={title}
                         description={description}
@@ -126,39 +127,38 @@ export const SizeForm: React.FC<SizeFormProps> = ({ initialData }) => {
                         <TrashButton
                             disabled={isLoading}
                             onClick={setOpen}
+                            className="self-start"
                         />
                     ) : null}
                 </div>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="w-full space-y-8"
-                    >
-                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-                            {/* <div className="flex flex-col gap-8"> */}
-                            <FormEntry
-                                control={form.control}
-                                name="name"
-                                label="Size Name"
-                                floating
-                            />
-                            <FormEntry
-                                control={form.control}
-                                name="value"
-                                label="Size Value"
-                                floating
-                            />
-                            {/* </div> */}
-                        </div>
-                        <Button
-                            disabled={isLoading}
-                            type="submit"
-                            className="ml-auto"
+                <Card>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="w-full space-y-8"
                         >
-                            {action}
-                        </Button>
-                    </form>
-                </Form>
+                            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+                                <FormEntry
+                                    control={form.control}
+                                    name="name"
+                                    label="Size Name"
+                                />
+                                <FormEntry
+                                    control={form.control}
+                                    name="value"
+                                    label="Size Value"
+                                />
+                            </div>
+                            <Button
+                                disabled={isLoading}
+                                type="submit"
+                                className="ml-auto"
+                            >
+                                {action}
+                            </Button>
+                        </form>
+                    </Form>
+                </Card>
             </SectionDiv>
         </>
     )

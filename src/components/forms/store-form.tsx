@@ -56,7 +56,6 @@ export function CreateStoreForm() {
                     name="name"
                     label="Store Name"
                     isLoading={isSubmitting}
-                    floating
                 />
                 <div className="flex w-full items-center justify-end space-x-4 mt-8">
                     <Button

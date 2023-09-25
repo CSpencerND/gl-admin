@@ -3,6 +3,7 @@
 import { FormEntry, ImageDisplay, ImagePicker, SubmitButton } from "@/components/forms"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
+import { Card } from "@/components/ui/card"
 import { SectionDiv } from "@/components/ui/divs"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
@@ -247,7 +248,7 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
                 isLoading={isLoading}
             />
             <SectionDiv>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between pl-2">
                     <Heading
                         title={headingTitle}
                         description={headingDescription}
@@ -256,264 +257,234 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
                         <TrashButton
                             disabled={isLoading}
                             onClick={setOpen}
+                            className="self-start"
                         />
                     ) : null}
                 </div>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="w-full space-y-8"
-                    >
-                        <FormField
-                            control={form.control}
-                            name="images"
-                            render={({ field }) => {
-                                return (
-                                    <FormItem>
-                                        <FormLabel className="ml-3 font-semibold text-sm text-muted-foreground">
-                                            Product Images
-                                        </FormLabel>
-                                        <ImageDisplay imageUrls={field.value?.map((value) => value?.url)}>
-                                            {(url) => (
-                                                <TrashButton
-                                                    disabled={isLoading}
-                                                    base="default"
-                                                    onClick={() => onRemove(url, field)}
+                <Card>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="w-full space-y-8"
+                        >
+                            <FormField
+                                control={form.control}
+                                name="images"
+                                render={({ field }) => {
+                                    return (
+                                        <FormItem>
+                                            <FormLabel className="ml-3 font-semibold text-sm text-muted-foreground">
+                                                Product Images
+                                            </FormLabel>
+                                            <ImageDisplay imageUrls={field.value?.map((value) => value?.url)}>
+                                                {(url) => (
+                                                    <TrashButton
+                                                        disabled={isLoading}
+                                                        onClick={() => onRemove(url, field)}
+                                                    />
+                                                )}
+                                            </ImageDisplay>
+                                            <FormControl>
+                                                <ImagePicker.Multi
+                                                    hasValue={!!field.value}
+                                                    handleChange={(e) => onChange(e, field)}
                                                 />
-                                            )}
-                                        </ImageDisplay>
-                                        <FormControl>
-                                            <ImagePicker.Multi
-                                                hasValue={!!field.value}
-                                                handleChange={(e) => onChange(e, field)}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )
-                            }}
-                        />
-                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-                            <FormEntry
-                                control={form.control}
-                                name="name"
-                                label="Product Name"
-                                type="text"
-                                floating
-                            />
-                            <FormEntry
-                                control={form.control}
-                                name="price"
-                                label="Price"
-                                type="number"
-                                floating
-                            />
-                            <FormField
-                                control={form.control}
-                                name="categoryId"
-                                render={({ field }) => (
-                                    <FormItem className="relative my-1">
-                                        <Select
-                                            disabled={isLoading}
-                                            onValueChange={field.onChange}
-                                            value={field.value}
-                                            defaultValue={field.value}
-                                        >
-                                            <FormControl>
-                                                <SelectTrigger className="h-12">
-                                                    <SelectValue
-                                                        defaultValue={field.value}
-                                                        placeholder="Select A Category"
-                                                        className="!placeholder-transparent !peer"
-                                                    />
-                                                </SelectTrigger>
                                             </FormControl>
-                                            <SelectContent>
-                                                {categories.map((category, i) => (
-                                                    <SelectItem
-                                                        key={i}
-                                                        value={category.id}
-                                                        className="h-12"
-                                                    >
-                                                        {category.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                        <FormLabel
-                                            className={cn(
-                                                "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all",
-                                                "peer-placeholder-shown:top-1 peer-placeholder-shown:text-base",
-                                                "peer-focus:-top-5 peer-focus:text-sm peer-focus:text-ring"
-                                            )}
-                                        >
-                                            Category
-                                        </FormLabel>
-                                    </FormItem>
-                                )}
+                                            <FormMessage />
+                                        </FormItem>
+                                    )
+                                }}
                             />
-                            <FormField
-                                control={form.control}
-                                name="sizeId"
-                                render={({ field }) => (
-                                    <FormItem className="relative my-1">
-                                        <Select
-                                            disabled={isLoading}
-                                            onValueChange={field.onChange}
-                                            value={field.value}
-                                            defaultValue={field.value}
-                                        >
-                                            <FormControl>
-                                                <SelectTrigger className="h-12">
-                                                    <SelectValue
-                                                        defaultValue={field.value}
-                                                        placeholder="Select A Size"
-                                                        className="!placeholder-transparent !peer"
-                                                    />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                {sizes.map((size, i) => (
-                                                    <SelectItem
-                                                        key={i}
-                                                        value={size.id}
-                                                        className="h-12"
-                                                    >
-                                                        {size.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                        <FormLabel
-                                            className={cn(
-                                                "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all",
-                                                "peer-placeholder-shown:top-1 peer-placeholder-shown:text-base",
-                                                "peer-focus:-top-5 peer-focus:text-sm peer-focus:text-ring"
-                                            )}
-                                        >
-                                            Size
-                                        </FormLabel>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="colorId"
-                                render={({ field }) => (
-                                    <FormItem className="relative my-1">
-                                        <Select
-                                            disabled={isLoading}
-                                            onValueChange={field.onChange}
-                                            value={field.value}
-                                            defaultValue={field.value}
-                                        >
-                                            <FormControl>
-                                                <SelectTrigger className="h-12">
-                                                    <SelectValue
-                                                        defaultValue={field.value}
-                                                        placeholder="Select A Color"
-                                                        className="!placeholder-transparent !peer"
-                                                    />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                {colors.map((color, i) => (
-                                                    <SelectItem
-                                                        key={i}
-                                                        value={color.id}
-                                                        className="h-12"
-                                                    >
-                                                        {color.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                        <FormLabel
-                                            className={cn(
-                                                "absolute -top-5 left-0 ml-1.5 bg-background px-1.5 text-sm font-semibold text-muted-foreground transition-all",
-                                                "peer-placeholder-shown:top-1 peer-placeholder-shown:text-base",
-                                                "peer-focus:-top-5 peer-focus:text-sm peer-focus:text-ring"
-                                            )}
-                                        >
-                                            Color
-                                        </FormLabel>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-                            <FormField
-                                control={form.control}
-                                name="isFeatured"
-                                render={({ field }) => (
-                                    <FormItem className="flex flex-row items-center justify-between rounded-md border border-input text-muted-foreground h-12">
-                                        <FormControl>
-                                            <Button
-                                                asChild
-                                                variant="ghost"
-                                                size="icon"
-                                                type="button"
+                            <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 md:grid-cols-3">
+                                <FormEntry
+                                    control={form.control}
+                                    name="name"
+                                    label="Product Name"
+                                    type="text"
+                                />
+                                <FormEntry
+                                    control={form.control}
+                                    name="price"
+                                    label="Price"
+                                    type="number"
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="categoryId"
+                                    render={({ field }) => (
+                                        <FormItem className="relative">
+                                            <Select
+                                                disabled={isLoading}
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                                defaultValue={field.value}
                                             >
-                                                <label className="cursor-pointer">
-                                                    <Checkbox
-                                                        checked={field.value}
-                                                        onCheckedChange={field.onChange}
-                                                        className="border-none ring-1 ring-muted-foreground"
-                                                    />
-                                                </label>
-                                            </Button>
-                                        </FormControl>
-                                        <FormLabel className=" font-semibold text-base !mb-2 !cursor-pointer">
-                                            Featured
-                                        </FormLabel>
-                                        <InfoPopover className="!mb-1.5 ml-auto">
-                                            <p>This product will appear on the landing page</p>
-                                        </InfoPopover>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="isArchived"
-                                render={({ field }) => (
-                                    <FormItem className="flex flex-row items-center justify-between rounded-md border border-input text-muted-foreground h-12">
-                                        <FormControl>
-                                            <Button
-                                                asChild
-                                                variant="ghost"
-                                                size="icon"
-                                                type="button"
+                                                <FormLabel className="ml-3">Category</FormLabel>
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue
+                                                            defaultValue={field.value}
+                                                            placeholder="Select A Category"
+                                                        />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent className="rounded-lg">
+                                                    {categories.map((category, i) => (
+                                                        <SelectItem
+                                                            key={i}
+                                                            value={category.id}
+                                                        >
+                                                            {category.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="sizeId"
+                                    render={({ field }) => (
+                                        <FormItem className="relative">
+                                            <Select
+                                                disabled={isLoading}
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                                defaultValue={field.value}
                                             >
-                                                <label className="cursor-pointer">
-                                                    <Checkbox
-                                                        checked={field.value}
-                                                        onCheckedChange={field.onChange}
-                                                        className="border-none ring-1 ring-muted-foreground"
-                                                    />
-                                                </label>
-                                            </Button>
-                                        </FormControl>
-                                        <FormLabel className=" font-semibold text-base !mb-2 !cursor-pointer">
-                                            Archived
-                                        </FormLabel>
-                                        <InfoPopover className="!mb-1.5 ml-auto">
-                                            <p>This product will not appear anywhere in the store</p>
-                                        </InfoPopover>
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-                        <div className="flex w-full justify-end max-sm:justify-center max-sm:grid max-sm:place-items-center">
-                            <SubmitButton
-                                isSubmitting={isLoading}
-                                submitActionText={submitActionText}
-                            />
-                        </div>
-                    </form>
-                </Form>
+                                                <FormLabel className="ml-3">Size</FormLabel>
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue
+                                                            defaultValue={field.value}
+                                                            placeholder="Select A Size"
+                                                        />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent className="rounded-lg">
+                                                    {sizes.map((size, i) => (
+                                                        <SelectItem
+                                                            key={i}
+                                                            value={size.id}
+                                                        >
+                                                            {size.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="colorId"
+                                    render={({ field }) => (
+                                        <FormItem className="relative">
+                                            <Select
+                                                disabled={isLoading}
+                                                onValueChange={field.onChange}
+                                                value={field.value}
+                                                defaultValue={field.value}
+                                            >
+                                                <FormLabel className="ml-3">Color</FormLabel>
+                                                <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue
+                                                            defaultValue={field.value}
+                                                            placeholder="Select A Color"
+                                                        />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent className="rounded-lg">
+                                                    {colors.map((color, i) => (
+                                                        <SelectItem
+                                                            key={i}
+                                                            value={color.id}
+                                                        >
+                                                            {color.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="grid grid-cols-1 gap-x-6 gap-y-4 max-sm:gap-y-8 sm:grid-cols-2 md:grid-cols-3">
+                                <FormField
+                                    control={form.control}
+                                    name="isFeatured"
+                                    render={({ field }) => (
+                                        <FormItem className="bg-background max-h-10 flex flex-row items-center justify-between rounded-md border border-input text-muted-foreground h-12">
+                                            <FormControl>
+                                                <Button
+                                                    asChild
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    type="button"
+                                                >
+                                                    <label className="cursor-pointer">
+                                                        <Checkbox
+                                                            checked={field.value}
+                                                            onCheckedChange={field.onChange}
+                                                            className="border-none ring-1 ring-muted-foreground"
+                                                        />
+                                                    </label>
+                                                </Button>
+                                            </FormControl>
+                                            <FormLabel className="font-semibold text-base !mb-2 !cursor-pointer">
+                                                Featured
+                                            </FormLabel>
+                                            <InfoPopover className="!mb-1.5 ml-auto">
+                                                <p>This product will appear on the landing page</p>
+                                            </InfoPopover>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="isArchived"
+                                    render={({ field }) => (
+                                        <FormItem className="bg-background max-h-10 flex flex-row items-center justify-between rounded-md border border-input text-muted-foreground h-12">
+                                            <FormControl>
+                                                <Button
+                                                    asChild
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    type="button"
+                                                >
+                                                    <label className="cursor-pointer">
+                                                        <Checkbox
+                                                            checked={field.value}
+                                                            onCheckedChange={field.onChange}
+                                                            className="border-none ring-1 ring-muted-foreground"
+                                                        />
+                                                    </label>
+                                                </Button>
+                                            </FormControl>
+                                            <FormLabel className="font-semibold text-base !mb-2 !cursor-pointer">
+                                                Archived
+                                            </FormLabel>
+                                            <InfoPopover className="!mb-1.5 ml-auto">
+                                                <p>This product will not appear anywhere in the store</p>
+                                            </InfoPopover>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <div className="flex w-full justify-end max-sm:justify-center max-sm:grid max-sm:place-items-center">
+                                <SubmitButton
+                                    isSubmitting={isLoading}
+                                    submitActionText={submitActionText}
+                                />
+                            </div>
+                        </form>
+                    </Form>
+                </Card>
             </SectionDiv>
         </>
     )

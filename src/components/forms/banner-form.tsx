@@ -3,6 +3,7 @@
 import { FormEntry, ImageDisplay, ImagePicker, SubmitButton } from "@/components/forms"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
+import { Card } from "@/components/ui/card"
 import { SectionDiv } from "@/components/ui/divs"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
@@ -194,7 +195,7 @@ export const BannerForm: React.FC<BannerFormProps> = (props) => {
                 isLoading={isLoading}
             />
             <SectionDiv>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between pl-2">
                     <Heading
                         title={headingTitle}
                         description={headingDescription}
@@ -203,55 +204,56 @@ export const BannerForm: React.FC<BannerFormProps> = (props) => {
                         <TrashButton
                             disabled={isLoading}
                             onClick={setOpen}
+                            className="self-start"
                         />
                     ) : null}
                 </div>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="w-full space-y-8"
-                    >
-                        <FormField
-                            control={form.control}
-                            name="url"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="ml-3 font-semibold text-sm text-muted-foreground">
-                                        Banner Image
-                                    </FormLabel>
-                                    <ImageDisplay imageUrls={[field.value]}>
-                                        <TrashButton
-                                            disabled={isLoading}
-                                            base="default"
-                                            onClick={onRemove}
-                                        />
-                                    </ImageDisplay>
-                                    <FormControl>
-                                        <ImagePicker.Single
-                                            hasValue={!!field.value}
-                                            handleChange={(e) => onChange(e, field)}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-                            <FormEntry
+                <Card>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="w-full space-y-8"
+                        >
+                            <FormField
                                 control={form.control}
-                                name="label"
-                                label="Banner Label"
-                                floating
+                                name="url"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="ml-3 font-semibold text-sm text-muted-foreground">
+                                            Banner Image
+                                        </FormLabel>
+                                        <ImageDisplay imageUrls={[field.value]}>
+                                            <TrashButton
+                                                disabled={isLoading}
+                                                onClick={onRemove}
+                                            />
+                                        </ImageDisplay>
+                                        <FormControl>
+                                            <ImagePicker.Single
+                                                hasValue={!!field.value}
+                                                handleChange={(e) => onChange(e, field)}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
                             />
-                        </div>
-                        <div className="flex w-full max-sm:justify-center max-sm:grid max-sm:place-items-center">
-                            <SubmitButton
-                                isSubmitting={isLoading}
-                                submitActionText={submitActionText}
-                            />
-                        </div>
-                    </form>
-                </Form>
+                            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+                                <FormEntry
+                                    control={form.control}
+                                    name="label"
+                                    label="Banner Label"
+                                />
+                            </div>
+                            <div className="flex w-full max-sm:justify-center max-sm:grid max-sm:place-items-center">
+                                <SubmitButton
+                                    isSubmitting={isLoading}
+                                    submitActionText={submitActionText}
+                                />
+                            </div>
+                        </form>
+                    </Form>
+                </Card>
             </SectionDiv>
         </>
     )

@@ -4,16 +4,21 @@ import { FormEntry } from "@/components/forms/form-entry"
 import { AlertModal } from "@/components/modals/alert-modal"
 import { TrashButton } from "@/components/trash-button"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import { SectionDiv } from "@/components/ui/divs"
-import { Form } from "@/components/ui/form"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Heading } from "@/components/ui/heading"
+import { Input } from "@/components/ui/input"
+import { ColorPicker, useColorPicker } from "./color-picker"
 
 import { useLoading } from "@/lib/hooks/use-loading"
 import { useOpen } from "@/lib/hooks/use-open"
 import { useToast } from "@/lib/hooks/use-toast"
 import { useParams, useRouter } from "next/navigation"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 
+import { isHexCode } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import * as z from "zod"
@@ -38,6 +43,10 @@ const ENTITY = "Color"
 const SEGMENT = "colors"
 
 export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
+    const isShowColorPicker = useColorPicker((s) => s.isShowColorPicker)
+    const openColorPicker = useColorPicker((s) => s.openColorPicker)
+    const color = useColorPicker((s) => s.color)
+
     const { setOpen, setClosed, isOpen } = useOpen()
     const { isLoading, setLoading, setLoaded } = useLoading()
 
@@ -110,6 +119,10 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
         }
     }
 
+    useEffect(() => {
+        form.setValue("value", color)
+    }, [color, form])
+
     return (
         <>
             <AlertModal
@@ -119,7 +132,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                 isLoading={isLoading}
             />
             <SectionDiv>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between pl-2">
                     <Heading
                         title={title}
                         description={description}
@@ -128,39 +141,74 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                         <TrashButton
                             disabled={isLoading}
                             onClick={setOpen}
+                            className="self-start"
                         />
                     ) : null}
                 </div>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="w-full space-y-8"
-                    >
-                        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
-                            {/* <div className="flex flex-col gap-8"> */}
-                            <FormEntry
-                                control={form.control}
-                                name="name"
-                                label="Color Name"
-                                floating
-                            />
-                            <FormEntry
-                                control={form.control}
-                                name="value"
-                                label="Color Value"
-                                colorIndicator
-                            />
-                            {/* </div> */}
-                        </div>
-                        <Button
-                            disabled={isLoading}
-                            type="submit"
-                            className="ml-auto"
+                <Card>
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="w-full space-y-8"
                         >
-                            {action}
-                        </Button>
-                    </form>
-                </Form>
+                            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+                                <FormEntry
+                                    control={form.control}
+                                    name="name"
+                                    label="Color Name"
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="value"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="ml-3">Color Value</FormLabel>
+                                            <FormControl>
+                                                <div className="flex items-center gap-4 relative">
+                                                    <Input
+                                                        placeholder="Color Value"
+                                                        disabled={isLoading}
+                                                        maxLength={7}
+                                                        {...field}
+                                                    />
+                                                    <Button
+                                                        type="button"
+                                                        className="rounded-full size-lg"
+                                                        size="icon"
+                                                        variant="ghost"
+                                                        onClick={openColorPicker}
+                                                    >
+                                                        <span
+                                                            className="border p-4 rounded-full"
+                                                            style={{
+                                                                backgroundColor: isHexCode(field.value)
+                                                                    ? field.value
+                                                                    : color,
+                                                            }}
+                                                        />
+                                                    </Button>
+                                                    <ColorPicker open={isShowColorPicker} />
+                                                </div>
+                                            </FormControl>
+                                            <FormDescription className="pl-3">
+                                                click the icon for a color picker
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <Button
+                                disabled={isLoading}
+                                type="submit"
+                                className="ml-auto"
+                            >
+                                {action}
+                            </Button>
+                        </form>
+                    </Form>
+                </Card>
             </SectionDiv>
         </>
     )

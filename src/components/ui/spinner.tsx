@@ -12,6 +12,7 @@ export const FancySpinner: React.FC<FancySpinnerProps> = ({ isLoading = true, si
         <Loader
             loading={isLoading}
             size={size}
+            className="stroke-primary fill-primary"
             {...props}
         />
     )
@@ -24,7 +25,7 @@ type SpinnerProps = React.ComponentProps<typeof Loader2Icon> & {
 export const Spinner: React.FC<SpinnerProps> = ({ isLoading, className, ...props }) => {
     return (
         <Loader2Icon
-            className={cn("animate-spin size-sm", !isLoading ? "hidden" : "", className)}
+            className={cn("animate-spin size-sm stroke-primary fill-primary", !isLoading ? "hidden" : "", className)}
             {...props}
         />
     )
