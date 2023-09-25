@@ -48,7 +48,7 @@ function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>) {
                     />
                 </Card>
             </SectionDiv>
-            <SectionDiv className="">
+            <SectionDiv>
                 <Heading
                     className="pl-2"
                     title="API"
