@@ -46,6 +46,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
     const isShowColorPicker = useColorPicker((s) => s.isShowColorPicker)
     const openColorPicker = useColorPicker((s) => s.openColorPicker)
     const color = useColorPicker((s) => s.color)
+    const setColor = useColorPicker((s) => s.setColor)
 
     const { setOpen, setClosed, isOpen } = useOpen()
     const { isLoading, setLoading, setLoaded } = useLoading()
@@ -171,6 +172,10 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                                                         disabled={isLoading}
                                                         maxLength={7}
                                                         {...field}
+                                                        onChange={(e) => {
+                                                            field.onChange(e.target.value)
+                                                            setColor(e.target.value)
+                                                        }}
                                                     />
                                                     <Button
                                                         aria-labelledby="colorValueDescription"
@@ -189,10 +194,16 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                                                             }}
                                                         />
                                                     </Button>
-                                                    <ColorPicker open={isShowColorPicker} initialValue={initialData?.value} />
+                                                    <ColorPicker
+                                                        open={isShowColorPicker}
+                                                        initialValue={initialData?.value}
+                                                    />
                                                 </div>
                                             </FormControl>
-                                            <FormDescription id="colorValueDescription" className="pl-3">
+                                            <FormDescription
+                                                id="colorValueDescription"
+                                                className="pl-3"
+                                            >
                                                 click the icon for a color picker
                                             </FormDescription>
                                             <FormMessage />

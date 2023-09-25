@@ -1,3 +1,5 @@
+"use client"
+
 import { Modal } from "@/components/ui/modal"
 import { Hue, Saturation, useColor, type IColor } from "react-color-palette"
 import "react-color-palette/css"
@@ -62,15 +64,17 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({ open, initialValue }) 
             isOpen={open}
             onClose={closeColorPicker}
         >
-            <Saturation
-                height={384}
-                color={libColor}
-                onChange={onColorChange}
-            />
-            <Hue
-                color={libColor}
-                onChange={onColorChange}
-            />
+            <div className="space-y-6">
+                <Saturation
+                    height={384}
+                    color={libColor}
+                    onChange={onColorChange}
+                />
+                <Hue
+                    color={libColor}
+                    onChange={onColorChange}
+                />
+            </div>
         </Modal>
     )
 }
