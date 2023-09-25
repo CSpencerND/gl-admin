@@ -78,7 +78,7 @@ export const MainNav: React.FC<MainNavProps> = ({ children, className, ...props 
                     <Link
                         href={route.href}
                         className={cn(
-                            "p-4 text-sm font-medium text-muted-foreground transition-colors hover:text-primary",
+                            "px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground transition-colors hover:text-primary",
                             route.active ? "text-foreground" : ""
                         )}
                     >
