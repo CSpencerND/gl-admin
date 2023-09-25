@@ -4,11 +4,12 @@ import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 
-type DLProps = {
+type DashboardLayoutProps = {
     children: React.ReactNode
     params: { storeId: string }
 }
-export default async function DashboardLayout({ children, params }: DLProps) {
+
+export default async function DashboardLayout({ children, params }: DashboardLayoutProps) {
     const { userId } = auth()
     if (!userId) redirect("/sign-in")
 
