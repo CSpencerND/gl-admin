@@ -12,7 +12,7 @@ import {
     getPaginationRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
+import { ChevronLeftIcon, ChevronRightIcon, SearchIcon } from "lucide-react"
 
 import { useState } from "react"
 
@@ -47,12 +47,16 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, className }
 
     return (
         <div className={className}>
-            <div className="flex items-center py-4">
+            <div className="flex items-center py-4 relative">
+                <label htmlFor="searchInput" className="absolute px-3 bg-input h-10 rounded-l-md grid place-items-center">
+                    <SearchIcon className="size-xs stroke-muted-foreground" />
+                </label>
                 <Input
+                    id="searchInput"
                     placeholder={`Search by ${searchKey} ...`}
                     value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
                     onChange={(event) => table.getColumn(searchKey)?.setFilterValue(event.target.value)}
-                    className="max-w-sm"
+                    className="max-w-sm pl-12"
                 />
             </div>
             <div className="rounded-lg">
@@ -106,7 +110,7 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, className }
                     size="icon"
                     onClick={() => table.previousPage()}
                     disabled={!canPrevPage}
-                    // className={cn(!canPrevPage ? "hidden" : "")}
+                // className={cn(!canPrevPage ? "hidden" : "")}
                 >
                     <ChevronLeftIcon />
                 </Button>
@@ -119,7 +123,7 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, className }
                     size="icon"
                     onClick={() => table.nextPage()}
                     disabled={!canNextPage}
-                    // className={cn(!canNextPage ? "hidden" : "")}
+                // className={cn(!canNextPage ? "hidden" : "")}
                 >
                     <ChevronRightIcon />
                 </Button>
