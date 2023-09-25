@@ -50,6 +50,7 @@ function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>) {
             </SectionDiv>
             <SectionDiv className="">
                 <Heading
+                    className="pl-2"
                     title="API"
                     description={`CRUD operations for ${entityName}`}
                 />
