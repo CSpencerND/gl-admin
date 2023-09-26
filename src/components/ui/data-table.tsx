@@ -48,7 +48,7 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, className }
     return (
         <div className={className}>
             <div className="flex items-center py-4 relative">
-                <label htmlFor="searchInput" className="absolute px-3 bg-input h-10 rounded-l-md grid place-items-center">
+                <label htmlFor="searchInput" className="absolute px-3 h-10 rounded-l-md grid place-items-center">
                     <SearchIcon className="size-xs stroke-muted-foreground" />
                 </label>
                 <Input

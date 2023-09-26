@@ -8,6 +8,8 @@ import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis } fro
 import { useHydrated } from "@/lib/hooks"
 import { create } from "zustand"
 
+import { primaryColor, mutedColor } from "@/constants"
+
 import type { GraphData } from "@/types"
 
 type UseChartStyle = {
@@ -39,13 +41,13 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                 <BarChart data={data}>
                     <XAxis
                         dataKey="name"
-                        stroke="#71717a"
+                        stroke={mutedColor}
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
                     />
                     <YAxis
-                        stroke="#71717a"
+                        stroke={mutedColor}
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -53,7 +55,7 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                     />
                     <Bar
                         dataKey="total"
-                        fill="#0d968b"
+                        fill={primaryColor}
                         radius={[4, 4, 0, 0]}
                     />
                 </BarChart>
@@ -68,13 +70,13 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                 <LineChart data={data}>
                     <XAxis
                         dataKey="name"
-                        stroke="#71717a"
+                        stroke={mutedColor}
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
                     />
                     <YAxis
-                        stroke="#71717a"
+                        stroke={mutedColor}
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -82,8 +84,8 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                     />
                     <Line
                         dataKey="total"
-                        fill="#0d968b"
-                        stroke="#0d968b"
+                        fill={primaryColor}
+                        stroke={primaryColor}
                     />
                 </LineChart>
             </ResponsiveContainer>

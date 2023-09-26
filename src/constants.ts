@@ -1,4 +1,4 @@
-import { ImageData } from "@/types"
+import type { ImageData } from "@/types"
 import * as z from "zod"
 
 export const imagePlaceholder =
@@ -22,3 +22,6 @@ export const imageData = {
     default: defaultData,
     zod: zImageData,
 } as const
+
+export const primaryColor = "#14b8a6"
+export const mutedColor = "#71717a"
