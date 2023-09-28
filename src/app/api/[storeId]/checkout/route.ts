@@ -69,8 +69,8 @@ export async function POST(req: Request, { params }: StoreParams) {
         phone_number_collection: {
             enabled: true,
         },
-        success_url: `${reqOrigin}/cart?success=1`,
-        cancel_url: `${reqOrigin}/cart?cancelled=1`,
+        success_url: `${reqOrigin}/cart?status=success`,
+        cancel_url: `${reqOrigin}/cart?status=cancelled`,
         metadata: {
             orderId: order.id,
         },
