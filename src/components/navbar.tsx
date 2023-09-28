@@ -25,7 +25,7 @@ export const Navbar: React.FC<NavbarProps> = async () => {
     })
 
     return (
-        <header className="border-b sticky top-0 backdrop-blur-lg">
+        <header className="border-b sticky top-0 backdrop-blur-lg z-50">
             <div className="container flex gap-8 items-center px-8 h-[74px]">
                 <nav className="flex items-center gap-8">
                     <Link href="/" className="py-2 rounded-lg">

@@ -47,7 +47,7 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, className }
 
     return (
         <div className={className}>
-            <div className="flex items-center py-4 relative">
+            <div className="flex items-center py-4 relative pl-2">
                 <label htmlFor="searchInput" className="absolute px-3 h-10 rounded-l-md grid place-items-center">
                     <SearchIcon className="size-xs stroke-muted-foreground" />
                 </label>
@@ -59,7 +59,7 @@ export function DataTable<TData, TValue>({ columns, data, searchKey, className }
                     className="max-w-sm pl-12"
                 />
             </div>
-            <div className="rounded-lg">
+            <div className="rounded-md overflow-hidden">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

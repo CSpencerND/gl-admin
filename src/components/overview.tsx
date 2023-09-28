@@ -5,7 +5,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { BarChart4Icon, LineChartIcon } from "lucide-react"
 import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 
-import { useHydrated } from "@/lib/hooks"
 import { create } from "zustand"
 
 import { primaryColor, mutedColor } from "@/constants"
@@ -28,9 +27,6 @@ type OverviewProps = {
 
 export const Overview: React.FC<OverviewProps> = ({ data }) => {
     const chartStyle = useChartStyle((s) => s.chartStyle)
-
-    const hydrated = useHydrated()
-    if (!hydrated) return null
 
     if (chartStyle === "bar") {
         return (
@@ -93,12 +89,9 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
     }
 }
 
-export const OverviewStyleToggle = () => {
+export const OverviewStyleToggle = ({ className }: { className?: string }) => {
     const chartStyle = useChartStyle((s) => s.chartStyle)
     const setChartStyle = useChartStyle((s) => s.setChartStyle)
-
-    const hydrated = useHydrated()
-    if (!hydrated) return null
 
     return (
         <TooltipProvider>
@@ -108,6 +101,7 @@ export const OverviewStyleToggle = () => {
                         onClick={setChartStyle}
                         size="icon"
                         variant="outline"
+                        className={className}
                     >
                         {chartStyle === "bar" ? (
                             <BarChart4Icon className="size-sm" />

@@ -39,7 +39,7 @@ function DataClient<TData, TValue>(props: DataClientProps<TData, TValue>) {
                         Add New
                     </Button>
                 </div>
-                <Card>
+                <Card className="p-1">
                     <DataTable
                         data={data}
                         searchKey={searchKey}

@@ -63,15 +63,15 @@ export const StoreSwitcher: React.FC<StoreSwitcherProps> = ({ className, items =
                     role="combobox"
                     aria-expanded={isOpen}
                     aria-label="Select A Store"
-                    className={cn("w-72 justify-between", className)}
+                    className={cn("w-72 justify-between bg-background/25", className)}
                 >
                     <StoreIcon className="mr-2 size-sm" />
                     <span>{currentStore?.label}</span>
                     <ChevronsUpDownIcon className="ml-auto stroke-muted-foreground size-sm" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="mt-1 overflow-hidden border-none p-0 ring-1 ring-border">
-                <Command>
+            <PopoverContent className="mt-1 overflow-hidden border-none p-0 ring-1 ring-border bg-transparent">
+                <Command className="bg-background/60 backdrop-blur-lg backdrop-saturate-150">
                     <CommandList>
                         <CommandInput
                             placeholder="Search stores ..."
