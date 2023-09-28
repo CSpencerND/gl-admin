@@ -141,7 +141,7 @@ model Order {
     storeId    String
     store      Store       @relation("StoreToOrder", fields: [storeId], references: [id])
     orderItems OrderItem[]
-    isPaid     Boolean     @default(false)
+    status     OrderStatus @default(pending)
     phone      String      @default("")
     address    String      @default("")
 
@@ -151,10 +151,17 @@ model Order {
     @@index([storeId])
 }
 
+enum OrderStatus {
+    pending
+    cancelled
+    paid
+    refunded
+}
+
 model OrderItem {
     id        String  @id @default(cuid())
     orderId   String
-    order     Order   @relation(fields: [orderId], references: [id])
+    order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
     productId String
     product   Product @relation(fields: [productId], references: [id])
 

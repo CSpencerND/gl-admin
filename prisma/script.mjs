@@ -20,8 +20,12 @@ async function main() {
     // })
     // console.log(res)
 
-    const res = await prisma.productImage.findMany()
-    console.log(res.length)
+    const res = await prisma.order.deleteMany({
+        where: {
+            status: "pending"
+        }
+    })
+    console.log(res)
 }
 
 main()
