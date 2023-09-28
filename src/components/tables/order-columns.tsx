@@ -1,12 +1,13 @@
 "use client"
 
-import type { ColumnDef } from "@tanstack/react-table"
 import type { ColumnType } from "@/types"
+import type { OrderStatus } from "@prisma/client"
+import type { ColumnDef } from "@tanstack/react-table"
 
 export type OrderColumn = ColumnType<{
     phone: string
     address: string
-    isPaid: boolean
+    status: OrderStatus
     totalPrice: string
     products: string
 }>
@@ -29,7 +30,7 @@ export const OrderColumns: ColumnDef<OrderColumn>[] = [
         header: "Total Price",
     },
     {
-        accessorKey: "isPaid",
-        header: "Paid",
+        accessorKey: "status",
+        header: "Status",
     },
 ]

@@ -28,7 +28,7 @@ const OrdersPage: NextPage<OrdersPageProps> = async ({ params: { storeId } }) =>
         },
     })
 
-    const formattedOrders: OrderColumn[] = orders.map(({ id, phone, address, orderItems, isPaid, createdAt }) => {
+    const formattedOrders: OrderColumn[] = orders.map(({ id, phone, address, orderItems, status, createdAt }) => {
         const total = orderItems.reduce((total, item) => {
             const price = Number(item.product.price)
             return total + price
@@ -40,7 +40,7 @@ const OrdersPage: NextPage<OrdersPageProps> = async ({ params: { storeId } }) =>
             address,
             products: orderItems.map((orderItem) => orderItem.product.name).join(", "),
             totalPrice: formatPrice(total),
-            isPaid,
+            status,
             createdAt: format(createdAt, "MMMM do, yyyy"),
         }
     })

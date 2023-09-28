@@ -13,7 +13,7 @@ export const getGraphRevenue = async (storeId: string) => {
     const paidOrders = await prismadb.order.findMany({
         where: {
             storeId,
-            isPaid: true,
+            status: "paid",
         },
         include: {
             orderItems: {

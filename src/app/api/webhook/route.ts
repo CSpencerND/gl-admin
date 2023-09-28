@@ -34,7 +34,7 @@ export async function POST(req: Request) {
                 id: session?.metadata?.orderId,
             },
             data: {
-                isPaid: true,
+                status: "paid",
                 address: addressString,
                 phone: session?.customer_details?.phone ?? "",
             },
