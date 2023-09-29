@@ -7,7 +7,7 @@ import type Stripe from "stripe"
 
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
 }
 
@@ -70,11 +70,26 @@ export async function POST(req: Request, { params }: StoreParams) {
             enabled: true,
         },
         success_url: `${reqOrigin}/cart?status=success`,
-        cancel_url: `${reqOrigin}/cart?status=cancelled`,
+        cancel_url: `${reqOrigin}/cart?status=cancelled&orderId=${order.id}`,
         metadata: {
             orderId: order.id,
         },
     })
 
     return NextResponse.json({ sessionId: session.id }, { headers: corsHeaders })
+}
+
+export async function PATCH(req: Request) {
+    const { orderId } = (await req.json()) as { orderId: string }
+
+    await prismadb.order.update({
+        where: {
+            id: orderId,
+        },
+        data: {
+            status: "cancelled",
+        },
+    })
+
+    return NextResponse.json({ orderId: orderId }, { headers: corsHeaders })
 }
