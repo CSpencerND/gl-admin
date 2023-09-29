@@ -7,7 +7,7 @@ import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis } fro
 
 import { create } from "zustand"
 
-import { primaryColor, mutedColor } from "@/constants"
+import { theme } from "@/constants"
 
 import type { GraphData } from "@/types"
 
@@ -37,13 +37,13 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                 <BarChart data={data}>
                     <XAxis
                         dataKey="name"
-                        stroke={mutedColor}
+                        stroke={theme.muted}
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
                     />
                     <YAxis
-                        stroke={mutedColor}
+                        stroke={theme.muted}
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -51,7 +51,7 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                     />
                     <Bar
                         dataKey="total"
-                        fill={primaryColor}
+                        fill={theme.primary}
                         radius={[4, 4, 0, 0]}
                     />
                 </BarChart>
@@ -66,13 +66,13 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                 <LineChart data={data}>
                     <XAxis
                         dataKey="name"
-                        stroke={mutedColor}
+                        stroke={theme.muted}
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
                     />
                     <YAxis
-                        stroke={mutedColor}
+                        stroke={theme.muted}
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -80,8 +80,8 @@ export const Overview: React.FC<OverviewProps> = ({ data }) => {
                     />
                     <Line
                         dataKey="total"
-                        fill={primaryColor}
-                        stroke={primaryColor}
+                        fill={theme.primary}
+                        stroke={theme.primary}
                     />
                 </LineChart>
             </ResponsiveContainer>

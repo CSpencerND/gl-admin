@@ -68,7 +68,7 @@ export function generateFormPageStrings(hasInitialData: boolean, entityName: str
     return { headingTitle, headingDescription, submitActionText, toastSuccess, toastError }
 }
 
-export const readImageFile = async (file: File) => {
+export async function readImageFile(file: File) {
     return new Promise<string>((resolve, reject) => {
         const fr = new FileReader()
 
@@ -86,7 +86,7 @@ export const readImageFile = async (file: File) => {
     })
 }
 
-export const validateImageFile = (selectedFile: File) => {
+export function validateImageFile(selectedFile: File) {
     if (!selectedFile.type.includes("image")) {
         return "Only jpg, jpeg, png and webp files are accepted"
     }
@@ -98,8 +98,33 @@ export const validateImageFile = (selectedFile: File) => {
     return 0
 }
 
-export const isHexCode = (input: string): boolean => {
+export function isHexCode(input: string): boolean {
     const hexColorPattern = /^#([0-9A-Fa-f]{3}){1,2}$/
 
     return hexColorPattern.test(input)
+}
+
+export function formatAmountForDisplay(amount: number, currency: string): string {
+    let numberFormat = new Intl.NumberFormat(["en-US"], {
+        style: "currency",
+        currency: currency,
+        currencyDisplay: "symbol",
+    })
+    return numberFormat.format(amount)
+}
+
+export function formatAmountForStripe(amount: number, currency: string): number {
+    let numberFormat = new Intl.NumberFormat(["en-US"], {
+        style: "currency",
+        currency: currency,
+        currencyDisplay: "symbol",
+    })
+    const parts = numberFormat.formatToParts(amount)
+    let zeroDecimalCurrency: boolean = true
+    for (let part of parts) {
+        if (part.type === "decimal") {
+            zeroDecimalCurrency = false
+        }
+    }
+    return zeroDecimalCurrency ? amount : Math.round(amount * 100)
 }

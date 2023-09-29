@@ -4,7 +4,7 @@ import { Loader2Icon } from "lucide-react"
 import Loader from "react-spinners/BeatLoader"
 import BigLoader from "react-spinners/PacmanLoader"
 
-import { primaryColor } from "@/constants"
+import { theme } from "@/constants"
 import { cn } from "@/lib/utils"
 
 type FancySpinnerProps = React.ComponentProps<typeof Loader> & {
@@ -42,7 +42,7 @@ export const PageLoader = () => {
             <div aria-label="loading">
                 <BigLoader
                     size={24}
-                    color={primaryColor}
+                    color={theme.primary}
                 />
             </div>
         </div>
