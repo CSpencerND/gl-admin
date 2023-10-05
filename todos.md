@@ -11,3 +11,6 @@ Data
 [ ] <!-- TDOD: add ability to adjust items in cart quantity -->
 [ ] <!-- TODO: create a static list of sizes and remove the sizes page -->
 [ ] <!-- TODO: add variants api for products -->
+
+Perf and Cleanliness
+[ ] <!-- TODO: breakdown, reverse engineer, and simplify the entire shopping cart / checkout situation -->

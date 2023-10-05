@@ -34,3 +34,19 @@ export const CURRENCY = "usd"
 export const MIN_AMOUNT = 10.0
 export const MAX_AMOUNT = 5000.0
 export const AMOUNT_STEP = 5.0
+
+export const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+} as const
+
+export const orderStatus = {
+    requires_payment_method: "pending",
+    requires_confirmation: "pending",
+    requires_action: "pending",
+    requires_capture: "pending",
+    processing: "pending",
+    canceled: "cancelled",
+    succeeded: "paid",
+} as const

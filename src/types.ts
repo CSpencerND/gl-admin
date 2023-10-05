@@ -1,3 +1,5 @@
+import { Category, Color, Product, ProductImage, Size } from "@prisma/client"
+
 export type { BannerFormValues } from "@/components/forms/banner-form"
 export type { CategoryFormValues } from "@/components/forms/category-form"
 export type { ColorFormValues } from "@/components/forms/color-form"
@@ -5,6 +7,7 @@ export type { ProductFormValues } from "@/components/forms/product-form"
 export type { StoreFormValues } from "@/components/forms/settings-form"
 export type { SizeFormValues } from "@/components/forms/size-form"
 export type { GraphData } from "@/lib/actions/get-graph-revenue"
+export type { Stripe } from "stripe"
 
 export type ImageData = {
     name: string
@@ -59,6 +62,20 @@ export type ColumnType<T = {}> = {
     createdAt: string
 } & T
 
+export type CartItem = {
+    product: Product
+    quantity: number
+}
+
 export type CheckoutRequest = {
-    productIds: string[]
+    cartItems: CartItem[]
+    paymentIntentId?: string
+    orderId?: string
+}
+
+export type CartProductResponse = Product & {
+    images: ProductImage[]
+    size: Size
+    color: Color
+    category: Category
 }
