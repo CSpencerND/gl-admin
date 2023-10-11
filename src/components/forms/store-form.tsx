@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form"
 import { SubmitButton } from "."
 
-import { useLoading, useModalStore, useToast } from "@/lib/hooks"
+import { useModalStore, useToast } from "@/lib/hooks"
 import { useForm, useFormState } from "react-hook-form"
 
 import axios from "axios"
@@ -42,9 +42,8 @@ export function CreateStoreForm() {
             console.log("[CREATE_FORM_ON_SUBMIT]", error)
             toast({
                 title: "Something went wrong :(",
-                description: `${error}`,
+                description: error instanceof Error ? error.message : null,
             })
-        } finally {
         }
     }
 

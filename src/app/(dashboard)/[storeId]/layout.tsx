@@ -4,23 +4,31 @@ import prismadb from "@/lib/prismadb"
 import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 
-type DashboardLayoutProps = {
-    children: React.ReactNode
-    params: { storeId: string }
-}
+import type { StoreParams } from "@/types"
+
+type DashboardLayoutProps = React.PropsWithChildren<StoreParams>
 
 export default async function DashboardLayout({ children, params }: DashboardLayoutProps) {
     const { userId } = auth()
-    if (!userId) redirect("/sign-in")
+
+    if (!userId) {
+        redirect("/sign-in")
+    }
 
     const store = await prismadb.store.findFirst({
         where: {
             id: params.storeId,
-            userId,
+            users: {
+                some: {
+                    id: userId,
+                },
+            },
         },
     })
 
-    if (!store) redirect("/")
+    if (!store) {
+        redirect("/")
+    }
 
     return (
         <>

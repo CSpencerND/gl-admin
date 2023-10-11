@@ -20,7 +20,11 @@ export const Navbar: React.FC<NavbarProps> = async () => {
 
     const stores = await prismadb.store.findMany({
         where: {
-            userId,
+            users: {
+                some: {
+                    id: userId
+                }
+            }
         },
     })
 

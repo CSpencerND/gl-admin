@@ -1,13 +1,12 @@
-// PERF: MAYBE ADD tRPC?
-
 import { ModalProvider } from "@/components/modals/modal-provider"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { ClerkProvider } from "@clerk/nextjs"
-import { dark } from "@clerk/themes"
 
 import type { Metadata } from "next"
 
+import { theme } from "@/constants"
+import { dark } from "@clerk/themes"
 import "./globals.css"
 
 import { Inter } from "next/font/google"
@@ -24,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             appearance={{
                 baseTheme: dark,
                 variables: {
-                    colorPrimary: "rgb(13 148 136)",
+                    colorPrimary: theme.primary,
                 },
             }}
         >
