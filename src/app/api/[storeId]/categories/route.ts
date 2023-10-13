@@ -28,7 +28,11 @@ export async function POST(req: Request, { params: { storeId } }: StoreParams) {
         const storeMatchByUserId = await prismadb.store.findFirst({
             where: {
                 id: storeId,
-                userId: userId,
+                users: {
+                    some: {
+                        id: userId,
+                    },
+                },
             },
         })
 

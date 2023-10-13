@@ -9,7 +9,8 @@ datasource db {
 }
 
 model User {
-    id     String  @id
+    id String @id
+
     stores Store[]
 
     createdAt DateTime @default(now())
@@ -17,13 +18,12 @@ model User {
 }
 
 model Store {
-    id         String     @id @default(cuid())
+    id String @id @default(cuid())
+
     name       String
     users      User[]
     banners    Banner[]   @relation("StoreToBanner")
     categories Category[] @relation("StoreToCategory")
-    sizes      Size[]     @relation("StoreToSize")
-    colors     Color[]    @relation("StoreToColor")
     products   Product[]  @relation("StoreToProduct")
     orders     Order[]    @relation("StoreToOrder")
 
@@ -32,13 +32,14 @@ model Store {
 }
 
 model Category {
-    id       String    @id @default(cuid())
-    storeId  String
-    store    Store     @relation("StoreToCategory", fields: [storeId], references: [id])
-    bannerId String
-    banner   Banner    @relation("BannerToCategory", fields: [bannerId], references: [id])
-    products Product[] @relation("CategoryToProduct")
+    id      String @id @default(cuid())
+    storeId String
+    store   Store  @relation("StoreToCategory", fields: [storeId], references: [id])
+
     name     String
+    bannerId String?
+    banner   Banner?   @relation("BannerToCategory", fields: [bannerId], references: [id])
+    products Product[] @relation("CategoryToProduct")
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -47,69 +48,19 @@ model Category {
     @@index([storeId])
 }
 
-model Size {
-    id       String    @id @default(cuid())
-    storeId  String
-    store    Store     @relation("StoreToSize", fields: [storeId], references: [id])
-    products Product[]
-    name     String
-    value    String
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([storeId])
-}
-
-model Color {
-    id       String    @id @default(cuid())
-    storeId  String
-    store    Store     @relation("StoreToColor", fields: [storeId], references: [id])
-    products Product[]
-    name     String
-    value    String
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([storeId])
-}
-
-model Banner {
-    id         String     @id @default(cuid())
-    storeId    String
-    store      Store      @relation("StoreToBanner", fields: [storeId], references: [id])
-    label      String
-    categories Category[] @relation("BannerToCategory")
-
-    key      String
-    size     Int
-    name     String
-    url      String
-    fileKey  String?
-    fileSize Int?
-    fileName String?
-    fileUrl  String?
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([storeId])
-}
-
 model Product {
-    id         String         @id @default(cuid())
-    storeId    String
-    store      Store          @relation("StoreToProduct", fields: [storeId], references: [id])
-    categoryId String
-    category   Category       @relation("CategoryToProduct", fields: [categoryId], references: [id])
-    sizeId     String
-    size       Size           @relation(fields: [sizeId], references: [id])
-    colorId    String
-    color      Color          @relation(fields: [colorId], references: [id])
+    id      String @id @default(cuid())
+    storeId String
+    store   Store  @relation("StoreToProduct", fields: [storeId], references: [id])
+
+    categoryId String?
+    category   Category?        @relation("CategoryToProduct", fields: [categoryId], references: [id])
+    optionsId  String?
+    options    ProductOptions?  @relation("ProductToOptions", fields: [optionsId], references: [id])
+    variants   ProductVariant[] @relation("ProductToVariants")
     name       String
     price      Decimal
-    images     ProductImage[]
+    images     ProductImage[]   @relation("ProductToImage")
     orderItems OrderItem[]
 
     isFeatured Boolean @default(false)
@@ -120,39 +71,131 @@ model Product {
 
     @@index([storeId])
     @@index([categoryId])
-    @@index([sizeId])
-    @@index([colorId])
+    @@index([optionsId])
 }
 
-model ProductImage {
-    id       String  @id @default(cuid())
-    key      String
-    size     Int
-    name     String
-    url      String
-    fileKey  String?
-    fileSize Int?
-    fileName String?
-    fileUrl  String?
+model ProductVariant {
+    id String @id @default(cuid())
 
     productId String
-    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+    product   Product        @relation("ProductToVariants", fields: [productId], references: [id])
+    colorId   String?
+    color     Color?         @relation("VariantToColor", fields: [colorId], references: [id])
+    sizeId    String?
+    size      Size?          @relation("VariantToSize", fields: [sizeId], references: [id])
+    price     Decimal?
+    images    ProductImage[] @relation("VariantToImage")
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@index([productId])
+    @@index([colorId])
+    @@index([sizeId])
+}
+
+model ProductImage {
+    id String @id @default(cuid())
+
+    key  String
+    size Int
+    name String
+    url  String
+
+    fileKey  String?
+    fileSize Int?
+    fileName String?
+    fileUrl  String?
+
+    productId String?
+    product   Product?        @relation("ProductToImage", fields: [productId], references: [id], onDelete: Cascade)
+    variantId String?
+    variant   ProductVariant? @relation("VariantToImage", fields: [variantId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([productId])
+    @@index([variantId])
+}
+
+model ProductOptions {
+    id String @id @default(cuid())
+
+    colors Color[] @relation("OptionsToColors")
+    sizes  Size[]  @relation("OptionsToSizes")
+
+    product Product[] @relation("ProductToOptions")
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Color {
+    id       String           @id @default(cuid())
+    variants ProductVariant[] @relation("VariantToColor")
+
+    name      String
+    value     String
+    options   ProductOptions? @relation("OptionsToColors", fields: [optionsId], references: [id])
+    optionsId String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([optionsId])
+}
+
+model Size {
+    id       String           @id @default(cuid())
+    variants ProductVariant[] @relation("VariantToSize")
+
+    name      String
+    value     String
+    options   ProductOptions? @relation("OptionsToSizes", fields: [optionsId], references: [id])
+    optionsId String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([optionsId])
+}
+
+model Banner {
+    id      String @id @default(cuid())
+    storeId String
+    store   Store  @relation("StoreToBanner", fields: [storeId], references: [id])
+
+    label      String
+    categories Category[] @relation("BannerToCategory")
+
+    key  String
+    size Int
+    name String
+    url  String
+
+    fileKey  String?
+    fileSize Int?
+    fileName String?
+    fileUrl  String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([storeId])
 }
 
 model Order {
-    id         String      @id @default(cuid())
-    storeId    String
-    store      Store       @relation("StoreToOrder", fields: [storeId], references: [id])
-    orderItems OrderItem[]
-    status     OrderStatus @default(pending)
-    phone      String      @default("")
-    address    String      @default("")
-    paymentId  String?
+    id      String @id @default(cuid())
+    storeId String
+    store   Store  @relation("StoreToOrder", fields: [storeId], references: [id])
+
+    items     OrderItem[]
+    status    OrderStatus @default(pending)
+    address   String
+    phone     String?
+    email     String?
+    paymentId String
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -168,7 +211,8 @@ enum OrderStatus {
 }
 
 model OrderItem {
-    id        String  @id @default(cuid())
+    id String @id @default(cuid())
+
     orderId   String
     order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
     productId String

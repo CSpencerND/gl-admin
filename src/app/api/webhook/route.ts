@@ -39,11 +39,11 @@ export async function POST(req: Request) {
                 phone: session?.customer_details?.phone ?? "",
             },
             include: {
-                orderItems: true,
+                items: true,
             },
         })
 
-        const productIds = order.orderItems.map((item) => item.productId)
+        const productIds = order.items.map((item) => item.productId)
 
         await prismadb.product.updateMany({
             where: {

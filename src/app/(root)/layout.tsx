@@ -9,9 +9,18 @@ export default async function SetupLayout({ children }: React.PropsWithChildren)
         redirect("/sign-in")
     }
 
-    const user = await userGET(userId)
+    const user = await prismadb.user.findFirst({
+        where: {
+            id: userId,
+        },
+    })
+
     if (!user) {
-        await userPOST(userId)
+        await prismadb.user.create({
+            data: {
+                id: userId,
+            },
+        })
     } else {
         const store = await prismadb.store.findFirst({
             where: {
@@ -31,18 +40,18 @@ export default async function SetupLayout({ children }: React.PropsWithChildren)
     return <>{children}</>
 }
 
-async function userGET(id: string) {
-    return await prismadb.user.findFirst({
-        where: {
-            id,
-        },
-    })
-}
+// async function userGET(id: string) {
+//     return await prismadb.user.findFirst({
+//         where: {
+//             id,
+//         },
+//     })
+// }
 
-async function userPOST(id: string) {
-    return await prismadb.user.create({
-        data: {
-            id,
-        },
-    })
-}
+// async function userPOST(id: string) {
+//     return await prismadb.user.create({
+//         data: {
+//             id,
+//         },
+//     })
+// }

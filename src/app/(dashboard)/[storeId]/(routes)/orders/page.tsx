@@ -17,7 +17,7 @@ const OrdersPage: NextPage<OrdersPageProps> = async ({ params: { storeId } }) =>
             storeId,
         },
         include: {
-            orderItems: {
+            items: {
                 include: {
                     product: true,
                 },
@@ -28,8 +28,8 @@ const OrdersPage: NextPage<OrdersPageProps> = async ({ params: { storeId } }) =>
         },
     })
 
-    const formattedOrders: OrderColumn[] = orders.map(({ id, phone, address, orderItems, status, createdAt }) => {
-        const total = orderItems.reduce((total, item) => {
+    const formattedOrders: OrderColumn[] = orders.map(({ id, phone, address, items, status, createdAt }) => {
+        const total = items.reduce((total, item) => {
             const price = Number(item.product.price)
             return total + price
         }, 0)
@@ -38,7 +38,7 @@ const OrdersPage: NextPage<OrdersPageProps> = async ({ params: { storeId } }) =>
             id,
             phone,
             address,
-            products: orderItems.map((orderItem) => orderItem.product.name).join(", "),
+            products: items.map((orderItem) => orderItem.product.name).join(", "),
             totalPrice: formatPrice(total),
             status,
             createdAt: format(createdAt, "MMMM do, yyyy"),

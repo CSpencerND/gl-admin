@@ -28,7 +28,11 @@ export async function PATCH(req: Request, { params: { storeId, colorId } }: Colo
         const storeMatchByUserId = await prismadb.store.findFirst({
             where: {
                 id: storeId,
-                userId,
+                users: {
+                    some: {
+                        id: userId
+                    }
+                }
             },
         })
 
@@ -69,7 +73,11 @@ export async function DELETE(_req: Request, { params: { storeId, colorId } }: Co
         const storeMatchByUserId = await prismadb.store.findFirst({
             where: {
                 id: storeId,
-                userId,
+                users: {
+                    some: {
+                        id: userId
+                    }
+                }
             },
         })
 

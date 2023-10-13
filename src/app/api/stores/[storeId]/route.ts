@@ -24,7 +24,11 @@ export async function PATCH(req: Request, { params: { storeId } }: StoreParams) 
         const store = await prismadb.store.updateMany({
             where: {
                 id: storeId,
-                userId,
+                users: {
+                    some: {
+                        id: userId,
+                    },
+                },
             },
             data: {
                 name,
@@ -53,7 +57,11 @@ export async function DELETE(_req: Request, { params: { storeId } }: StoreParams
         const store = await prismadb.store.delete({
             where: {
                 id: storeId,
-                userId,
+                users: {
+                    some: {
+                        id: userId,
+                    },
+                },
             },
         })
 
