@@ -17,57 +17,79 @@ import { useLoading, useOpen, useToast } from "@/lib/hooks"
 import { useUploadThing } from "@/lib/uploadthing"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
-import { ControllerRenderProps, useForm } from "react-hook-form"
+import { useForm, type ControllerRenderProps } from "react-hook-form"
 
 import { deleteFilesFromServer } from "@/lib/actions/uploadthing"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import * as z from "zod"
 
-import { imageData } from "@/constants"
 import { cn, generateFormPageStrings, isBase64Image, readImageFile, validateImageFile } from "@/lib/utils"
 import unionBy from "lodash.unionby"
 
-import type { FormProps, ProductParams } from "@/types"
-import type { Category, Color, Product, ProductImage, Size } from "@prisma/client"
+import type { FormProps, ImageData, ProductParams, OptionData } from "@/types"
+import type { Category, Product, ProductImage, ProductOption } from "@prisma/client"
 
 type TProduct = Product & { images: ProductImage[] }
 
 type ProductFormProps = FormProps<TProduct> & {
     categories: Category[]
-    // sizes: Size[]
-    // colors: Color[]
+    options: ProductOption[]
 }
 
-export type ProductFormValues = z.infer<typeof schema>
+const imageSchema = z.object({
+    name: z.string(),
+    size: z.number(),
+    key: z.string(),
+    url: z.string(),
+})
+
+const optionSchema = z.object({
+    name: z.string(),
+    value: z.string(),
+    type: z.string(),
+})
 
 const schema = z.object({
     name: z.string(),
     price: z.coerce.number(),
     categoryId: z.string(),
-    // colorId: z.string(),
-    // sizeId: z.string(),
-    images: imageData.zod.array(),
+    options: optionSchema.array().optional(),
+    images: imageSchema.array(),
     isFeatured: z.boolean().default(false).optional(),
     isArchived: z.boolean().default(false).optional(),
 })
 
+const imageDefault: ImageData = {
+    name: "",
+    size: 0,
+    key: "",
+    url: "",
+}
+
+const optionsDefault: OptionData = {
+    name: "",
+    value: "",
+    type: "",
+}
+
+const defaultValues = {
+    name: "",
+    price: 0,
+    categoryId: "",
+    options: [optionsDefault],
+    images: [imageDefault],
+    isFeatured: false,
+    isArchived: false,
+}
+
+export type ProductFormValues = z.infer<typeof schema>
+
 export const ProductForm: React.FC<ProductFormProps> = (props) => {
-    const { entityName, routeSegment, initialData, categories } = props
+    const { entityName, routeSegment, initialData, categories, options } = props
 
     const [filesAdded, setFilesAdded] = useState<File[]>([])
     const [filesDeleted, setFilesDeleted] = useState<string | string[]>([])
-
-    const defaultValues = {
-        name: "",
-        images: [imageData.default],
-        price: 0,
-        categoryId: "",
-        // colorId: "",
-        // sizeId: "",
-        isFeatured: false,
-        isArchived: false,
-    }
 
     const form = useForm<ProductFormValues>({
         resolver: zodResolver(schema),
@@ -118,7 +140,7 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
         if (imageDataUrls) {
             const newImages = imageDataUrls.map((url, i) => {
                 return {
-                    ...imageData.default,
+                    ...imageDefault,
                     name: files[i].name,
                     url: url,
                 }
@@ -476,6 +498,7 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
                                     )}
                                 />
                             </div>
+                            <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 md:grid-cols-3"></div>
                             <div className="flex w-full justify-end max-sm:justify-center max-sm:grid max-sm:place-items-center">
                                 <SubmitButton
                                     isSubmitting={isLoading}

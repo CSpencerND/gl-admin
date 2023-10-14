@@ -1,4 +1,4 @@
-import { Category, Color, Product, ProductImage, Size } from "@prisma/client"
+import { Category, Product, ProductImage } from "@prisma/client"
 
 export type { BannerFormValues } from "@/components/forms/banner-form"
 export type { CategoryFormValues } from "@/components/forms/category-form"
@@ -18,6 +18,12 @@ export type ImageData = {
     fileSize?: number
     fileKey?: string
     fileUrl?: string
+}
+
+export type OptionData = {
+    name: string
+    value: string
+    type: string
 }
 
 export type StoreParams<T = Record<string, string>> = {
@@ -51,7 +57,7 @@ export type OrderParams = StoreParams<{
 }>
 
 export type FormProps<TModel> = {
-    initialData: TModel | null
+    initialData?: TModel | null
     entityName: string
     routeSegment: string
     dependentEntity?: string

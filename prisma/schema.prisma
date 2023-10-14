@@ -53,12 +53,11 @@ model Product {
     storeId String
     store   Store  @relation("StoreToProduct", fields: [storeId], references: [id])
 
-    categoryId String?
-    category   Category?        @relation("CategoryToProduct", fields: [categoryId], references: [id])
-    optionsId  String?
-    options    ProductOptions?  @relation("ProductToOptions", fields: [optionsId], references: [id])
-    variants   ProductVariant[] @relation("ProductToVariants")
     name       String
+    categoryId String
+    category   Category         @relation("CategoryToProduct", fields: [categoryId], references: [id])
+    options    ProductOption[]
+    variants   ProductVariant[] @relation("ProductToVariants")
     price      Decimal
     images     ProductImage[]   @relation("ProductToImage")
     orderItems OrderItem[]
@@ -71,7 +70,22 @@ model Product {
 
     @@index([storeId])
     @@index([categoryId])
-    @@index([optionsId])
+}
+
+model ProductOption {
+    // id String @id @default(cuid())
+
+    name  String @id
+    value String
+    type  String
+
+    // colors Color[] @relation("OptionsToColors")
+    // sizes  Size[]  @relation("OptionsToSizes")
+
+    product Product[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model ProductVariant {
@@ -79,19 +93,19 @@ model ProductVariant {
 
     productId String
     product   Product        @relation("ProductToVariants", fields: [productId], references: [id])
-    colorId   String?
-    color     Color?         @relation("VariantToColor", fields: [colorId], references: [id])
-    sizeId    String?
-    size      Size?          @relation("VariantToSize", fields: [sizeId], references: [id])
+    // colorId   String?
+    // color     Color?         @relation("VariantToColor", fields: [colorId], references: [id])
+    // sizeId    String?
+    // size      Size?          @relation("VariantToSize", fields: [sizeId], references: [id])
     price     Decimal?
     images    ProductImage[] @relation("VariantToImage")
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    // @@index([colorId])
+    // @@index([sizeId])
 
     @@index([productId])
-    @@index([colorId])
-    @@index([sizeId])
 }
 
 model ProductImage {
@@ -117,48 +131,6 @@ model ProductImage {
 
     @@index([productId])
     @@index([variantId])
-}
-
-model ProductOptions {
-    id String @id @default(cuid())
-
-    colors Color[] @relation("OptionsToColors")
-    sizes  Size[]  @relation("OptionsToSizes")
-
-    product Product[] @relation("ProductToOptions")
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model Color {
-    id       String           @id @default(cuid())
-    variants ProductVariant[] @relation("VariantToColor")
-
-    name      String
-    value     String
-    options   ProductOptions? @relation("OptionsToColors", fields: [optionsId], references: [id])
-    optionsId String?
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([optionsId])
-}
-
-model Size {
-    id       String           @id @default(cuid())
-    variants ProductVariant[] @relation("VariantToSize")
-
-    name      String
-    value     String
-    options   ProductOptions? @relation("OptionsToSizes", fields: [optionsId], references: [id])
-    optionsId String?
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    @@index([optionsId])
 }
 
 model Banner {
@@ -225,3 +197,33 @@ model OrderItem {
     @@index([orderId])
     @@index([productId])
 }
+
+// model Color {
+//     id       String           @id @default(cuid())
+//     variants ProductVariant[] @relation("VariantToColor")
+//
+//     name      String
+//     value     String
+//     options   ProductOptions? @relation("OptionsToColors", fields: [optionsId], references: [id])
+//     optionsId String?
+//
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+//
+//     @@index([optionsId])
+// }
+
+// model Size {
+//     id       String           @id @default(cuid())
+//     variants ProductVariant[] @relation("VariantToSize")
+//
+//     name      String
+//     value     String
+//     options   ProductOptions? @relation("OptionsToSizes", fields: [optionsId], references: [id])
+//     optionsId String?
+//
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+//
+//     @@index([optionsId])
+// }
