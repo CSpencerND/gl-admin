@@ -17,8 +17,9 @@ export const MainNav: React.FC<MainNavProps> = ({ children, className, ...props 
     const settingsHref = `${rootHref}/settings`
     const bannerHref = `${rootHref}/banners`
     const categoriesHref = `${rootHref}/categories`
-    const sizesHref = `${rootHref}/sizes`
-    const colorsHref = `${rootHref}/colors`
+    const optionsHref = `${rootHref}/options`
+    // const sizesHref = `${rootHref}/sizes`
+    // const colorsHref = `${rootHref}/colors`
     const productsHref = `${rootHref}/products`
     const ordersHref = `${rootHref}/orders`
 
@@ -49,15 +50,20 @@ export const MainNav: React.FC<MainNavProps> = ({ children, className, ...props 
             active: pathname === productsHref,
         },
         {
-            href: sizesHref,
-            label: "Sizes",
-            active: pathname === sizesHref,
+            href: optionsHref,
+            label: "Options",
+            active: pathname === optionsHref,
         },
-        {
-            href: colorsHref,
-            label: "Colors",
-            active: pathname === colorsHref,
-        },
+        // {
+        //     href: sizesHref,
+        //     label: "Sizes",
+        //     active: pathname === sizesHref,
+        // },
+        // {
+        //     href: colorsHref,
+        //     label: "Colors",
+        //     active: pathname === colorsHref,
+        // },
         {
             href: ordersHref,
             label: "Orders",

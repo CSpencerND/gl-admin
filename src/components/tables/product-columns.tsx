@@ -12,9 +12,10 @@ type CellActionProps = {
 export type ProductColumn = ColumnType<{
     name: string
     price: string
-    size: string
-    color: string
-    category: string
+    // size: string
+    // color: string
+    // options: [],
+    category: string | undefined
     isFeatured: boolean
     isArchived: boolean
 }>
@@ -42,24 +43,24 @@ export const ProductColumns: ColumnDef<ProductColumn>[] = [
         accessorKey: "price",
         header: "Price",
     },
-    {
-        accessorKey: "size",
-        header: "Size",
-    },
-    {
-        accessorKey: "color",
-        header: "Color",
-        cell: ({ row }) => (
-            <div className="flex items-center gap-2">
-                {row.original.color}
-                <div
-                    aria-hidden="true"
-                    className="size-md rounded-full border"
-                    style={{ backgroundColor: row.original.color }}
-                />
-            </div>
-        ),
-    },
+    // {
+    //     accessorKey: "size",
+    //     header: "Size",
+    // },
+    // {
+    //     accessorKey: "color",
+    //     header: "Color",
+    //     cell: ({ row }) => (
+    //         <div className="flex items-center gap-2">
+    //             {row.original.color}
+    //             <div
+    //                 aria-hidden="true"
+    //                 className="size-md rounded-full border"
+    //                 style={{ backgroundColor: row.original.color }}
+    //             />
+    //         </div>
+    //     ),
+    // },
     {
         accessorKey: "isArchived",
         header: "Archived",

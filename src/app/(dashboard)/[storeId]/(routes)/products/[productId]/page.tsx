@@ -24,17 +24,17 @@ const ProductPage: NextPage<ProductPageProps> = async ({ params: { storeId, prod
         },
     })
 
-    const sizes = await prismadb.size.findMany({
-        where: {
-            storeId,
-        },
-    })
+    // const sizes = await prismadb.size.findMany({
+    //     where: {
+    //         storeId,
+    //     },
+    // })
 
-    const colors = await prismadb.color.findMany({
-        where: {
-            storeId,
-        },
-    })
+    // const colors = await prismadb.color.findMany({
+    //     where: {
+    //         storeId,
+    //     },
+    // })
 
     return (
         <MainDiv>
@@ -42,7 +42,7 @@ const ProductPage: NextPage<ProductPageProps> = async ({ params: { storeId, prod
                 initialData={product}
                 entityName="Product"
                 routeSegment="products"
-                {...{ categories, sizes, colors }}
+                {...{ categories}}
             />
         </MainDiv>
     )

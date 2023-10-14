@@ -35,8 +35,8 @@ type TProduct = Product & { images: ProductImage[] }
 
 type ProductFormProps = FormProps<TProduct> & {
     categories: Category[]
-    sizes: Size[]
-    colors: Color[]
+    // sizes: Size[]
+    // colors: Color[]
 }
 
 export type ProductFormValues = z.infer<typeof schema>
@@ -45,15 +45,15 @@ const schema = z.object({
     name: z.string(),
     price: z.coerce.number(),
     categoryId: z.string(),
-    colorId: z.string(),
-    sizeId: z.string(),
+    // colorId: z.string(),
+    // sizeId: z.string(),
     images: imageData.zod.array(),
     isFeatured: z.boolean().default(false).optional(),
     isArchived: z.boolean().default(false).optional(),
 })
 
 export const ProductForm: React.FC<ProductFormProps> = (props) => {
-    const { entityName, routeSegment, initialData, categories, sizes, colors } = props
+    const { entityName, routeSegment, initialData, categories } = props
 
     const [filesAdded, setFilesAdded] = useState<File[]>([])
     const [filesDeleted, setFilesDeleted] = useState<string | string[]>([])
@@ -63,8 +63,8 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
         images: [imageData.default],
         price: 0,
         categoryId: "",
-        colorId: "",
-        sizeId: "",
+        // colorId: "",
+        // sizeId: "",
         isFeatured: false,
         isArchived: false,
     }
@@ -343,76 +343,76 @@ export const ProductForm: React.FC<ProductFormProps> = (props) => {
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="sizeId"
-                                    render={({ field }) => (
-                                        <FormItem className="relative">
-                                            <Select
-                                                disabled={isLoading}
-                                                onValueChange={field.onChange}
-                                                value={field.value}
-                                                defaultValue={field.value}
-                                            >
-                                                <FormLabel className="ml-3">Size</FormLabel>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue
-                                                            defaultValue={field.value}
-                                                            placeholder="Select A Size"
-                                                        />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent className="rounded-lg">
-                                                    {sizes.map((size, i) => (
-                                                        <SelectItem
-                                                            key={i}
-                                                            value={size.id}
-                                                        >
-                                                            {size.name}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="colorId"
-                                    render={({ field }) => (
-                                        <FormItem className="relative">
-                                            <Select
-                                                disabled={isLoading}
-                                                onValueChange={field.onChange}
-                                                value={field.value}
-                                                defaultValue={field.value}
-                                            >
-                                                <FormLabel className="ml-3">Color</FormLabel>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue
-                                                            defaultValue={field.value}
-                                                            placeholder="Select A Color"
-                                                        />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent className="rounded-lg">
-                                                    {colors.map((color, i) => (
-                                                        <SelectItem
-                                                            key={i}
-                                                            value={color.id}
-                                                        >
-                                                            {color.name}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                {/* <FormField */}
+                                {/*     control={form.control} */}
+                                {/*     name="sizeId" */}
+                                {/*     render={({ field }) => ( */}
+                                {/*         <FormItem className="relative"> */}
+                                {/*             <Select */}
+                                {/*                 disabled={isLoading} */}
+                                {/*                 onValueChange={field.onChange} */}
+                                {/*                 value={field.value} */}
+                                {/*                 defaultValue={field.value} */}
+                                {/*             > */}
+                                {/*                 <FormLabel className="ml-3">Size</FormLabel> */}
+                                {/*                 <FormControl> */}
+                                {/*                     <SelectTrigger> */}
+                                {/*                         <SelectValue */}
+                                {/*                             defaultValue={field.value} */}
+                                {/*                             placeholder="Select A Size" */}
+                                {/*                         /> */}
+                                {/*                     </SelectTrigger> */}
+                                {/*                 </FormControl> */}
+                                {/*                 <SelectContent className="rounded-lg"> */}
+                                {/*                     {sizes.map((size, i) => ( */}
+                                {/*                         <SelectItem */}
+                                {/*                             key={i} */}
+                                {/*                             value={size.id} */}
+                                {/*                         > */}
+                                {/*                             {size.name} */}
+                                {/*                         </SelectItem> */}
+                                {/*                     ))} */}
+                                {/*                 </SelectContent> */}
+                                {/*             </Select> */}
+                                {/*             <FormMessage /> */}
+                                {/*         </FormItem> */}
+                                {/*     )} */}
+                                {/* /> */}
+                                {/* <FormField */}
+                                {/*     control={form.control} */}
+                                {/*     name="colorId" */}
+                                {/*     render={({ field }) => ( */}
+                                {/*         <FormItem className="relative"> */}
+                                {/*             <Select */}
+                                {/*                 disabled={isLoading} */}
+                                {/*                 onValueChange={field.onChange} */}
+                                {/*                 value={field.value} */}
+                                {/*                 defaultValue={field.value} */}
+                                {/*             > */}
+                                {/*                 <FormLabel className="ml-3">Color</FormLabel> */}
+                                {/*                 <FormControl> */}
+                                {/*                     <SelectTrigger> */}
+                                {/*                         <SelectValue */}
+                                {/*                             defaultValue={field.value} */}
+                                {/*                             placeholder="Select A Color" */}
+                                {/*                         /> */}
+                                {/*                     </SelectTrigger> */}
+                                {/*                 </FormControl> */}
+                                {/*                 <SelectContent className="rounded-lg"> */}
+                                {/*                     {colors.map((color, i) => ( */}
+                                {/*                         <SelectItem */}
+                                {/*                             key={i} */}
+                                {/*                             value={color.id} */}
+                                {/*                         > */}
+                                {/*                             {color.name} */}
+                                {/*                         </SelectItem> */}
+                                {/*                     ))} */}
+                                {/*                 </SelectContent> */}
+                                {/*             </Select> */}
+                                {/*             <FormMessage /> */}
+                                {/*         </FormItem> */}
+                                {/*     )} */}
+                                {/* /> */}
                             </div>
                             <div className="grid grid-cols-1 gap-x-6 gap-y-4 max-sm:gap-y-8 sm:grid-cols-2 md:grid-cols-3">
                                 <FormField

@@ -34,13 +34,13 @@ export type CategoryParams = StoreParams<{
     categoryId: string
 }>
 
-export type SizeParams = StoreParams<{
-    sizeId: string
-}>
+// export type SizeParams = StoreParams<{
+//     sizeId: string
+// }>
 
-export type ColorParams = StoreParams<{
-    colorId: string
-}>
+// export type ColorParams = StoreParams<{
+//     colorId: string
+// }>
 
 export type ProductParams = StoreParams<{
     productId: string

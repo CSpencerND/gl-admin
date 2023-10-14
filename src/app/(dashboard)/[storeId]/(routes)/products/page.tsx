@@ -19,8 +19,9 @@ const ProductsPage: NextPage<ProductsPageProps> = async ({ params: { storeId } }
         },
         include: {
             category: true,
-            size: true,
-            color: true,
+            // options: true
+            // size: true,
+            // color: true,
         },
         orderBy: {
             createdAt: "desc",
@@ -28,15 +29,14 @@ const ProductsPage: NextPage<ProductsPageProps> = async ({ params: { storeId } }
     })
 
     const formattedProducts: ProductColumn[] = products.map((product) => {
-        const { id, name, isFeatured, isArchived, price, size, color, category, createdAt } = product
+        const { id, name, isFeatured, isArchived, price, category, createdAt } = product
 
         return {
             id,
             name,
             price: formatPrice(price),
-            size: size.name,
-            color: color.value,
-            category: category.name,
+            category: category?.name,
+            // options: options?.id,
             isArchived,
             isFeatured,
             createdAt: format(createdAt, "MMMM do, yyyy"),
